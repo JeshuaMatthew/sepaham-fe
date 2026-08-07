@@ -1,0 +1,107 @@
+/* ------------------------------------------------------------------ */
+/*  Google Fonts — harus di paling atas sebelum @import lain           */
+/*  Sansation (judul) + Google Sans (teks) + JetBrains Mono (kode)     */
+/* ------------------------------------------------------------------ */
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=JetBrains+Mono:wght@400;500;600&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+
+@import "tailwindcss";
+
+/* ================================================================== */
+/*  DESIGN TOKENS (Tailwind v4 — pakai @theme, TANPA tailwind.config)  */
+/*  Palet "Neutral Dark Gray" — monokrom, gelap, netral.               */
+/*  Setiap token otomatis jadi utility, mis:                           */
+/*    --color-primary  -> bg-primary / text-primary / border-primary   */
+/*    --font-display   -> font-display                                  */
+/* ================================================================== */
+@theme {
+  /* ================================================================ */
+  /*  Monokrom: background abu-abu gelap netral, sisanya abu netral.   */
+  /*  Surface/border/muted = putih transparan di atas background gelap.*/
+  /*  (Warna bahasa di halaman profil dikecualikan — dari data github.)*/
+  /* ================================================================ */
+
+  /* ---- Surfaces & lines (dark gray + putih transparan) ---- */
+  --color-canvas: #1c1c1c; /* background utama (neutral dark gray) */
+  --color-surface: rgba(255, 255, 255, 0.045); /* kartu / panel   */
+  --color-elevate: rgba(255, 255, 255, 0.09); /* hover / aktif     */
+  --color-line: rgba(255, 255, 255, 0.15); /* border halus         */
+
+  /* ---- Brand & accents (neutral gray) ---- */
+  --color-primary: #e5e5e5; /* abu terang (aksi utama / highlight) */
+  --color-primary-soft: rgba(229, 229, 229, 0.14); /* tint abu     */
+  --color-accent: #e5e5e5; /* abu terang (aksen teks / link)       */
+  --color-neon: #e5e5e5; /* abu terang                            */
+  --color-danger: #e5e5e5; /* abu terang                          */
+
+  /* ---- Text (neutral gray) ---- */
+  --color-ink: #ededed; /* teks utama (abu sangat terang)       */
+  --color-muted: rgba(237, 237, 237, 0.52); /* teks sekunder     */
+
+  /* ---- Typography ---- */
+  --font-sans: "Google Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sansation", "Google Sans", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Courier New", monospace;
+
+  /* ---- Radius (tanpa sudut membulat) ---- */
+  --radius-card: 0;
+
+  /* ---- Custom keyframes / animations ---- */
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes shimmer {
+    0% {
+      opacity: 0.45;
+    }
+    50% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0.45;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base layer — reset & default look                                  */
+/* ------------------------------------------------------------------ */
+@layer base {
+  /* Sementara: matikan semua animasi & transisi CSS. */
+  /* Tanpa sudut membulat: semua elemen bersudut tajam. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    border-radius: 0 !important;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Scrollbar bergaya lembut */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-canvas);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-elevate);
+  }
+}

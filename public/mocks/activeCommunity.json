@@ -1,0 +1,37 @@
+{
+  "communities": [
+    {
+      "id": "itb-cs",
+      "name": "ITB Computer Science",
+      "initial": "IT",
+      "color": "#e5e5e5",
+      "members": [
+        { "id": "m1", "name": "Siti Rahma", "avatar": "https://i.pravatar.cc/80?img=5", "role": "Frontend", "status": "online", "activity": "in #general" },
+        { "id": "m2", "name": "Budi Santoso", "avatar": "https://i.pravatar.cc/80?img=12", "role": "Backend", "status": "online", "activity": "in #frontend" },
+        { "id": "m3", "name": "Nadia Putri", "avatar": "https://i.pravatar.cc/80?img=45", "role": "UI/UX", "status": "idle", "activity": "studying" },
+        { "id": "m4", "name": "Rian Hidayat", "avatar": "https://i.pravatar.cc/80?img=15", "role": "Mobile", "status": "online", "activity": "in #jobs" }
+      ]
+    },
+    {
+      "id": "ui-ilkom",
+      "name": "UI Computer Science",
+      "initial": "UI",
+      "color": "#e5e5e5",
+      "members": [
+        { "id": "m5", "name": "Dewi Lestari", "avatar": "https://i.pravatar.cc/80?img=32", "role": "Data/ML", "status": "online", "activity": "thesis discussion" },
+        { "id": "m6", "name": "Andi Pratama", "avatar": "https://i.pravatar.cc/80?img=8", "role": "Backend", "status": "idle", "activity": "AFK 10 min" },
+        { "id": "m7", "name": "Maya Sari", "avatar": "https://i.pravatar.cc/80?img=20", "role": "Frontend", "status": "online", "activity": "in #ui-ux" }
+      ]
+    },
+    {
+      "id": "ugm-if",
+      "name": "UGM Computer Science",
+      "initial": "UG",
+      "color": "#e5e5e5",
+      "members": [
+        { "id": "m8", "name": "Fajar Nugroho", "avatar": "https://i.pravatar.cc/80?img=51", "role": "DevOps", "status": "online", "activity": "deploying a project" },
+        { "id": "m9", "name": "Intan Permata", "avatar": "https://i.pravatar.cc/80?img=25", "role": "UI/UX", "status": "online", "activity": "design review" }
+      ]
+    }
+  ]
+}

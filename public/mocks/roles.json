@@ -1,0 +1,104 @@
+{
+  "roles": [
+    {
+      "id": "frontend-engineer",
+      "title": "Frontend Engineer",
+      "emoji": "",
+      "tagline": "Building interfaces that feel alive & smooth.",
+      "description": "You love making things you can see and touch right away. Focused on interactive UI, animation, and user experience.",
+      "matchTags": ["web-dev", "ui-ux", "open-source", "gaming"],
+      "techStack": ["React", "TypeScript", "Tailwind"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "backend-engineer",
+      "title": "Backend Engineer",
+      "emoji": "",
+      "tagline": "The scalable engine behind the scenes.",
+      "description": "You enjoy thinking about data structures, APIs, and performance. Logic and efficiency are your playground.",
+      "matchTags": ["web-dev", "competitive-programming", "cloud-devops", "open-source"],
+      "techStack": ["Rust", "Go", "PostgreSQL"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "mobile-developer",
+      "title": "Mobile Developer",
+      "emoji": "",
+      "tagline": "Apps in the hands of millions.",
+      "description": "You want your work in everyone's pocket. Focused on responsive Android/iOS apps.",
+      "matchTags": ["mobile-dev", "ui-ux", "gaming"],
+      "techStack": ["Kotlin", "Swift", "Flutter"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "ml-engineer",
+      "title": "ML / AI Engineer",
+      "emoji": "",
+      "tagline": "Teaching machines to think.",
+      "description": "You're curious about patterns and prediction. Building models that learn from data is your passion.",
+      "matchTags": ["machine-learning", "data-analytics", "competitive-programming"],
+      "techStack": ["Python", "PyTorch", "Pandas"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "data-analyst",
+      "title": "Data Analyst",
+      "emoji": "",
+      "tagline": "Turning numbers into decisions.",
+      "description": "You're great at finding the story behind the data and telling it clearly.",
+      "matchTags": ["data-analytics", "writing", "machine-learning"],
+      "techStack": ["SQL", "Python", "Looker"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "devops-engineer",
+      "title": "DevOps / Cloud Engineer",
+      "emoji": "",
+      "tagline": "Automation, deploys, and 99.9% uptime.",
+      "description": "You love making systems run automatically and reliably, from CI/CD to cloud infrastructure.",
+      "matchTags": ["cloud-devops", "open-source", "cybersecurity"],
+      "techStack": ["Docker", "Kubernetes", "Terraform"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "security-engineer",
+      "title": "Security Engineer",
+      "emoji": "",
+      "tagline": "The gatekeeper of the digital world.",
+      "description": "You think like an attacker in order to defend. Focused on system and network security.",
+      "matchTags": ["cybersecurity", "competitive-programming", "open-source"],
+      "techStack": ["Linux", "Python", "Burp Suite"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "game-developer",
+      "title": "Game Developer",
+      "emoji": "",
+      "tagline": "Building worlds you can play.",
+      "description": "You want to combine logic, art, and story into a fun playing experience.",
+      "matchTags": ["game-dev", "gaming", "ui-ux", "anime"],
+      "techStack": ["Unity", "C#", "Godot"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "ui-ux-designer",
+      "title": "UI/UX Designer",
+      "emoji": "",
+      "tagline": "Empathy translated into design.",
+      "description": "You care about how people feel using a product. Research, wireframes, and prototypes.",
+      "matchTags": ["ui-ux", "photography", "writing"],
+      "techStack": ["Figma", "Framer", "Miro"],
+      "accent": "#e5e5e5"
+    },
+    {
+      "id": "fullstack-engineer",
+      "title": "Fullstack / Product Engineer",
+      "emoji": "",
+      "tagline": "From idea to deploy, you can do it all.",
+      "description": "You love building whole features — frontend, backend, all the way to release. A product-minded generalist.",
+      "matchTags": ["web-dev", "ui-ux", "writing", "open-source", "cloud-devops"],
+      "techStack": ["Next.js", "Node.js", "PostgreSQL"],
+      "accent": "#e5e5e5"
+    }
+  ]
+}

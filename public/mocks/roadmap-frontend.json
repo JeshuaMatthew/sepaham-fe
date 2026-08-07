@@ -1,0 +1,172 @@
+{
+  "id": "frontend",
+  "roleId": "frontend-engineer",
+  "author": "Dr. Andi Wijaya",
+  "title": "Frontend Engineer",
+  "emoji": "",
+  "nodes": [
+    {
+      "id": "html-css",
+      "title": "HTML & CSS",
+      "emoji": "",
+      "x": 50,
+      "y": 6,
+      "prereqs": [],
+      "article": "## HTML & CSS\n\nFondasi setiap halaman web. **HTML** menyusun struktur, **CSS** mengatur tampilan.\n\n### Yang dipelajari\n- Semantic HTML (`header`, `nav`, `main`, `footer`)\n- Box model, Flexbox, dan Grid\n- Responsive design & media queries\n\n>  Tips: bikin ulang layout website favoritmu untuk latihan.\n\nReferensi: [MDN HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML) · [web.dev CSS](https://web.dev/learn/css)",
+      "submission": {
+        "type": "quiz",
+        "passingScore": 50,
+        "questions": [
+          {
+            "id": "q1",
+            "question": "Properti CSS untuk membuat layout fleksibel satu dimensi?",
+            "options": ["display: block", "display: flex", "float: left", "position: absolute"],
+            "correctIndex": 1
+          },
+          {
+            "id": "q2",
+            "question": "Tag HTML yang semantik untuk navigasi?",
+            "options": ["<div>", "<nav>", "<span>", "<b>"],
+            "correctIndex": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "emoji": "",
+      "x": 50,
+      "y": 20,
+      "prereqs": ["html-css"],
+      "article": "## JavaScript\n\nBahasa yang bikin web jadi **interaktif** — event, DOM, fetch API, dan async.\n\n### Yang dipelajari\n- Variabel, function, array & object\n- Manipulasi DOM & event handling\n- `fetch` + async/await\n\n**Latihan:** bikin aplikasi to-do sederhana tanpa framework, lalu push ke GitHub.",
+      "submission": {
+        "type": "text",
+        "prompt": "Tempel link GitHub repo aplikasi to-do buatanmu."
+      }
+    },
+    {
+      "id": "git",
+      "title": "Git & GitHub",
+      "emoji": "",
+      "x": 84,
+      "y": 20,
+      "prereqs": ["html-css"],
+      "article": "## Git & GitHub\n\nVersion control wajib buat semua dev. Kelola perubahan kode & kolaborasi.\n\n### Yang dipelajari\n- `commit`, `branch`, `merge`, `pull request`\n- Menyelesaikan merge conflict\n\nReferensi: [Learn Git Branching](https://learngitbranching.js.org)",
+      "submission": {
+        "type": "text",
+        "prompt": "Tempel link profil GitHub-mu."
+      }
+    },
+    {
+      "id": "typescript",
+      "title": "TypeScript",
+      "emoji": "",
+      "x": 28,
+      "y": 34,
+      "prereqs": ["javascript"],
+      "article": "## TypeScript\n\nJavaScript **plus tipe statis** — bikin kode lebih aman & enak di-maintain.\n\n### Yang dipelajari\n- Tipe dasar, interface, dan generic\n- Type narrowing & utility types\n\nReferensi: [TS Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)",
+      "submission": { "type": "checkmark" }
+    },
+    {
+      "id": "tailwind",
+      "title": "Tailwind CSS",
+      "emoji": "",
+      "x": 72,
+      "y": 34,
+      "prereqs": ["javascript"],
+      "article": "## Tailwind CSS\n\nUtility-first CSS framework — styling cepat langsung di markup.\n\n### Yang dipelajari\n- Utility class & responsive prefix\n- Dark mode dengan theme token\n\nReferensi: [Tailwind Docs](https://tailwindcss.com/docs)",
+      "submission": { "type": "checkmark" }
+    },
+    {
+      "id": "react",
+      "title": "React",
+      "emoji": "",
+      "x": 50,
+      "y": 48,
+      "prereqs": ["typescript"],
+      "article": "## React\n\nLibrary UI berbasis **komponen**. Kelola state dengan hooks.\n\n### Yang dipelajari\n- Komponen, props, dan `useState`/`useEffect`\n- Lifting state & composition\n\n**Latihan:** bikin komponen reusable + form dengan hooks.",
+      "submission": {
+        "type": "text",
+        "prompt": "Tempel link repo komponen/app React buatanmu."
+      }
+    },
+    {
+      "id": "state-mgmt",
+      "title": "Data & State",
+      "emoji": "",
+      "x": 22,
+      "y": 63,
+      "prereqs": ["react"],
+      "article": "## Data & State Management\n\nAmbil data server & kelola state global tanpa pusing.\n\n### Yang dipelajari\n- Data fetching + caching (TanStack Query)\n- Global state (Zustand)\n\nReferensi: [TanStack Query](https://tanstack.com/query/latest)",
+      "submission": { "type": "checkmark" }
+    },
+    {
+      "id": "nextjs",
+      "title": "Next.js",
+      "emoji": "",
+      "x": 50,
+      "y": 63,
+      "prereqs": ["react", "tailwind"],
+      "article": "## Next.js\n\nFramework React untuk produksi: routing, server components, dan SSR.\n\n### Yang dipelajari\n- App Router & server components\n- Data fetching + routing dinamis\n\n**Latihan:** bikin app kecil, lalu screenshot hasilnya.",
+      "submission": {
+        "type": "file",
+        "prompt": "Upload screenshot aplikasi Next.js buatanmu (png/jpg)."
+      }
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "emoji": "",
+      "x": 78,
+      "y": 63,
+      "optional": true,
+      "prereqs": ["react"],
+      "article": "## Testing\n\nPastikan aplikasi tetap benar saat berubah. Unit & integration test.\n\n### Yang dipelajari\n- Testing Library + Vitest\n- Menulis test untuk komponen & alur user\n\nReferensi: [Testing Library](https://testing-library.com)",
+      "submission": {
+        "type": "quiz",
+        "passingScore": 50,
+        "questions": [
+          {
+            "id": "q1",
+            "question": "Library populer untuk testing komponen React?",
+            "options": ["jQuery", "Testing Library", "Lodash", "Axios"],
+            "correctIndex": 1
+          },
+          {
+            "id": "q2",
+            "question": "Jenis test yang menguji satu fungsi/komponen terisolasi?",
+            "options": ["End-to-end test", "Unit test", "Load test", "Manual test"],
+            "correctIndex": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "deployment",
+      "title": "Deploy & CI/CD",
+      "emoji": "",
+      "x": 50,
+      "y": 85,
+      "prereqs": ["nextjs", "git"],
+      "article": "## Deploy & CI/CD\n\nRilis aplikasimu ke internet & otomasi build/test tiap push.\n\n### Yang dipelajari\n- Deploy ke Vercel/Netlify\n- CI dengan GitHub Actions\n\n**Latihan:** deploy salah satu project-mu, lalu tempel URL-nya.",
+      "submission": {
+        "type": "text",
+        "prompt": "Tempel URL project yang sudah kamu deploy (mis. Vercel)."
+      }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "html-css", "target": "javascript" },
+    { "id": "e2", "source": "html-css", "target": "git", "dashed": true },
+    { "id": "e3", "source": "javascript", "target": "typescript" },
+    { "id": "e4", "source": "javascript", "target": "tailwind" },
+    { "id": "e5", "source": "typescript", "target": "react", "animated": true },
+    { "id": "e6", "source": "react", "target": "state-mgmt" },
+    { "id": "e7", "source": "react", "target": "nextjs" },
+    { "id": "e8", "source": "tailwind", "target": "nextjs" },
+    { "id": "e9", "source": "react", "target": "testing", "dashed": true },
+    { "id": "e10", "source": "nextjs", "target": "deployment" },
+    { "id": "e11", "source": "git", "target": "deployment", "optional": true }
+  ]
+}

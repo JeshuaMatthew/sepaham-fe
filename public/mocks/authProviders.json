@@ -1,0 +1,6 @@
+{
+  "providers": [
+    { "id": "google", "label": "Lanjutkan dengan Google", "icon": "google" },
+    { "id": "github", "label": "Lanjutkan dengan GitHub", "icon": "github" }
+  ]
+}

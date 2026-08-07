@@ -1,0 +1,146 @@
+{
+  "general": [
+    {
+      "id": "g1",
+      "authorId": "siti",
+      "authorName": "Siti Rahma",
+      "authorAvatar": "https://i.pravatar.cc/64?img=5",
+      "timestamp": "08:42",
+      "text": "Pagi semuaa  ada yang mau bareng ngerjain tugas Sistem Operasi hari ini?",
+      "anonymous": false,
+      "replies": []
+    },
+    {
+      "id": "g2",
+      "authorId": "budi",
+      "authorName": "Budi Santoso",
+      "authorAvatar": "https://i.pravatar.cc/64?img=12",
+      "timestamp": "08:50",
+      "text": "Gas! Aku di Perpus lantai 3 dari jam 10.",
+      "anonymous": false,
+      "replies": []
+    }
+  ],
+  "ui-ux": [
+    {
+      "id": "u1",
+      "authorId": "nadia",
+      "authorName": "Nadia Putri",
+      "authorAvatar": "https://i.pravatar.cc/64?img=45",
+      "timestamp": "09:15",
+      "text": "Baru selesai redesign halaman login-nya. Menurut kalian spacing-nya udah pas belum? Feedback dong ",
+      "attachment": { "name": "login-redesign-v2.png", "kind": "image", "size": "412 KB" },
+      "anonymous": false,
+      "replies": [
+        {
+          "id": "u1r1",
+          "authorId": "rangga",
+          "authorName": "Rangga Pratama",
+          "authorAvatar": "https://i.pravatar.cc/64?img=13",
+          "timestamp": "09:20",
+          "text": "Keren! Tapi menurutku CTA-nya kurang kontras, coba pakai warna primary yang lebih pekat.",
+          "anonymous": false,
+          "replies": []
+        },
+        {
+          "id": "u1r2",
+          "authorId": "nadia",
+          "authorName": "Nadia Putri",
+          "authorAvatar": "https://i.pravatar.cc/64?img=45",
+          "timestamp": "09:23",
+          "text": "Noted, makasih! Aku revisi dulu ya.",
+          "anonymous": false,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "loker": [
+    {
+      "id": "l1",
+      "authorId": "kevin",
+      "authorName": "Kevin Wijaya",
+      "authorAvatar": "https://i.pravatar.cc/64?img=32",
+      "timestamp": "10:02",
+      "text": "Ada bukaan magang Frontend Engineer di startup fintech, remote, batch Agustus. Persyaratan lengkap di attachment ya ",
+      "attachment": { "name": "jobdesc-frontend-intern.pdf", "kind": "file", "size": "88 KB" },
+      "anonymous": false,
+      "replies": [
+        {
+          "id": "l1r1",
+          "authorId": "rangga",
+          "authorName": "Rangga Pratama",
+          "authorAvatar": "https://i.pravatar.cc/64?img=13",
+          "timestamp": "10:10",
+          "text": "Minat! Boleh minta kontak HR-nya?",
+          "anonymous": false,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "frontend": [
+    {
+      "id": "f1",
+      "authorId": "budi",
+      "authorName": "Budi Santoso",
+      "authorAvatar": "https://i.pravatar.cc/64?img=12",
+      "timestamp": "11:30",
+      "text": "Kenapa useEffect aku jalan dua kali di dev ya? Ini kodenya:",
+      "code": {
+        "language": "tsx",
+        "content": "useEffect(() => {\n  console.log(\"fetch data\");\n  fetchData();\n}, []);"
+      },
+      "anonymous": false,
+      "replies": [
+        {
+          "id": "f1r1",
+          "authorId": "rangga",
+          "authorName": "Rangga Pratama",
+          "authorAvatar": "https://i.pravatar.cc/64?img=13",
+          "timestamp": "11:35",
+          "text": "Itu efek StrictMode di development, sengaja double-invoke buat deteksi side-effect. Di production cuma sekali kok.",
+          "anonymous": false,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "tanya-anonim": [
+    {
+      "id": "a1",
+      "authorId": "anon",
+      "authorName": "Anonim",
+      "authorAvatar": "",
+      "timestamp": "12:05",
+      "text": "Jujur, kalian pernah ngerasa insecure lihat teman seangkatan udah jago ngoding padahal kita masih struggling? Cara kalian coping gimana?",
+      "anonymous": true,
+      "replies": [
+        {
+          "id": "a1r1",
+          "authorId": "siti",
+          "authorName": "Siti Rahma",
+          "authorAvatar": "https://i.pravatar.cc/64?img=5",
+          "timestamp": "12:12",
+          "text": "Sering banget. Aku belajar fokus ke progress diri sendiri, bukan bandingin sama orang. Semua orang punya timeline masing-masing ",
+          "anonymous": false,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "ui-general": [
+    {
+      "id": "uig1",
+      "authorId": "dewi",
+      "authorName": "Dewi Lestari",
+      "authorAvatar": "https://i.pravatar.cc/64?img=25",
+      "timestamp": "07:55",
+      "text": "Halo warga Fasilkom! Jangan lupa besok ada seminar AI ya.",
+      "anonymous": false,
+      "replies": []
+    }
+  ],
+  "ui-riset": [],
+  "ugm-general": []
+}

@@ -1,0 +1,12 @@
+{
+  "badges": [
+    { "id": "first-commit", "name": "First Blood", "description": "Your first commit to a public repo.", "icon": "", "tier": "common", "earned": true },
+    { "id": "streak-7", "name": "Consistent", "description": "A 7-day streak.", "icon": "", "tier": "common", "earned": true },
+    { "id": "streak-30", "name": "On Fire", "description": "A 30-day streak.", "icon": "", "tier": "rare", "earned": true },
+    { "id": "polyglot", "name": "Polyglot", "description": "Coded in 5+ different languages.", "icon": "", "tier": "rare", "earned": true },
+    { "id": "contributor", "name": "Contributor", "description": "Merged a PR into an open-source project.", "icon": "", "tier": "epic", "earned": true },
+    { "id": "rising-star", "name": "Rising Star", "description": "One of your repos hit 100 stars.", "icon": "", "tier": "epic", "earned": true },
+    { "id": "night-owl", "name": "Night Owl", "description": "Committed at midnight 10 times.", "icon": "", "tier": "common", "earned": false },
+    { "id": "mentor", "name": "Mentor", "description": "Helped 10 people in a discussion channel.", "icon": "", "tier": "legendary", "earned": false }
+  ]
+}

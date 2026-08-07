@@ -1,0 +1,121 @@
+{
+  "id": "backend",
+  "roleId": "backend-engineer",
+  "author": "Dr. Budi Santoso",
+  "title": "Backend Engineer",
+  "emoji": "",
+  "nodes": [
+    {
+      "id": "bahasa",
+      "title": "Bahasa (Go/Python)",
+      "emoji": "",
+      "x": 50,
+      "y": 7,
+      "prereqs": [],
+      "resources": [
+        { "label": "A Tour of Go", "url": "https://go.dev/tour/" },
+        { "label": "Python Docs", "url": "https://docs.python.org/3/tutorial/" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Bikin CLI sederhana" },
+        { "id": "m2", "text": "Selesaikan 5 soal algoritma dasar" }
+      ]
+    },
+    {
+      "id": "rest-api",
+      "title": "HTTP & REST API",
+      "emoji": "",
+      "x": 38,
+      "y": 24,
+      "prereqs": ["bahasa"],
+      "resources": [
+        { "label": "MDN: HTTP", "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP" },
+        { "label": "REST API Best Practices", "url": "https://restfulapi.net" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Bikin API CRUD lengkap" },
+        { "id": "m2", "text": "Dokumentasikan pakai OpenAPI/Swagger" }
+      ]
+    },
+    {
+      "id": "database",
+      "title": "Database & SQL",
+      "emoji": "",
+      "x": 76,
+      "y": 22,
+      "prereqs": ["bahasa"],
+      "resources": [
+        { "label": "PostgreSQL Tutorial", "url": "https://www.postgresqltutorial.com" },
+        { "label": "SQLBolt", "url": "https://sqlbolt.com" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Desain skema relasional" },
+        { "id": "m2", "text": "Tulis query JOIN kompleks" }
+      ]
+    },
+    {
+      "id": "auth",
+      "title": "Auth & Security",
+      "emoji": "",
+      "x": 22,
+      "y": 44,
+      "prereqs": ["rest-api"],
+      "resources": [
+        { "label": "JWT.io", "url": "https://jwt.io/introduction" },
+        { "label": "OWASP Top 10", "url": "https://owasp.org/www-project-top-ten/" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Implementasi login pakai JWT" },
+        { "id": "m2", "text": "Hash password dengan bcrypt/argon2" }
+      ]
+    },
+    {
+      "id": "caching",
+      "title": "Caching & Queue",
+      "emoji": "",
+      "x": 58,
+      "y": 44,
+      "prereqs": ["rest-api", "database"],
+      "resources": [
+        { "label": "Redis Docs", "url": "https://redis.io/docs/" },
+        { "label": "RabbitMQ Tutorial", "url": "https://www.rabbitmq.com/getstarted.html" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Cache response pakai Redis" },
+        { "id": "m2", "text": "Proses job async lewat message queue" }
+      ]
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "emoji": "",
+      "x": 84,
+      "y": 60,
+      "prereqs": ["database"],
+      "resources": [
+        { "label": "Testing in Go", "url": "https://go.dev/doc/tutorial/add-a-test" },
+        { "label": "Postman", "url": "https://learning.postman.com" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Tulis unit test untuk service" },
+        { "id": "m2", "text": "Integration test 1 endpoint" }
+      ]
+    },
+    {
+      "id": "deploy",
+      "title": "Deploy & Docker",
+      "emoji": "",
+      "x": 50,
+      "y": 82,
+      "prereqs": ["auth", "caching", "testing"],
+      "resources": [
+        { "label": "Docker Docs", "url": "https://docs.docker.com/get-started/" },
+        { "label": "Railway", "url": "https://docs.railway.app" }
+      ],
+      "missions": [
+        { "id": "m1", "text": "Containerize app pakai Docker" },
+        { "id": "m2", "text": "Deploy ke cloud + kelola env vars" }
+      ]
+    }
+  ]
+}

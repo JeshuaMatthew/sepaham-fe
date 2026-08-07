@@ -1,0 +1,77 @@
+{
+  "requests": [
+    {
+      "id": "c1",
+      "title": "Aplikasi Absensi Kelas pakai QR",
+      "description": "Bikin app absensi berbasis QR buat tugas besar Rekayasa Perangkat Lunak. Butuh yang jago backend & mobile, deadline 6 minggu.",
+      "neededRoles": ["Backend", "Mobile"],
+      "techStack": ["Go", "Flutter"],
+      "tags": ["Tugas Besar"],
+      "repoUrl": "https://github.com/kevinw/absensi-qr",
+      "author": { "name": "Kevin Wijaya", "avatar": "https://i.pravatar.cc/64?img=32", "role": "Frontend" },
+      "membersCurrent": 2,
+      "membersNeeded": 4,
+      "interested": 3,
+      "status": "open",
+      "postedMinutesAgo": 30
+    },
+    {
+      "id": "c2",
+      "title": "Startup Marketplace Jasa Mahasiswa",
+      "description": "Serius mau bangun startup marketplace jasa antar mahasiswa (join tim, split equity). Cari co-founder teknis & desainer yang komit jangka panjang.",
+      "neededRoles": ["Fullstack", "UI/UX"],
+      "techStack": ["Next.js", "PostgreSQL"],
+      "tags": ["Startup"],
+      "author": { "name": "Nabila Zahra", "avatar": "https://i.pravatar.cc/64?img=31", "role": "Product" },
+      "membersCurrent": 1,
+      "membersNeeded": 3,
+      "interested": 8,
+      "status": "open",
+      "postedMinutesAgo": 120
+    },
+    {
+      "id": "c3",
+      "title": "Game Edukasi buat Lomba Hackathon",
+      "description": "Ikut hackathon bulan depan, tema teknologi pendidikan. Bikin game edukasi anak SD. Butuh 1 game dev & 1 artist.",
+      "neededRoles": ["Game Dev", "Artist"],
+      "techStack": ["Unity", "C#"],
+      "tags": ["Hackathon"],
+      "author": { "name": "Bagas Prasetyo", "avatar": "https://i.pravatar.cc/64?img=68", "role": "Backend" },
+      "membersCurrent": 2,
+      "membersNeeded": 4,
+      "interested": 5,
+      "status": "open",
+      "postedMinutesAgo": 240
+    },
+    {
+      "id": "c4",
+      "title": "Web Portofolio Komunitas Open Source",
+      "description": "Bikin website showcase project open-source anak kampus. Santai, buat belajar bareng & nambah portofolio.",
+      "neededRoles": ["Frontend", "Backend"],
+      "techStack": ["React", "Node.js"],
+      "tags": ["Open Source", "Santai"],
+      "repoUrl": "https://github.com/dindaa/oss-showcase",
+      "author": { "name": "Dinda Ayu", "avatar": "https://i.pravatar.cc/64?img=47", "role": "UI/UX" },
+      "membersCurrent": 3,
+      "membersNeeded": 3,
+      "interested": 2,
+      "status": "full",
+      "postedMinutesAgo": 600
+    },
+    {
+      "id": "c5",
+      "title": "Aplikasi Deteksi Penyakit Tanaman (ML)",
+      "description": "Project ML klasifikasi penyakit daun pakai CNN, buat skripsi + submit ke jurnal. Butuh partner yang ngerti data & deployment.",
+      "neededRoles": ["Data/ML", "Backend"],
+      "techStack": ["Python", "PyTorch"],
+      "tags": ["Skripsi", "Riset"],
+      "repoUrl": "https://github.com/salsa/leaf-disease-cnn",
+      "author": { "name": "Salsabila", "avatar": "https://i.pravatar.cc/64?img=44", "role": "Data Scientist" },
+      "membersCurrent": 1,
+      "membersNeeded": 2,
+      "interested": 4,
+      "status": "open",
+      "postedMinutesAgo": 45
+    }
+  ]
+}

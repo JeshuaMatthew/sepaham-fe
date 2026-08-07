@@ -1,0 +1,8 @@
+{
+  "tracks": [
+    { "id": "t1", "title": "Late Night Commit", "artist": "Lo-Fi Dev" },
+    { "id": "t2", "title": "Coffee & Compile", "artist": "ChillCode" },
+    { "id": "t3", "title": "Debugging Rain", "artist": "Ambient Stack" },
+    { "id": "t4", "title": "Deploy at Dawn", "artist": "Synth Ops" }
+  ]
+}

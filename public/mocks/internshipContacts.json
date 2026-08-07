@@ -1,0 +1,109 @@
+{
+  "contacts": [
+    {
+      "id": "fe1",
+      "company": "Tokopedia",
+      "emoji": "",
+      "position": "Frontend Engineer Intern",
+      "roleId": "frontend-engineer",
+      "location": "Jakarta",
+      "type": "Hybrid",
+      "pic": "Rina — Talent Acquisition",
+      "contact": "internship@tokopedia.com",
+      "note": "Sebut kamu dari Sepaham + lampirkan roadmap-mu."
+    },
+    {
+      "id": "fe2",
+      "company": "Gojek",
+      "emoji": "",
+      "position": "Web Frontend Intern",
+      "roleId": "frontend-engineer",
+      "location": "Jakarta",
+      "type": "On-site",
+      "pic": "Dimas — Engineering Manager",
+      "contact": "https://www.gojek.io/careers",
+      "note": "Buka lowongan tiap kuartal."
+    },
+    {
+      "id": "fe3",
+      "company": "Ruangguru",
+      "emoji": "",
+      "position": "Frontend Intern (React)",
+      "roleId": "frontend-engineer",
+      "location": "Remote",
+      "type": "Remote",
+      "pic": "Tania — Recruiter",
+      "contact": "+62 812-3456-7890",
+      "note": "Chat WA, jam kerja 09.00–17.00."
+    },
+    {
+      "id": "be1",
+      "company": "Xendit",
+      "emoji": "",
+      "position": "Backend Engineer Intern",
+      "roleId": "backend-engineer",
+      "location": "Jakarta",
+      "type": "Hybrid",
+      "pic": "Kevin — Backend Lead",
+      "contact": "careers@xendit.co",
+      "note": "Fokus Go & sistem pembayaran."
+    },
+    {
+      "id": "be2",
+      "company": "Traveloka",
+      "emoji": "",
+      "position": "Software Engineer Intern (Backend)",
+      "roleId": "backend-engineer",
+      "location": "Jakarta",
+      "type": "Hybrid",
+      "pic": "Sari — Recruiter",
+      "contact": "internship@traveloka.com"
+    },
+    {
+      "id": "ml1",
+      "company": "Kata.ai",
+      "emoji": "",
+      "position": "ML Engineer Intern",
+      "roleId": "ml-engineer",
+      "location": "Jakarta",
+      "type": "Remote",
+      "pic": "Adi — AI Team",
+      "contact": "hello@kata.ai",
+      "note": "Bawa portofolio project ML."
+    },
+    {
+      "id": "ml2",
+      "company": "Bukalapak",
+      "emoji": "",
+      "position": "Data Science Intern",
+      "roleId": "ml-engineer",
+      "location": "Jakarta",
+      "type": "Hybrid",
+      "pic": "Maya — Data Team",
+      "contact": "https://careers.bukalapak.com"
+    },
+    {
+      "id": "mo1",
+      "company": "DANA",
+      "emoji": "",
+      "position": "Android Engineer Intern",
+      "roleId": "mobile-developer",
+      "location": "Jakarta",
+      "type": "On-site",
+      "pic": "Bagus — Mobile Lead",
+      "contact": "081298765432",
+      "note": "Kotlin & Jetpack Compose diutamakan. Chat via WA."
+    },
+    {
+      "id": "mo2",
+      "company": "Blibli",
+      "emoji": "",
+      "position": "Mobile Engineer Intern",
+      "roleId": "mobile-developer",
+      "location": "Jakarta",
+      "type": "Hybrid",
+      "pic": "Nina — Recruiter",
+      "contact": "internship@blibli.com"
+    }
+  ]
+}

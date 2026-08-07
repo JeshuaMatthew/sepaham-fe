@@ -1,0 +1,64 @@
+{
+  "hobbies": [
+    { "id": "competitive-programming", "label": "Competitive Programming", "emoji": "", "category": "code" },
+    { "id": "web-dev", "label": "Web Development", "emoji": "", "category": "code" },
+    { "id": "mobile-dev", "label": "Mobile Dev", "emoji": "", "category": "code" },
+    { "id": "game-dev", "label": "Game Dev", "emoji": "", "category": "code" },
+    { "id": "machine-learning", "label": "Machine Learning", "emoji": "", "category": "data" },
+    { "id": "data-analytics", "label": "Data & Analytics", "emoji": "", "category": "data" },
+    { "id": "cybersecurity", "label": "Cybersecurity", "emoji": "", "category": "systems" },
+    { "id": "cloud-devops", "label": "Cloud & DevOps", "emoji": "", "category": "systems" },
+    { "id": "open-source", "label": "Open Source", "emoji": "", "category": "systems" },
+    { "id": "ui-ux", "label": "UI/UX Design", "emoji": "", "category": "design" },
+    { "id": "photography", "label": "Photography", "emoji": "", "category": "creative" },
+    { "id": "lofi-music", "label": "Lo-Fi & Music", "emoji": "", "category": "creative" },
+    { "id": "writing", "label": "Writing & Blogging", "emoji": "", "category": "creative" },
+    { "id": "anime", "label": "Anime & Manga", "emoji": "", "category": "lifestyle" },
+    { "id": "gaming", "label": "Gaming", "emoji": "", "category": "lifestyle" },
+    { "id": "coffee", "label": "Coffee Nerd", "emoji": "", "category": "lifestyle" }
+  ],
+  "vibes": [
+    {
+      "id": "neon-cyberpunk",
+      "title": "Neon Cyberpunk",
+      "description": "Kota malam, lampu neon, dan kode yang tak pernah tidur.",
+      "imageUrl": "https://picsum.photos/seed/neon-cyberpunk/640/800",
+      "accent": "#7c5cff"
+    },
+    {
+      "id": "cozy-coder",
+      "title": "Cozy Coder",
+      "description": "Ngopi hangat, hujan di jendela, ngoding santai.",
+      "imageUrl": "https://picsum.photos/seed/cozy-coder/640/800",
+      "accent": "#f59e0b"
+    },
+    {
+      "id": "minimal-zen",
+      "title": "Minimal Zen",
+      "description": "Ruang bersih, fokus penuh, tanpa distraksi.",
+      "imageUrl": "https://picsum.photos/seed/minimal-zen/640/800",
+      "accent": "#22d3ee"
+    },
+    {
+      "id": "retro-terminal",
+      "title": "Retro Terminal",
+      "description": "Layar hijau CRT dan estetika hacker jadul.",
+      "imageUrl": "https://picsum.photos/seed/retro-terminal/640/800",
+      "accent": "#34d399"
+    },
+    {
+      "id": "nature-focus",
+      "title": "Nature Focus",
+      "description": "Deep work ditemani suasana hutan yang menenangkan.",
+      "imageUrl": "https://picsum.photos/seed/nature-focus/640/800",
+      "accent": "#4ade80"
+    },
+    {
+      "id": "synthwave-sunset",
+      "title": "Synthwave Sunset",
+      "description": "Gradasi ungu-pink, energi retro-futuristik.",
+      "imageUrl": "https://picsum.photos/seed/synthwave-sunset/640/800",
+      "accent": "#ec4899"
+    }
+  ]
+}
