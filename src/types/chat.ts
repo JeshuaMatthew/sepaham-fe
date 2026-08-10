@@ -87,4 +87,8 @@ export interface ActiveCall {
   /** true jika user ini yang membuat panggilan (boleh memutar musik). */
   isHost: boolean;
   participants: CallParticipant[];
+  /** Koneksi LiveKit untuk media nyata (mic/video grup). */
+  serverUrl: string;
+  token: string;
+  room: string;
 }

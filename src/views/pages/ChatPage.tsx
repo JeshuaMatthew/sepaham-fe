@@ -28,7 +28,40 @@ import {
   fetchMyCommunities,
   joinCommunity,
 } from "../../services/communityService";
+import { getToken } from "../../utils/authToken";
+import { fetchCallToken } from "../../services/callService";
 import ChatContainer from "../components/ChatContainer";
+
+/** Sisipkan pesan channel dari event WS ke cache (dedup by id). */
+function applyChannelMessage(
+  old: ChatMessage[] | undefined,
+  message: ChatMessage,
+  parentId?: string | null,
+): ChatMessage[] | undefined {
+  if (!old) return old; // hanya update channel yang sedang dibuka
+  if (parentId) {
+    return old.map((m) =>
+      m.id === parentId && !m.replies.some((r) => r.id === message.id)
+        ? { ...m, replies: [...m.replies, message] }
+        : m,
+    );
+  }
+  return old.some((m) => m.id === message.id) ? old : [...old, message];
+}
+
+/** Sisipkan pesan DM dari event WS ke cache (dedup by id). */
+function applyDmMessage(
+  old: DirectConversation[] | undefined,
+  dmId: string,
+  message: ChatMessage,
+): DirectConversation[] | undefined {
+  if (!old) return old;
+  return old.map((dm) =>
+    dm.id === dmId && !dm.messages.some((m) => m.id === message.id)
+      ? { ...dm, messages: [...dm.messages, message] }
+      : dm,
+  );
+}
 
 /** Info user yang diajak DM dari fitur lain (mis. Cari Tim). */
 interface DmWithState {
@@ -103,6 +136,40 @@ function ChatPage() {
           ],
     );
     setActiveView({ kind: "dm", id: dmId });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Real-time: WebSocket push pesan channel/DM dari user lain → update cache.
+  useEffect(() => {
+    const token = getToken();
+    if (!token) return;
+    const base = (import.meta.env.VITE_API_URL as string) || "http://localhost:8080/api";
+    const url = `${base.replace(/^http/, "ws")}/ws?token=${encodeURIComponent(token)}`;
+    const ws = new WebSocket(url);
+    ws.onmessage = (event) => {
+      let evt: {
+        type: string;
+        channelId?: string;
+        dmId?: string;
+        parentId?: string | null;
+        message: ChatMessage;
+      };
+      try {
+        evt = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      if (evt.type === "channel_message" && evt.channelId) {
+        queryClient.setQueryData<ChatMessage[]>(messagesQueryKey(evt.channelId), (old) =>
+          applyChannelMessage(old, evt.message, evt.parentId),
+        );
+      } else if (evt.type === "dm_message" && evt.dmId) {
+        queryClient.setQueryData<DirectConversation[]>(DMS_QUERY_KEY, (old) =>
+          applyDmMessage(old, evt.dmId as string, evt.message),
+        );
+      }
+    };
+    return () => ws.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -286,30 +353,29 @@ function ChatPage() {
       .catch(() => {});
   };
 
-  // Mulai panggilan: grup untuk channel, langsung (1-on-1) untuk DM.
+  // Mulai panggilan LiveKit: room per channel/DM. Media lewat server LiveKit.
   const handleStartCall = (mode: CallMode) => {
     const me = { id: currentUser.id, name: currentUser.name, avatar: currentUser.avatar };
+    const start = (room: string, title: string, kind: "group" | "direct") => {
+      void fetchCallToken(room)
+        .then((t) => {
+          setCall({
+            kind,
+            mode,
+            title,
+            isHost: true,
+            participants: [me],
+            serverUrl: t.url,
+            token: t.token,
+            room,
+          });
+        })
+        .catch(() => {});
+    };
     if (effectiveView.kind === "channel" && activeChannel) {
-      setCall({
-        kind: "group",
-        mode,
-        title: `#${activeChannel.name}`,
-        isHost: true,
-        participants: [
-          me,
-          ...dms
-            .slice(0, 3)
-            .map((dm) => ({ id: dm.id, name: dm.userName, avatar: dm.avatar })),
-        ],
-      });
+      start(`call-${activeChannel.id}`, `#${activeChannel.name}`, "group");
     } else if (activeDm) {
-      setCall({
-        kind: "direct",
-        mode,
-        title: activeDm.userName,
-        isHost: true,
-        participants: [me, { id: activeDm.id, name: activeDm.userName, avatar: activeDm.avatar }],
-      });
+      start(`call-dm-${activeDm.id}`, activeDm.userName, "direct");
     }
   };
 
