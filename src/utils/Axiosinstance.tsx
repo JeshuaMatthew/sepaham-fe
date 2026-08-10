@@ -1,16 +1,21 @@
 import axios from "axios";
 import { clearToken, getToken } from "./authToken";
+import { clearAccount } from "./account";
+import { emitAuthExpired } from "./authEvents";
 
 /**
  * Instance axios untuk semua panggilan ke backend Axum.
  * - baseURL dari VITE_API_URL (mis. http://localhost:8080/api)
  * - melampirkan JWT (Authorization: Bearer ...) otomatis kalau ada
- * - membersihkan token saat 401 supaya token basi tidak menempel
+ * - saat 401 (token basi): bersihkan sesi lalu picu redirect ke /login
  */
 const AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
+
+/** Endpoint auth: 401 di sini = kredensial salah, ditangani form — jangan redirect. */
+const AUTH_PATHS = ["/auth/login", "/auth/register"];
 
 AxiosInstance.interceptors.request.use((config) => {
   const token = getToken();
@@ -23,8 +28,14 @@ AxiosInstance.interceptors.request.use((config) => {
 AxiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.response?.status === 401) {
+    const status = error?.response?.status;
+    const url: string = error?.config?.url ?? "";
+    const isAuthCall = AUTH_PATHS.some((path) => url.includes(path));
+    if (status === 401 && !isAuthCall) {
+      // Token basi/dicabut: bersihkan sesi lalu suruh App redirect ke /login.
       clearToken();
+      clearAccount();
+      emitAuthExpired();
     }
     return Promise.reject(error);
   },

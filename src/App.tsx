@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { isFaculty } from "./utils/account";
+import { clearAccount, isFaculty } from "./utils/account";
+import { clearToken, hasValidToken } from "./utils/authToken";
+import { onAuthExpired } from "./utils/authEvents";
 import AppLayout from "./views/layout/AppLayout";
 import FacultyLayout from "./views/layout/FacultyLayout";
 import LandingPage from "./views/pages/LandingPage";
@@ -30,6 +32,19 @@ import FacultyRequestsPage from "./views/pages/FacultyRequestsPage";
 
 const queryClient = new QueryClient();
 
+/**
+ * Wajib login: kalau tak ada token valid (belum login / token basi), tendang
+ * ke /login. Membungkus seluruh halaman inti (AppLayout).
+ */
+function RequireAuth({ children }: { children: ReactNode }) {
+  if (!hasValidToken()) {
+    clearToken();
+    clearAccount();
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+}
+
 /** Blokir dosen dari halaman khusus mahasiswa (mis. grup/community chat). */
 function StudentOnly({ children }: { children: ReactNode }) {
   return isFaculty() ? <Navigate to="/faculty" replace /> : <>{children}</>;
@@ -42,9 +57,13 @@ const router = createBrowserRouter([
   { path: "/onboarding", element: <OnboardingPage /> },
   { path: "/onboarding/role", element: <RoleRecommendationPage /> },
 
-  // Halaman inti dengan navigasi global (AppLayout)
+  // Halaman inti dengan navigasi global (AppLayout) — wajib login
   {
-    element: <AppLayout />,
+    element: (
+      <RequireAuth>
+        <AppLayout />
+      </RequireAuth>
+    ),
     children: [
       { path: "/home", element: <HomePage /> },
       { path: "/roadmap", element: <RoadmapCatalogPage /> },
@@ -76,6 +95,12 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+// 401 dari request terautentikasi (token basi) → redirect SPA ke /login.
+// Pakai instance router langsung supaya bisa dipanggil dari luar React.
+onAuthExpired(() => {
+  void router.navigate("/login", { replace: true });
+});
 
 function App() {
   return (
