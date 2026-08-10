@@ -83,8 +83,10 @@ function DevCardContainer({
   return (
     <div className="min-h-screen bg-canvas px-6 py-12 sm:px-8">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-        {/* Profil */}
-        {showProfile ? <ProfileHeader profile={profile} /> : <ProfileHeaderSkeleton />}
+        {/* Profil — bagian penting, dibungkus gradient biru */}
+        <div className="grad-blue p-6 sm:p-7">
+          {showProfile ? <ProfileHeader profile={profile} /> : <ProfileHeaderSkeleton />}
+        </div>
 
         {/* Aksi akun */}
         <ProfileActions

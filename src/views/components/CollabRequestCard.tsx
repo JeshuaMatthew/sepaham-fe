@@ -44,6 +44,20 @@ function CollabRequestCard({ request, onContact }: CollabRequestCardProps) {
 
       <p className="text-sm leading-relaxed text-muted">{request.description}</p>
 
+      {/* Gambar project (kalau ada) */}
+      {request.images && request.images.length > 0 ? (
+        <div className="flex flex-wrap gap-1.5">
+          {request.images.slice(0, 4).map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt=""
+              className="h-14 w-14 border border-line object-cover"
+            />
+          ))}
+        </div>
+      ) : null}
+
       {/* Tag pekerjaan yang dibutuhkan */}
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="text-xs text-muted">Butuh:</span>

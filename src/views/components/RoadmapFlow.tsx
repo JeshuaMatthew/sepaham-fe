@@ -1,10 +1,13 @@
 import { useMemo } from "react";
+import type { CSSProperties } from "react";
 import { ReactFlow, Background } from "@xyflow/react";
 import type { Edge, Node, NodeMouseHandler } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { NodeStatus, Roadmap } from "../../types/roadmap";
 import { getRoadmapEdges, toFlowPosition } from "../../utils/roadmapGraph";
+import { computeGroupBoxes } from "../../utils/flowGroups";
 import RoadmapFlowNode from "./RoadmapFlowNode";
+import GroupBoxNode from "./GroupBoxNode";
 
 interface RoadmapFlowProps {
   roadmap: Roadmap;
@@ -12,26 +15,30 @@ interface RoadmapFlowProps {
   onSelectNode: (id: string) => void;
 }
 
-const nodeTypes = { roadmapNode: RoadmapFlowNode };
+const nodeTypes = { roadmapNode: RoadmapFlowNode, groupBox: GroupBoxNode };
 
 function RoadmapFlow({ roadmap, statusById, onSelectNode }: RoadmapFlowProps) {
-  const nodes: Node[] = useMemo(
-    () =>
-      roadmap.nodes.map((node) => ({
-        id: node.id,
-        type: "roadmapNode",
-        position: toFlowPosition(node.x, node.y),
-        data: {
-          title: node.title,
-          emoji: node.emoji,
-          status: statusById[node.id] ?? "locked",
-          optional: node.optional,
-        },
-        draggable: false,
-        connectable: false,
-      })),
-    [roadmap.nodes, statusById],
-  );
+  const nodes: Node[] = useMemo(() => {
+    const skillNodes: Node[] = roadmap.nodes.map((node) => ({
+      id: node.id,
+      type: "roadmapNode",
+      position: toFlowPosition(node.x, node.y),
+      zIndex: 1,
+      data: {
+        title: node.title,
+        emoji: node.emoji,
+        status: statusById[node.id] ?? "locked",
+        group: node.group,
+        image: node.image,
+        titleInside: node.titleInside,
+        optional: node.optional,
+        style: roadmap.style,
+      },
+      draggable: false,
+      connectable: false,
+    }));
+    return [...computeGroupBoxes(skillNodes, roadmap.style), ...skillNodes];
+  }, [roadmap.nodes, roadmap.style, statusById]);
 
   const edges: Edge[] = useMemo(
     () =>
@@ -45,7 +52,7 @@ function RoadmapFlow({ roadmap, statusById, onSelectNode }: RoadmapFlowProps) {
           animated: edge.animated ?? false,
           label: edge.optional ? "opsional" : undefined,
           style: {
-            stroke: active ? "var(--color-neon)" : "var(--color-line)",
+            stroke: active ? "var(--color-neon)" : "var(--rf-edge, var(--color-line))",
             strokeWidth: 2,
             strokeDasharray: isDashed ? "6 4" : undefined,
           },
@@ -64,7 +71,10 @@ function RoadmapFlow({ roadmap, statusById, onSelectNode }: RoadmapFlowProps) {
   };
 
   return (
-    <div className="h-[560px] w-full overflow-hidden rounded-card border border-line bg-canvas">
+    <div
+      className="h-[560px] w-full overflow-hidden rounded-card border border-line bg-canvas"
+      style={{ "--rf-edge": roadmap.style?.edgeColor ?? "var(--color-line)" } as CSSProperties}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}

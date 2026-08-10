@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchRoadmapTree, roadmapTreeQueryKey } from "../../services/roadmapService";
+import {
+  fetchRoadmapTree,
+  pushActivity,
+  pushSubmission,
+  roadmapTreeQueryKey,
+} from "../../services/roadmapService";
 import type { SubmissionPayload, SubmissionState } from "../../types/roadmap";
 import { evaluateSubmission, nodeArticle, nodeSubmission } from "../../utils/nodeContent";
 import { computeStatuses } from "../../utils/roadmapGraph";
@@ -47,6 +52,9 @@ function RoadmapNodePage() {
     saveSubmission(roadmapId, node.id, next);
     markRoadmapActive(roadmapId);
     setSubmissions((prev) => ({ ...prev, [node.id]: next }));
+    // Sinkronkan ke backend (best-effort).
+    void pushSubmission(roadmapId, node.id, next).catch(() => {});
+    void pushActivity(roadmapId).catch(() => {});
   };
 
   return (

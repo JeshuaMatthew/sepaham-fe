@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CHANNELS_QUERY_KEY,
   DMS_QUERY_KEY,
@@ -10,6 +10,8 @@ import {
   fetchDirectConversations,
   fetchServers,
   messagesQueryKey,
+  sendChannelMessage,
+  sendDmMessage,
 } from "../../services/chatService";
 import { PROFILE_QUERY_KEY, fetchProfile } from "../../services/profileService";
 import { LOFI_TRACKS_QUERY_KEY, fetchLofiTracks } from "../../services/musicService";
@@ -21,7 +23,11 @@ import type {
   DirectConversation,
   SendPayload,
 } from "../../types/chat";
-import { getStoredCommunities } from "../../utils/communityStore";
+import {
+  MY_COMMUNITIES_QUERY_KEY,
+  fetchMyCommunities,
+  joinCommunity,
+} from "../../services/communityService";
 import ChatContainer from "../components/ChatContainer";
 
 /** Info user yang diajak DM dari fitur lain (mis. Cari Tim). */
@@ -53,19 +59,26 @@ function ChatPage() {
   const dmsQuery = useQuery({ queryKey: DMS_QUERY_KEY, queryFn: fetchDirectConversations });
   const profileQuery = useQuery({ queryKey: PROFILE_QUERY_KEY, queryFn: fetchProfile });
   const musicQuery = useQuery({ queryKey: LOFI_TRACKS_QUERY_KEY, queryFn: fetchLofiTracks });
+  const myCommunitiesQuery = useQuery({
+    queryKey: MY_COMMUNITIES_QUERY_KEY,
+    queryFn: fetchMyCommunities,
+  });
 
+  const queryClient = useQueryClient();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [activeServerId, setActiveServerId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<ActiveView | null>(null);
   const [openThreadId, setOpenThreadId] = useState<string | null>(null);
   const [call, setCall] = useState<ActiveCall | null>(null);
+  // Notifikasi setelah bergabung lewat invite link (?join=serverId).
+  const [joinNotice, setJoinNotice] = useState<string | null>(null);
+  const joinHandledRef = useRef(false);
 
-  // Overlay lokal untuk pesan/balasan baru (mock: belum ada backend).
-  const [extraByChannel, setExtraByChannel] = useState<Record<string, ChatMessage[]>>({});
+  // Overlay lokal HANYA untuk DM ad-hoc dari Cari Tim (partner belum tentu user
+  // nyata). Pesan channel & DM nyata sudah dari backend.
   const [extraByDm, setExtraByDm] = useState<Record<string, ChatMessage[]>>({});
-  const [extraReplies, setExtraReplies] = useState<Record<string, ChatMessage[]>>({});
-  // DM ad-hoc yang dibuka dari fitur lain (Cari Tim, dst).
   const [extraDms, setExtraDms] = useState<DirectConversation[]>([]);
 
   // Buka/buat DM saat diarahkan ke sini dengan state { dmWith }.
@@ -93,14 +106,48 @@ function ChatPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Komunitas yang dibuat dari request "Cari Tim" (localStorage) tampil paling atas.
-  const storedCommunities = getStoredCommunities();
-  const servers = [...storedCommunities.map((c) => c.server), ...(serversQuery.data ?? [])];
+  // Komunitas tim milik user (dari backend) tampil paling atas.
+  const myCommunities = myCommunitiesQuery.data ?? [];
+  const servers = [...myCommunities.map((c) => c.server), ...(serversQuery.data ?? [])];
   const channels = [
-    ...storedCommunities.flatMap((c) => c.channels),
+    ...myCommunities.flatMap((c) => c.channels),
     ...(channelsQuery.data ?? []),
   ];
   const dms = [...extraDms, ...(dmsQuery.data ?? [])];
+
+  // Invite link: join server dari ?join=serverId ke backend lalu buka.
+  const joinId = searchParams.get("join");
+  useEffect(() => {
+    if (!joinId || joinHandledRef.current) return;
+    joinHandledRef.current = true;
+    let cancelled = false;
+    void joinCommunity(joinId)
+      .then((community) => {
+        if (cancelled) return;
+        void queryClient.invalidateQueries({ queryKey: MY_COMMUNITIES_QUERY_KEY });
+        setActiveServerId(joinId);
+        const firstChannel = community.channels[0] ?? null;
+        setActiveView(firstChannel ? { kind: "channel", id: firstChannel.id } : null);
+        setJoinNotice(community.server.name);
+      })
+      .catch(() => {
+        // Fallback: mungkin server bawaan / sudah member — pilih dari daftar lokal.
+        const target = servers.find((server) => server.id === joinId);
+        if (target) {
+          setActiveServerId(joinId);
+          setJoinNotice(target.name);
+        }
+      })
+      .finally(() => {
+        const next = new URLSearchParams(searchParams);
+        next.delete("join");
+        setSearchParams(next, { replace: true });
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [joinId]);
 
   const effectiveServerId = activeServerId ?? servers[0]?.id ?? null;
   const serverChannels = channels.filter((channel) => channel.serverId === effectiveServerId);
@@ -123,30 +170,29 @@ function ChatPage() {
       ? dms.find((dm) => dm.id === effectiveView.id) ?? null
       : null;
 
+  // DM nyata (dari backend) vs ad-hoc (overlay lokal dari Cari Tim).
+  const realDmIds = new Set((dmsQuery.data ?? []).map((dm) => dm.id));
+
   const baseMessages: ChatMessage[] =
     effectiveView.kind === "channel"
       ? messagesQuery.data ?? []
       : activeDm?.messages ?? [];
 
+  // Hanya DM ad-hoc yang punya overlay lokal.
   const extraMessages: ChatMessage[] =
-    effectiveView.kind === "channel"
-      ? extraByChannel[effectiveView.id] ?? []
-      : extraByDm[effectiveView.id] ?? [];
+    effectiveView.kind === "dm" ? extraByDm[effectiveView.id] ?? [] : [];
 
   const messages = [...baseMessages, ...extraMessages];
 
   const replyCountById: Record<string, number> = {};
   for (const message of messages) {
-    replyCountById[message.id] =
-      message.replies.length + (extraReplies[message.id]?.length ?? 0);
+    replyCountById[message.id] = message.replies.length;
   }
 
   const threadMessage = openThreadId
     ? messages.find((message) => message.id === openThreadId) ?? null
     : null;
-  const threadReplies = threadMessage
-    ? [...threadMessage.replies, ...(extraReplies[threadMessage.id] ?? [])]
-    : [];
+  const threadReplies = threadMessage ? threadMessage.replies : [];
 
   const currentUser = {
     id: "me",
@@ -188,29 +234,56 @@ function ChatPage() {
   };
 
   const handleSendMessage = (payload: SendPayload) => {
-    const message = buildMessage(payload, effectiveView.kind === "channel");
     if (effectiveView.kind === "channel") {
       const channelId = effectiveView.id;
-      setExtraByChannel((prev) => ({
-        ...prev,
-        [channelId]: [...(prev[channelId] ?? []), message],
-      }));
+      void sendChannelMessage(channelId, payload)
+        .then((message) => {
+          // Tempel pesan dari server langsung ke cache (update instan).
+          queryClient.setQueryData<ChatMessage[]>(messagesQueryKey(channelId), (old) => [
+            ...(old ?? []),
+            message,
+          ]);
+        })
+        .catch(() => {});
     } else {
       const dmId = effectiveView.id;
-      setExtraByDm((prev) => ({
-        ...prev,
-        [dmId]: [...(prev[dmId] ?? []), message],
-      }));
+      if (realDmIds.has(dmId)) {
+        void sendDmMessage(dmId, payload)
+          .then((message) => {
+            queryClient.setQueryData<DirectConversation[]>(DMS_QUERY_KEY, (old) =>
+              (old ?? []).map((dm) =>
+                dm.id === dmId ? { ...dm, messages: [...dm.messages, message] } : dm,
+              ),
+            );
+          })
+          .catch(() => {});
+      } else {
+        // DM ad-hoc (dari Cari Tim) — simpan lokal.
+        const message = buildMessage(payload, false);
+        setExtraByDm((prev) => ({
+          ...prev,
+          [dmId]: [...(prev[dmId] ?? []), message],
+        }));
+      }
     }
   };
 
   const handleSendReply = (payload: SendPayload) => {
-    if (!openThreadId) return;
-    const reply = buildMessage(payload, false);
-    setExtraReplies((prev) => ({
-      ...prev,
-      [openThreadId]: [...(prev[openThreadId] ?? []), reply],
-    }));
+    if (!openThreadId || !activeChannelId) return;
+    const channelId = activeChannelId;
+    const parentId = openThreadId;
+    void sendChannelMessage(channelId, payload, parentId)
+      .then((reply) => {
+        // Sisipkan balasan ke replies parent di cache → thread panel langsung update.
+        queryClient.setQueryData<ChatMessage[]>(messagesQueryKey(channelId), (old) =>
+          (old ?? []).map((message) =>
+            message.id === parentId
+              ? { ...message, replies: [...message.replies, reply] }
+              : message,
+          ),
+        );
+      })
+      .catch(() => {});
   };
 
   // Mulai panggilan: grup untuk channel, langsung (1-on-1) untuk DM.
@@ -255,6 +328,8 @@ function ChatPage() {
       threadMessage={threadMessage}
       threadReplies={threadReplies}
       activeCall={call}
+      joinNotice={joinNotice}
+      onDismissJoinNotice={() => setJoinNotice(null)}
       musicTracks={musicQuery.data ?? []}
       isLoading={serversQuery.isLoading || channelsQuery.isLoading || dmsQuery.isLoading}
       isMessagesLoading={messagesQuery.isLoading}

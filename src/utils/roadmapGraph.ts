@@ -49,7 +49,10 @@ export function computeStatuses(
   const statusById: Record<string, NodeStatus> = {};
   for (const node of roadmap.nodes) {
     if (completed.has(node.id)) statusById[node.id] = "completed";
-    else if ((required[node.id] ?? []).every((prereqId) => completed.has(prereqId)))
+    else if (
+      node.alwaysUnlocked ||
+      (required[node.id] ?? []).every((prereqId) => completed.has(prereqId))
+    )
       statusById[node.id] = "available";
     else statusById[node.id] = "locked";
   }

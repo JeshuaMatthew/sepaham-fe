@@ -21,4 +21,6 @@ export interface AuthSession {
   email: string;
   /** true jika baru mendaftar — dipakai untuk mengarahkan ke onboarding. */
   isNewUser: boolean;
+  /** peran akun dari backend (menentukan panel dosen vs mahasiswa). */
+  role: "student" | "faculty";
 }

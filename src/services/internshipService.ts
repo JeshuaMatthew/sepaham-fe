@@ -1,9 +1,9 @@
-import axios from "axios";
+import AxiosInstance from "../utils/Axiosinstance";
 import type { InternshipContact } from "../types/internship";
 
 /**
- * Service kontak magang. Daftar kontak terbuka saat progres roadmap
- * mencapai ambang INTERNSHIP_UNLOCK_PERCENT.
+ * Service kontak magang (backend Axum: GET /api/internships/contacts).
+ * Daftar kontak terbuka saat progres roadmap mencapai INTERNSHIP_UNLOCK_PERCENT.
  */
 
 export const INTERNSHIP_CONTACTS_QUERY_KEY = ["internship", "contacts"] as const;
@@ -12,8 +12,8 @@ export const INTERNSHIP_CONTACTS_QUERY_KEY = ["internship", "contacts"] as const
 export const INTERNSHIP_UNLOCK_PERCENT = 50;
 
 export async function fetchInternshipContacts(): Promise<InternshipContact[]> {
-  const { data } = await axios.get<{ contacts: InternshipContact[] }>(
-    "/mocks/internshipContacts.json",
+  const { data } = await AxiosInstance.get<{ contacts: InternshipContact[] }>(
+    "/internships/contacts",
   );
   return data.contacts;
 }

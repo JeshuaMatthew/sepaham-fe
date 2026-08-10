@@ -36,15 +36,20 @@ function AuthPage() {
     password: "",
   });
 
-  const enterApp = () => {
+  // Arahkan berdasarkan peran: dosen → panel; mahasiswa → onboarding.
+  const goToApp = (accountRole: AccountRole) => {
+    void navigate(accountRole === "faculty" ? "/faculty" : "/onboarding");
+  };
+
+  // SSO belum tersambung ke backend — simpan akun lokal lalu masuk.
+  const enterAppMock = () => {
     saveAccount({ role, name: role === "faculty" ? "Dosen" : "Mahasiswa" });
-    // Dosen → panel pengelolaan; mahasiswa → kuesioner onboarding.
-    void navigate(role === "faculty" ? "/faculty" : "/onboarding");
+    goToApp(role);
   };
 
   const mutation = useMutation({
-    mutationFn: () => submitAuth(mode, values),
-    onSuccess: enterApp,
+    mutationFn: () => submitAuth(mode, values, role),
+    onSuccess: (session) => goToApp(session.role),
   });
 
   const handleFieldChange = (field: keyof AuthCredentials, value: string) => {
@@ -59,7 +64,7 @@ function AuthPage() {
   const handleSso = (providerId: string) => {
     // TODO: redirect OAuth (Google/GitHub) lewat backend Axum.
     console.log("sso login", providerId);
-    enterApp();
+    enterAppMock();
   };
 
   return (

@@ -9,6 +9,7 @@ interface CollabContainerProps {
   requests: CollabRequest[];
   availableRoles: string[];
   roleFilter: string;
+  communities: { id: string; name: string }[];
   isCreateOpen: boolean;
   isLoading: boolean;
   isError: boolean;
@@ -17,6 +18,7 @@ interface CollabContainerProps {
   onOpenCreate: () => void;
   onCloseCreate: () => void;
   onCreate: (input: NewCollabInput) => void;
+  onGoMyTeams: () => void;
   onRetry: () => void;
 }
 
@@ -24,6 +26,7 @@ function CollabContainer({
   requests,
   availableRoles,
   roleFilter,
+  communities,
   isCreateOpen,
   isLoading,
   isError,
@@ -32,6 +35,7 @@ function CollabContainer({
   onOpenCreate,
   onCloseCreate,
   onCreate,
+  onGoMyTeams,
   onRetry,
 }: CollabContainerProps) {
   if (isError) {
@@ -55,21 +59,30 @@ function CollabContainer({
   return (
     <div className="px-6 pb-16 pt-6 sm:px-8">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
-        {/* Header */}
-        <header className="flex flex-wrap items-end justify-between gap-4">
+        {/* Header — bagian penting, dibungkus gradient biru */}
+        <header className="grad-blue flex flex-wrap items-end justify-between gap-4 p-6 sm:p-7">
           <div className="flex flex-col gap-1">
             <h1 className="font-display text-2xl font-bold text-ink">Find a project team</h1>
             <p className="text-sm text-muted">
               Got an app idea? Invite other students to join, or hop into an existing request.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onOpenCreate}
-            className="cursor-pointer py-2 text-sm font-semibold text-primary"
-          >
-            + New request
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={onGoMyTeams}
+              className="cursor-pointer py-2 text-sm font-semibold text-muted hover:text-ink"
+            >
+              My teams
+            </button>
+            <button
+              type="button"
+              onClick={onOpenCreate}
+              className="cursor-pointer py-2 text-sm font-semibold text-primary"
+            >
+              + New request
+            </button>
+          </div>
         </header>
 
         {/* Filter tag */}
@@ -109,7 +122,11 @@ function CollabContainer({
       </div>
 
       {isCreateOpen ? (
-        <CreateRequestModal onCreate={onCreate} onClose={onCloseCreate} />
+        <CreateRequestModal
+          communities={communities}
+          onCreate={onCreate}
+          onClose={onCloseCreate}
+        />
       ) : null}
     </div>
   );

@@ -6,6 +6,7 @@ import {
   ROLES_QUERY_KEY,
 } from "../../services/roleService";
 import { savePreference } from "../../utils/preference";
+import { pushPreference } from "../../services/preferenceService";
 import RoleRecommendationContainer from "../components/RoleRecommendationContainer";
 
 /**
@@ -44,12 +45,15 @@ function RoleRecommendationPage() {
   const handleConfirm = () => {
     const role = data?.roles.find((item) => item.id === activeRoleId) ?? null;
     if (activeRoleId) {
-      savePreference({
+      const preference = {
         roleId: activeRoleId,
         roleTitle: role?.title ?? activeRoleId,
         roleEmoji: role?.emoji ?? "",
         roleScores: result.roleScores ?? {},
-      });
+      };
+      savePreference(preference);
+      // Sinkronkan ke backend (best-effort; butuh login).
+      void pushPreference(preference).catch(() => {});
     }
     void navigate("/roadmap");
   };

@@ -40,11 +40,11 @@ function RoleCard({ role, selected, recommended = false, onSelect }: RoleCardPro
       onMouseLeave={handleLeave}
       aria-pressed={selected}
       className={`group relative flex w-full flex-col gap-3 rounded-card border p-5 text-left will-change-transform transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 ${
-        selected ? "border-primary" : "border-transparent hover:border-line"
+        selected ? "border-blue" : "border-transparent hover:border-line"
       }`}
     >
       {recommended ? (
-        <span className="absolute right-4 top-4 inline-flex items-center gap-1 text-[11px] font-semibold text-primary">
+        <span className="absolute right-4 top-4 inline-flex items-center gap-1 text-[11px] font-semibold text-blue">
           <StarIcon className="h-3 w-3" /> Recommended
         </span>
       ) : null}

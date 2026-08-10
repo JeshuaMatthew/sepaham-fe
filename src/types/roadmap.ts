@@ -41,6 +41,14 @@ export interface RoadmapNode {
   x: number;
   /** posisi vertikal dalam persen (0–100). */
   y: number;
+  /** nama grup (opsional) — node dengan grup sama dikelompokkan dalam satu area. */
+  group?: string;
+  /** gambar node (data URL) yang diupload admin; menggantikan ikon default. */
+  image?: string;
+  /** tampilkan judul di dalam node (default: judul di bawah node). */
+  titleInside?: boolean;
+  /** node selalu terbuka — tidak pernah terkunci oleh prasyarat. */
+  alwaysUnlocked?: boolean;
   /** skill opsional (nice-to-have) — diberi label & tidak menggating progres wajib. */
   optional?: boolean;
   /** (opsional/legacy) id node prasyarat. Sumber kebenaran utama = `edges` roadmap. */
@@ -84,6 +92,26 @@ export interface SubmissionPayload {
   quizAnswers?: Record<string, number>;
 }
 
+/** Styling visual roadmap yang bisa diatur admin (berlaku ke semua node/edge/grup). */
+export interface RoadmapStyle {
+  /** sudut node membulat. */
+  nodeRounded?: boolean;
+  /** ketebalan border node (px). */
+  nodeBorderWidth?: number;
+  /** ukuran ikon/gambar node (px). */
+  iconSize?: number;
+  /** ukuran teks judul node (px). */
+  textSize?: number;
+  /** perataan teks judul node. */
+  textAlign?: "left" | "center" | "right";
+  /** posisi teks judul relatif ke ikon/logo. */
+  textPosition?: "top" | "bottom" | "left" | "right";
+  /** warna background kotak grup (hex). */
+  groupBg?: string;
+  /** warna garis koneksi/vertex (hex). */
+  edgeColor?: string;
+}
+
 /** Satu roadmap lengkap dengan skill tree-nya. */
 export interface Roadmap {
   id: string;
@@ -92,6 +120,8 @@ export interface Roadmap {
   emoji: string;
   /** dosen/pembuat roadmap ini. */
   author?: string;
+  /** styling visual (opsional) yang diatur admin. */
+  style?: RoadmapStyle;
   nodes: RoadmapNode[];
   /** koneksi antar-node. Kalau kosong, diturunkan dari `node.prereqs` (legacy). */
   edges?: RoadmapEdge[];

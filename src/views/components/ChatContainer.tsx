@@ -15,7 +15,7 @@ import ChannelSidebarSkeleton from "./ChannelSidebarSkeleton";
 import MessageList from "./MessageList";
 import MessageListSkeleton from "./MessageListSkeleton";
 import type { LofiTrack } from "../../types/music";
-import { AlertIcon, MaskIcon, PhoneIcon, VideoIcon } from "../icons";
+import { AlertIcon, CheckIcon, CloseIcon, MaskIcon, PhoneIcon, VideoIcon } from "../icons";
 import MessageComposer from "./MessageComposer";
 import ThreadPanel from "./ThreadPanel";
 import CallPanel from "./CallPanel";
@@ -34,10 +34,12 @@ interface ChatContainerProps {
   threadMessage: ChatMessage | null;
   threadReplies: ChatMessage[];
   activeCall: ActiveCall | null;
+  joinNotice: string | null;
   musicTracks: LofiTrack[];
   isLoading: boolean;
   isMessagesLoading: boolean;
   isError: boolean;
+  onDismissJoinNotice: () => void;
   onSelectServer: (id: string) => void;
   onSelectChannel: (id: string) => void;
   onSelectDm: (id: string) => void;
@@ -64,10 +66,12 @@ function ChatContainer({
   threadMessage,
   threadReplies,
   activeCall,
+  joinNotice,
   musicTracks,
   isLoading,
   isMessagesLoading,
   isError,
+  onDismissJoinNotice,
   onSelectServer,
   onSelectChannel,
   onSelectDm,
@@ -129,6 +133,25 @@ function ChatContainer({
 
       {/* Kolom utama */}
       <main className="flex min-w-0 flex-1 flex-col">
+        {/* Banner setelah bergabung lewat invite link */}
+        {joinNotice ? (
+          <div className="grad-blue flex items-center gap-2 px-5 py-2.5 text-sm text-ink">
+            <CheckIcon className="h-4 w-4 shrink-0" />
+            <span>
+              Kamu bergabung ke komunitas{" "}
+              <span className="font-semibold">{joinNotice}</span>.
+            </span>
+            <button
+              type="button"
+              onClick={onDismissJoinNotice}
+              aria-label="Tutup notifikasi"
+              className="ml-auto shrink-0 cursor-pointer text-muted hover:text-ink"
+            >
+              <CloseIcon className="h-4 w-4" />
+            </button>
+          </div>
+        ) : null}
+
         {/* Header */}
         <header className="flex items-center gap-3 border-b border-line px-5 py-3.5">
           {activeChannel ? (

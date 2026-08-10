@@ -1,16 +1,14 @@
-import axios from "axios";
+import AxiosInstance from "../utils/Axiosinstance";
 import type { AiFeed } from "../types/ai";
 
 /**
- * Service AI & Reminder (Tahap 7).
- * Nanti diganti API Axum (quote generator, GitHub webhook nudge,
- * internship matcher berbasis role & skill user).
+ * Service AI & Reminder (backend Axum: GET /api/ai/feed).
  */
 
 export const AI_FEED_QUERY_KEY = ["ai", "feed"] as const;
 
 export async function fetchAiFeed(): Promise<AiFeed> {
-  const { data } = await axios.get<AiFeed>("/mocks/aiFeed.json");
+  const { data } = await AxiosInstance.get<AiFeed>("/ai/feed");
   // Urutkan magang dari yang paling cocok.
   return {
     ...data,

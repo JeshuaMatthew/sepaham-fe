@@ -16,15 +16,16 @@ import {
   fetchChannels,
 } from "../../services/chatService";
 import { COLLAB_QUERY_KEY, fetchCollabRequests } from "../../services/collabService";
-import {
-  ACTIVE_COMMUNITY_QUERY_KEY,
-  fetchActiveCommunities,
-} from "../../services/activeCommunityService";
+import { GITHUB_QUERY_KEY, fetchGithubStats } from "../../services/githubService";
+import { buildCareerProfile } from "../../services/careerService";
 import type { RoadmapHeroData } from "../components/HomeRoadmapHero";
 import type { CollabRequest } from "../../types/collab";
 import { getPreference } from "../../utils/preference";
 import { getSubmissions } from "../../utils/submissionStore";
 import { computeStatuses } from "../../utils/roadmapGraph";
+import { getStoredCommunities } from "../../utils/communityStore";
+import { getCv } from "../../utils/cv";
+import { isGithubConnected } from "../../utils/githubConnection";
 import HomeContainer from "../components/HomeContainer";
 
 /**
@@ -55,10 +56,7 @@ function HomePage() {
   const serversQuery = useQuery({ queryKey: SERVERS_QUERY_KEY, queryFn: fetchServers });
   const channelsQuery = useQuery({ queryKey: CHANNELS_QUERY_KEY, queryFn: fetchChannels });
   const collabQuery = useQuery({ queryKey: COLLAB_QUERY_KEY, queryFn: fetchCollabRequests });
-  const activeQuery = useQuery({
-    queryKey: ACTIVE_COMMUNITY_QUERY_KEY,
-    queryFn: fetchActiveCommunities,
-  });
+  const githubQuery = useQuery({ queryKey: GITHUB_QUERY_KEY, queryFn: fetchGithubStats });
 
   // Roadmap utama: role-match dari preferensi, fallback item pertama katalog.
   const catalog = catalogQuery.data ?? [];
@@ -92,6 +90,29 @@ function HomePage() {
 
   const firstName = (profileQuery.data?.name ?? "Dev").split(" ")[0];
 
+  // Ringkasan kesiapan karier (dari roadmap, GitHub, project, CV).
+  const careerReadiness = useMemo(() => {
+    const github = githubQuery.data;
+    const cv = getCv();
+    return buildCareerProfile({
+      roadmap: {
+        completed: roadmap?.completedCount ?? 0,
+        total: roadmap?.totalCount ?? 0,
+        title: roadmap?.title ?? "",
+      },
+      github:
+        isGithubConnected() && github
+          ? {
+              commits: github.stats.totalCommits,
+              repos: github.stats.publicRepos,
+              topLanguages: github.topLanguages.map((lang) => lang.name),
+            }
+          : null,
+      projects: getStoredCommunities().length,
+      cv: cv ? { provided: true, fileName: cv.fileName } : { provided: false },
+    }).readiness;
+  }, [roadmap, githubQuery.data]);
+
   // "Cari Tim" yang cocok: request terbuka, diurutkan yang match role user dulu.
   const roleKeyword = (preference?.roleTitle ?? "").split(" ")[0].toLowerCase();
   const fittingCollab = [...(collabQuery.data ?? []).filter((request) => request.status === "open")]
@@ -110,19 +131,12 @@ function HomePage() {
       collab={{
         openRequests: (collabQuery.data ?? []).filter((request) => request.status === "open").length,
       }}
-      active={{
-        online: (activeQuery.data ?? []).reduce(
-          (sum, community) =>
-            sum + community.members.filter((member) => member.status === "online").length,
-          0,
-        ),
-        communities: (activeQuery.data ?? []).length,
-      }}
+      career={{ readiness: careerReadiness }}
       summaryLoading={
         serversQuery.isLoading ||
         channelsQuery.isLoading ||
         collabQuery.isLoading ||
-        activeQuery.isLoading
+        githubQuery.isLoading
       }
       feed={feedQuery.data ?? null}
       collabRequests={fittingCollab}
@@ -133,7 +147,7 @@ function HomePage() {
       onBrowseRoadmap={() => navigate("/roadmap")}
       onGoCommunity={() => navigate("/community")}
       onGoCollab={() => navigate("/partner")}
-      onGoActive={() => navigate("/active")}
+      onGoCareer={() => navigate("/career")}
       onRetry={() => {
         void feedQuery.refetch();
       }}

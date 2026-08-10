@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ROADMAP_CATALOG_QUERY_KEY,
@@ -21,6 +21,7 @@ import FacultyRoadmapEditContainer from "../components/FacultyRoadmapEditContain
 
 function FacultyRoadmapEditPage() {
   const { roadmapId } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, dataUpdatedAt, isLoading, isError, refetch } = useQuery({
@@ -79,6 +80,7 @@ function FacultyRoadmapEditPage() {
       onRetry={() => {
         void refetch();
       }}
+      onOpenNodePage={(nodeId) => navigate(`/faculty/roadmaps/${roadmapId}/${nodeId}`)}
     />
   );
 }

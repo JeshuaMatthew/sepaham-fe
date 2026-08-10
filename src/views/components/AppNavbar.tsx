@@ -1,9 +1,9 @@
 import type { ComponentType } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  ActivityIcon,
   BrandIcon,
   ChatIcon,
+  CompassIcon,
   GradIcon,
   HomeIcon,
   MapIcon,
@@ -20,13 +20,16 @@ const NAV_ITEMS: { to: string; icon: ComponentType<{ className?: string }>; labe
   { to: "/roadmap", icon: MapIcon, label: "Roadmap" },
   { to: "/community", icon: ChatIcon, label: "Community" },
   { to: "/partner", icon: UsersIcon, label: "Partner" },
-  { to: "/active", icon: ActivityIcon, label: "Active" },
+  { to: "/career", icon: CompassIcon, label: "Career" },
 ];
 
 const FACULTY_ITEM = { to: "/faculty", icon: GradIcon, label: "Faculty" };
 
 function AppNavbar({ avatarUrl, isFaculty }: AppNavbarProps) {
-  const items = isFaculty ? [...NAV_ITEMS, FACULTY_ITEM] : NAV_ITEMS;
+  // Dosen tak boleh melihat grup (chat/community) — item Community disembunyikan.
+  const items = isFaculty
+    ? [...NAV_ITEMS.filter((item) => item.to !== "/community"), FACULTY_ITEM]
+    : NAV_ITEMS;
   return (
     <header className="flex h-14 shrink-0 items-center gap-3 border-b border-line bg-surface px-4 sm:px-6">
       {/* Brand */}

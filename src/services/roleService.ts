@@ -1,21 +1,20 @@
-import axios from "axios";
+import AxiosInstance from "../utils/Axiosinstance";
 import type { Role, RoleRecommendation } from "../types/role";
 
 /**
- * Service Role IT.
+ * Service Role IT (backend Axum: GET /api/roles).
  *
- * Rekomendasi role kini datang dari hasil kuesioner Likert onboarding
+ * Rekomendasi role datang dari hasil kuesioner Likert onboarding
  * (recommendedRoleId dihitung di page). Di sini tetap ada jeda buatan
  * supaya animasi "AI meracik roadmap" sempat tampil.
  */
 
 export const ROLES_QUERY_KEY = ["onboarding", "roles"] as const;
 
-const MOCK_ENDPOINT = "/mocks/roles.json";
 const AI_THINKING_MS = 2400;
 
 export async function fetchRoles(): Promise<Role[]> {
-  const { data } = await axios.get<{ roles: Role[] }>(MOCK_ENDPOINT);
+  const { data } = await AxiosInstance.get<{ roles: Role[] }>("/roles");
   return data.roles;
 }
 

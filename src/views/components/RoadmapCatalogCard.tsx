@@ -30,11 +30,11 @@ function RoadmapCatalogCard({ roadmap, recommended, progress, onOpen }: RoadmapC
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       className={`relative flex w-full flex-col gap-3 border p-5 text-left will-change-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
-        recommended ? "border-primary" : "border-transparent hover:border-line"
+        recommended ? "border-blue" : "border-transparent hover:border-line"
       }`}
     >
       {recommended ? (
-        <span className="absolute right-4 top-4 inline-flex items-center gap-1 text-[11px] font-semibold text-primary">
+        <span className="absolute right-4 top-4 inline-flex items-center gap-1 text-[11px] font-semibold text-blue">
           <StarIcon className="h-3 w-3" /> Recommended for you
         </span>
       ) : null}

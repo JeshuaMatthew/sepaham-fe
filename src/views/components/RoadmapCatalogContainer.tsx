@@ -59,8 +59,8 @@ function RoadmapCatalogContainer({
   return (
     <div className="min-h-screen bg-canvas px-6 py-10 sm:px-8">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
-        {/* Header */}
-        <header className="flex flex-col gap-2">
+        {/* Header — bagian penting, dibungkus gradient biru */}
+        <header className="grad-blue flex flex-col gap-2 p-6 sm:p-7">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
             Roadmap
           </span>

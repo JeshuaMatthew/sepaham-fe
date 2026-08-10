@@ -11,7 +11,7 @@ import InternshipCard from "./InternshipCard";
 import InternshipCardSkeleton from "./InternshipCardSkeleton";
 import HomeCollabCard from "./HomeCollabCard";
 import HomeCollabCardSkeleton from "./HomeCollabCardSkeleton";
-import { ActivityIcon, AlertIcon, ChatIcon, SmileIcon, TargetIcon, UsersIcon } from "../icons";
+import { AlertIcon, ChatIcon, CompassIcon, SmileIcon, TargetIcon, UsersIcon } from "../icons";
 
 interface HomeContainerProps {
   userName: string;
@@ -19,7 +19,7 @@ interface HomeContainerProps {
   roadmapLoading: boolean;
   community: { channels: number; servers: number };
   collab: { openRequests: number };
-  active: { online: number; communities: number };
+  career: { readiness: number };
   summaryLoading: boolean;
   feed: AiFeed | null;
   collabRequests: CollabRequest[];
@@ -30,7 +30,7 @@ interface HomeContainerProps {
   onBrowseRoadmap: () => void;
   onGoCommunity: () => void;
   onGoCollab: () => void;
-  onGoActive: () => void;
+  onGoCareer: () => void;
   onRetry: () => void;
 }
 
@@ -40,7 +40,7 @@ function HomeContainer({
   roadmapLoading,
   community,
   collab,
-  active,
+  career,
   summaryLoading,
   feed,
   collabRequests,
@@ -51,7 +51,7 @@ function HomeContainer({
   onBrowseRoadmap,
   onGoCommunity,
   onGoCollab,
-  onGoActive,
+  onGoCareer,
   onRetry,
 }: HomeContainerProps) {
   if (isError) {
@@ -153,11 +153,11 @@ function HomeContainer({
               </div>
               <div className="border-r border-b border-line">
                 <HomeSummaryCard
-                  icon={ActivityIcon}
-                  value={`${active.online} online`}
-                  label="Active Community"
-                  hint={`in ${active.communities} communities`}
-                  onClick={onGoActive}
+                  icon={CompassIcon}
+                  value={`${career.readiness}%`}
+                  label="Career"
+                  hint="AI insights & progress"
+                  onClick={onGoCareer}
                 />
               </div>
             </>

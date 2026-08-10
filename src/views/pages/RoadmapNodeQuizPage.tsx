@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchRoadmapTree, roadmapTreeQueryKey } from "../../services/roadmapService";
+import {
+  fetchRoadmapTree,
+  pushActivity,
+  pushSubmission,
+  roadmapTreeQueryKey,
+} from "../../services/roadmapService";
 import type { SubmissionState } from "../../types/roadmap";
 import {
   DEFAULT_PASSING_SCORE,
@@ -53,6 +58,9 @@ function RoadmapNodeQuizPage() {
     const next = evaluateSubmission(submission, { quizAnswers: answers });
     saveSubmission(roadmapId, node.id, next);
     setSubmissions((prev) => ({ ...prev, [node.id]: next }));
+    // Sinkronkan ke backend (best-effort).
+    void pushSubmission(roadmapId, node.id, next).catch(() => {});
+    void pushActivity(roadmapId).catch(() => {});
   };
 
   return (

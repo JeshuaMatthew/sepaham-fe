@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRightIcon, DocIcon, GradIcon, MapIcon } from "../icons";
+import { ArrowRightIcon, ChatIcon, DocIcon, GradIcon, MapIcon, TargetIcon, UsersIcon } from "../icons";
 
 const CARDS: {
   to: string;
@@ -9,16 +9,34 @@ const CARDS: {
   description: string;
 }[] = [
   {
-    to: "/faculty/onboarding",
-    Icon: DocIcon,
-    title: "Manage Onboarding Questions",
-    description: "Compose the statements students answer on a Likert scale.",
+    to: "/faculty/students",
+    Icon: UsersIcon,
+    title: "Student progress",
+    description: "See each student's roadmap, GitHub, projects & career readiness — and their CV.",
   },
   {
     to: "/faculty/roadmaps",
     Icon: MapIcon,
-    title: "Manage Roadmaps",
+    title: "Manage roadmaps",
     description: "Add/edit the roadmap list and each roadmap's skill tree.",
+  },
+  {
+    to: "/faculty/groups",
+    Icon: ChatIcon,
+    title: "Group moderation",
+    description: "Ban group chats & calls if needed — without reading their messages.",
+  },
+  {
+    to: "/faculty/requests",
+    Icon: TargetIcon,
+    title: "Project requests",
+    description: "Close 'find a team' requests so no one else can join.",
+  },
+  {
+    to: "/faculty/onboarding",
+    Icon: DocIcon,
+    title: "Onboarding questions",
+    description: "Compose the statements students answer on a Likert scale.",
   },
 ];
 
@@ -26,15 +44,15 @@ function FacultyDashboardContainer() {
   return (
     <div className="min-h-screen bg-canvas px-6 py-10 sm:px-8">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
-        <header className="flex flex-col gap-2">
+        <header className="grad-blue flex flex-col gap-2 p-6 sm:p-7">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
             Faculty panel
           </span>
           <h1 className="flex items-center gap-2 font-display text-3xl font-bold text-ink">
-            <GradIcon className="h-7 w-7" /> Manage content
+            <GradIcon className="h-7 w-7" /> Faculty dashboard
           </h1>
           <p className="text-sm text-muted">
-            As faculty, you can build onboarding questions and edit the roadmaps students see.
+            Track every student's progress, edit roadmaps, and moderate groups & project requests.
           </p>
         </header>
 

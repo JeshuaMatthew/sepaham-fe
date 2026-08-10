@@ -12,6 +12,7 @@ interface FacultyRoadmapEditContainerProps {
   onSave: (roadmap: Roadmap) => void;
   onReset: () => void;
   onRetry: () => void;
+  onOpenNodePage: (nodeId: string) => void;
 }
 
 function FacultyRoadmapEditContainer({
@@ -23,6 +24,7 @@ function FacultyRoadmapEditContainer({
   onSave,
   onReset,
   onRetry,
+  onOpenNodePage,
 }: FacultyRoadmapEditContainerProps) {
   if (isError) {
     return (
@@ -44,7 +46,7 @@ function FacultyRoadmapEditContainer({
 
   return (
     <div className="min-h-screen bg-canvas px-6 pb-16 pt-10 sm:px-8">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-5">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-5">
         <header className="flex flex-col gap-2">
           <Link
             to="/faculty/roadmaps"
@@ -61,7 +63,7 @@ function FacultyRoadmapEditContainer({
         </header>
 
         {isLoading || !initialRoadmap ? (
-          <div className="h-[520px] rounded-card  animate-shimmer" />
+          <div className="h-[720px] rounded-card  animate-shimmer" />
         ) : (
           <RoadmapFlowEditor
             key={editorKey}
@@ -69,6 +71,7 @@ function FacultyRoadmapEditContainer({
             notice={notice}
             onSave={onSave}
             onReset={onReset}
+            onOpenNodePage={onOpenNodePage}
           />
         )}
       </div>

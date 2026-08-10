@@ -66,8 +66,8 @@ function RoadmapContainer({
   return (
     <div className="min-h-screen bg-canvas px-6 pb-16 pt-14 sm:px-8">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
-        {/* Header */}
-        <header className="flex flex-col gap-4">
+        {/* Header — bagian penting, dibungkus gradient biru */}
+        <header className="grad-blue flex flex-col gap-4 p-6 sm:p-7">
           <div className="flex flex-col gap-2">
             <button
               type="button"

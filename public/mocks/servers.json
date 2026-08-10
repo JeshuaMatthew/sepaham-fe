@@ -1,7 +1,0 @@
-{
-  "servers": [
-    { "id": "itb", "name": "ITB Computer Science", "initial": "IT", "color": "#e5e5e5" },
-    { "id": "ui", "name": "UI Computer Science", "initial": "UI", "color": "#e5e5e5" },
-    { "id": "ugm", "name": "UGM Computer Science", "initial": "UG", "color": "#e5e5e5" }
-  ]
-}

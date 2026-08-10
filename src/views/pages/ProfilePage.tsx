@@ -6,6 +6,7 @@ import {
   PROFILE_QUERY_KEY,
   fetchBadges,
   fetchProfile,
+  updateProfile,
 } from "../../services/profileService";
 import {
   GITHUB_QUERY_KEY,
@@ -13,8 +14,8 @@ import {
 } from "../../services/githubService";
 import type { Profile } from "../../types/profile";
 import { clearAccount } from "../../utils/account";
-import { saveProfileOverrides } from "../../utils/profileStore";
 import { isGithubConnected, setGithubConnected } from "../../utils/githubConnection";
+import { connectGithub } from "../../services/githubService";
 import DevCardContainer from "../components/DevCardContainer";
 
 /**
@@ -47,6 +48,7 @@ function ProfilePage() {
   const handleConnectGithub = () => {
     setGithubConnected(true);
     setConnected(true);
+    void connectGithub().catch(() => {});
   };
 
   const handleDisconnectGithub = () => {
@@ -55,8 +57,9 @@ function ProfilePage() {
   };
 
   const handleSaveProfile = (patch: Partial<Profile>) => {
-    saveProfileOverrides(patch);
-    void queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+    void updateProfile(patch)
+      .then(() => queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY }))
+      .catch(() => {});
     setIsEditOpen(false);
   };
 
