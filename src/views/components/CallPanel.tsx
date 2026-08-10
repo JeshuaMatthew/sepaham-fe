@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Room, RoomEvent, Track } from "livekit-client";
-import type { Participant } from "livekit-client";
+import type { Participant, RemoteTrack } from "livekit-client";
 import type { ActiveCall } from "../../types/chat";
-import type { LofiTrack } from "../../types/music";
 import CallMusicPlayer from "./CallMusicPlayer";
 import { MicIcon, MicOffIcon, PhoneIcon, PhoneOffIcon, VideoIcon, VideoOffIcon } from "../icons";
 
 interface CallPanelProps {
   call: ActiveCall;
-  tracks: LofiTrack[];
   onEnd: () => void;
 }
 
-/** Satu tile peserta — meng-attach video/audio track LiveKit ke elemennya. */
+/**
+ * Satu tile peserta — meng-attach video kamera. Audio (mic + musik) ditangani
+ * terpusat lewat audio-sink di CallPanel supaya semua track terdengar.
+ */
 function ParticipantTile({
   participant,
   isLocal,
@@ -23,7 +24,6 @@ function ParticipantTile({
   refreshKey: number;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [videoOn, setVideoOn] = useState(false);
 
   useEffect(() => {
@@ -34,10 +34,6 @@ function ParticipantTile({
       setVideoOn(true);
     } else {
       setVideoOn(false);
-    }
-    if (!isLocal) {
-      const audioTrack = participant.getTrackPublication(Track.Source.Microphone)?.audioTrack;
-      if (audioTrack && audioRef.current) audioTrack.attach(audioRef.current);
     }
   }, [participant, isLocal, refreshKey]);
 
@@ -62,7 +58,6 @@ function ParticipantTile({
           videoOn ? "" : "hidden"
         }`}
       />
-      {!isLocal ? <audio ref={audioRef} autoPlay /> : null}
       {!videoOn ? (
         <div className="flex h-full w-full items-center justify-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-sm font-semibold text-primary">
@@ -78,8 +73,9 @@ function ParticipantTile({
   );
 }
 
-function CallPanel({ call, tracks, onEnd }: CallPanelProps) {
+function CallPanel({ call, onEnd }: CallPanelProps) {
   const roomRef = useRef<Room | null>(null);
+  const audioSinkRef = useRef<HTMLDivElement>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -115,6 +111,18 @@ function CallPanel({ call, tracks, onEnd }: CallPanelProps) {
     }
   }, []);
 
+  // Attach/lepas SEMUA audio remote (mic + musik host) ke sink tersembunyi.
+  const attachAudio = useCallback((track: RemoteTrack) => {
+    if (track.kind !== Track.Kind.Audio) return;
+    const el = track.attach();
+    el.autoplay = true;
+    audioSinkRef.current?.appendChild(el);
+  }, []);
+  const detachAudio = useCallback((track: RemoteTrack) => {
+    if (track.kind !== Track.Kind.Audio) return;
+    for (const el of track.detach()) el.remove();
+  }, []);
+
   // Connect ke LiveKit room + publish mic/kamera. Media lewat server LiveKit.
   useEffect(() => {
     const room = new Room({ adaptiveStream: true, dynacast: true });
@@ -122,8 +130,14 @@ function CallPanel({ call, tracks, onEnd }: CallPanelProps) {
     room
       .on(RoomEvent.ParticipantConnected, refresh)
       .on(RoomEvent.ParticipantDisconnected, refresh)
-      .on(RoomEvent.TrackSubscribed, refresh)
-      .on(RoomEvent.TrackUnsubscribed, refresh)
+      .on(RoomEvent.TrackSubscribed, (track) => {
+        attachAudio(track);
+        refresh();
+      })
+      .on(RoomEvent.TrackUnsubscribed, (track) => {
+        detachAudio(track);
+        refresh();
+      })
       .on(RoomEvent.TrackMuted, refresh)
       .on(RoomEvent.TrackUnmuted, refresh)
       .on(RoomEvent.LocalTrackPublished, refresh)
@@ -138,6 +152,13 @@ function CallPanel({ call, tracks, onEnd }: CallPanelProps) {
         await room.connect(call.serverUrl, call.token);
         if (cancelled) return;
         setConnected(true);
+
+        // Peserta yang sudah ada + audio-nya (mis. host join belakangan).
+        room.remoteParticipants.forEach((p) => {
+          p.trackPublications.forEach((pub) => {
+            if (pub.isSubscribed && pub.track) attachAudio(pub.track);
+          });
+        });
 
         // Mikrofon dulu — ini juga yang memicu prompt izin, sehingga setelahnya
         // enumerateDevices mengembalikan label + deviceId lengkap.
@@ -357,10 +378,14 @@ function CallPanel({ call, tracks, onEnd }: CallPanelProps) {
         {/* Pemutar musik (khusus host/pembuat panggilan) */}
         {call.isHost ? (
           <div className="mt-3">
-            <CallMusicPlayer tracks={tracks} />
+            <CallMusicPlayer room={room} />
           </div>
         ) : null}
       </div>
+
+      {/* Sink audio remote (mic + musik) — tak terlihat, hanya untuk pemutaran. */}
+      <div ref={audioSinkRef} className="hidden" />
+
 
       {/* Kontrol panggilan */}
       <div className="flex items-center justify-center gap-2 border-t border-line px-4 py-3">

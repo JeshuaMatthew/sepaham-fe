@@ -14,7 +14,6 @@ import {
   sendDmMessage,
 } from "../../services/chatService";
 import { PROFILE_QUERY_KEY, fetchProfile } from "../../services/profileService";
-import { LOFI_TRACKS_QUERY_KEY, fetchLofiTracks } from "../../services/musicService";
 import type {
   ActiveCall,
   ActiveView,
@@ -91,7 +90,6 @@ function ChatPage() {
   const channelsQuery = useQuery({ queryKey: CHANNELS_QUERY_KEY, queryFn: fetchChannels });
   const dmsQuery = useQuery({ queryKey: DMS_QUERY_KEY, queryFn: fetchDirectConversations });
   const profileQuery = useQuery({ queryKey: PROFILE_QUERY_KEY, queryFn: fetchProfile });
-  const musicQuery = useQuery({ queryKey: LOFI_TRACKS_QUERY_KEY, queryFn: fetchLofiTracks });
   const myCommunitiesQuery = useQuery({
     queryKey: MY_COMMUNITIES_QUERY_KEY,
     queryFn: fetchMyCommunities,
@@ -396,7 +394,6 @@ function ChatPage() {
       activeCall={call}
       joinNotice={joinNotice}
       onDismissJoinNotice={() => setJoinNotice(null)}
-      musicTracks={musicQuery.data ?? []}
       isLoading={serversQuery.isLoading || channelsQuery.isLoading || dmsQuery.isLoading}
       isMessagesLoading={messagesQuery.isLoading}
       isError={serversQuery.isError || channelsQuery.isError || dmsQuery.isError}

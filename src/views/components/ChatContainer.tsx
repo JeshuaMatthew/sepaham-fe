@@ -14,7 +14,6 @@ import ChannelSidebar from "./ChannelSidebar";
 import ChannelSidebarSkeleton from "./ChannelSidebarSkeleton";
 import MessageList from "./MessageList";
 import MessageListSkeleton from "./MessageListSkeleton";
-import type { LofiTrack } from "../../types/music";
 import { AlertIcon, CheckIcon, CloseIcon, MaskIcon, PhoneIcon, VideoIcon } from "../icons";
 import MessageComposer from "./MessageComposer";
 import ThreadPanel from "./ThreadPanel";
@@ -35,7 +34,6 @@ interface ChatContainerProps {
   threadReplies: ChatMessage[];
   activeCall: ActiveCall | null;
   joinNotice: string | null;
-  musicTracks: LofiTrack[];
   isLoading: boolean;
   isMessagesLoading: boolean;
   isError: boolean;
@@ -67,7 +65,6 @@ function ChatContainer({
   threadReplies,
   activeCall,
   joinNotice,
-  musicTracks,
   isLoading,
   isMessagesLoading,
   isError,
@@ -263,7 +260,7 @@ function ChatContainer({
 
       {/* Panel panggilan (mendamping chat, tidak menutupi) */}
       {activeCall ? (
-        <CallPanel call={activeCall} tracks={musicTracks} onEnd={onEndCall} />
+        <CallPanel call={activeCall} onEnd={onEndCall} />
       ) : null}
     </div>
   );
