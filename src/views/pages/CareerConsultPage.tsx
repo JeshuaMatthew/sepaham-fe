@@ -1,0 +1,129 @@
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ROADMAP_CATALOG_QUERY_KEY,
+  fetchRoadmapCatalog,
+  fetchRoadmapTree,
+  roadmapTreeQueryKey,
+} from "../../services/roadmapService";
+import { GITHUB_QUERY_KEY, fetchGithubStats } from "../../services/githubService";
+import {
+  CAREER_SUGGESTIONS,
+  answerCareerQuestion,
+  buildCareerProfile,
+} from "../../services/careerService";
+import type { CareerMessage } from "../../types/career";
+import { getPreference } from "../../utils/preference";
+import { getSubmissions } from "../../utils/submissionStore";
+import { computeStatuses } from "../../utils/roadmapGraph";
+import { getStoredCommunities } from "../../utils/communityStore";
+import { getCv } from "../../utils/cv";
+import { isGithubConnected } from "../../utils/githubConnection";
+import CareerConsultContainer from "../components/CareerConsultContainer";
+
+/**
+ * CareerConsultPage — subhalaman konsultasi AI karier (chat). Menghitung profil
+ * yang sama dengan halaman Career, lalu menjawab pertanyaan berdasarkan data.
+ * TIDAK ADA class Tailwind di sini.
+ */
+
+function CareerConsultPage() {
+  const preference = getPreference();
+
+  const catalogQuery = useQuery({
+    queryKey: ROADMAP_CATALOG_QUERY_KEY,
+    queryFn: fetchRoadmapCatalog,
+  });
+  const githubQuery = useQuery({ queryKey: GITHUB_QUERY_KEY, queryFn: fetchGithubStats });
+
+  const catalog = catalogQuery.data ?? [];
+  const primary =
+    (preference != null ? catalog.find((item) => item.roleId === preference.roleId) : undefined) ??
+    catalog[0] ??
+    null;
+
+  const treeQuery = useQuery({
+    queryKey: roadmapTreeQueryKey(primary?.id ?? "none"),
+    queryFn: () => fetchRoadmapTree(primary!.id),
+    enabled: primary != null,
+  });
+
+  const projects = getStoredCommunities().length;
+  const cv = getCv();
+  const cvProvided = cv != null;
+  const cvName = cv?.fileName;
+  const connected = isGithubConnected();
+
+  const profile = useMemo(() => {
+    if (catalogQuery.isLoading || githubQuery.isLoading) return null;
+    const tree = treeQuery.data ?? null;
+    const completed =
+      primary && tree ? computeStatuses(tree, getSubmissions(primary.id)).completedCount : 0;
+    const github = githubQuery.data;
+    return buildCareerProfile({
+      roadmap: {
+        completed,
+        total: tree?.nodes.length ?? primary?.totalNodes ?? 0,
+        title: primary?.title ?? "",
+      },
+      github:
+        connected && github
+          ? {
+              commits: github.stats.totalCommits,
+              repos: github.stats.publicRepos,
+              topLanguages: github.topLanguages.map((lang) => lang.name),
+            }
+          : null,
+      projects,
+      cv: { provided: cvProvided, fileName: cvName },
+    });
+  }, [
+    catalogQuery.isLoading,
+    githubQuery.isLoading,
+    githubQuery.data,
+    treeQuery.data,
+    primary,
+    projects,
+    cvProvided,
+    cvName,
+    connected,
+  ]);
+
+  const [messages, setMessages] = useState<CareerMessage[]>([
+    {
+      id: "welcome",
+      role: "ai",
+      text: "Hi! I'm your career AI. Ask me anything about your progress, or tap a suggestion below.",
+    },
+  ]);
+  const [input, setInput] = useState("");
+
+  const handleSend = (text: string) => {
+    if (!profile) return;
+    const userMessage: CareerMessage = { id: crypto.randomUUID().slice(0, 8), role: "user", text };
+    const aiMessage: CareerMessage = {
+      id: crypto.randomUUID().slice(0, 8),
+      role: "ai",
+      text: answerCareerQuestion(text, profile),
+    };
+    setMessages((prev) => [...prev, userMessage, aiMessage]);
+    setInput("");
+  };
+
+  const isLoading =
+    catalogQuery.isLoading || githubQuery.isLoading || (primary != null && treeQuery.isLoading);
+
+  return (
+    <CareerConsultContainer
+      profile={profile}
+      isLoading={isLoading}
+      messages={messages}
+      input={input}
+      suggestions={CAREER_SUGGESTIONS}
+      onInputChange={setInput}
+      onSend={handleSend}
+    />
+  );
+}
+
+export default CareerConsultPage;
