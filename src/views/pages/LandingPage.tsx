@@ -7,6 +7,8 @@ import LandingContainer from "../components/LandingContainer";
  * Kalau sudah login, langsung diarahkan ke beranda. TIDAK ADA class Tailwind.
  */
 
+import PageTransition from "../components/animations/PageTransition";
+
 function LandingPage() {
   const navigate = useNavigate();
 
@@ -15,10 +17,12 @@ function LandingPage() {
   }
 
   return (
-    <LandingContainer
-      onLogin={() => navigate("/login")}
-      onRegister={() => navigate("/login", { state: { mode: "register" } })}
-    />
+    <PageTransition className="h-full">
+      <LandingContainer
+        onLogin={() => navigate("/login")}
+        onRegister={() => navigate("/login", { state: { mode: "register" } })}
+      />
+    </PageTransition>
   );
 }
 

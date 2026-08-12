@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import gsap from "gsap";
+import { useGsapHover } from "../../hooks/useGsapHover";
 import type { Repo } from "../../types/github";
 import { ForkIcon, PackageIcon, StarIcon } from "../icons";
 
@@ -8,15 +7,7 @@ interface RepoCardProps {
 }
 
 function RepoCard({ repo }: RepoCardProps) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
-
-  const handleEnter = () => {
-    gsap.to(cardRef.current, { y: -5, duration: 0.28, ease: "power3.out" });
-  };
-
-  const handleLeave = () => {
-    gsap.to(cardRef.current, { y: 0, duration: 0.32, ease: "power3.out" });
-  };
+  const cardRef = useGsapHover<HTMLAnchorElement>({ y: -5, scale: 1 });
 
   return (
     <a
@@ -24,8 +15,6 @@ function RepoCard({ repo }: RepoCardProps) {
       href={repo.url}
       target="_blank"
       rel="noreferrer"
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       className="flex h-full flex-col gap-3 rounded-card  p-5 will-change-transform transition-colors duration-200 hover:border-primary/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
     >
       <div className="flex items-center gap-2">

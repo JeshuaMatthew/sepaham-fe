@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import gsap from "gsap";
+import { useGsapHover } from "../../hooks/useGsapHover";
 import type { RoadmapSummary } from "../../types/roadmap";
 import ProgressBar from "./ProgressBar";
 import { ChartIcon, MapIcon, SkillIcon, StarIcon, UserIcon } from "../icons";
@@ -13,22 +12,13 @@ interface RoadmapCatalogCardProps {
 }
 
 function RoadmapCatalogCard({ roadmap, recommended, progress, onOpen }: RoadmapCatalogCardProps) {
-  const cardRef = useRef<HTMLButtonElement>(null);
-
-  const handleEnter = () => {
-    gsap.to(cardRef.current, { y: -5, duration: 0.28, ease: "power3.out" });
-  };
-  const handleLeave = () => {
-    gsap.to(cardRef.current, { y: 0, duration: 0.32, ease: "power3.out" });
-  };
+  const cardRef = useGsapHover<HTMLButtonElement>({ y: -5, scale: 1 });
 
   return (
     <button
       ref={cardRef}
       type="button"
       onClick={() => onOpen(roadmap.id)}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       className={`relative flex w-full flex-col gap-3 border p-5 text-left will-change-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
         recommended ? "border-blue" : "border-transparent hover:border-line"
       }`}

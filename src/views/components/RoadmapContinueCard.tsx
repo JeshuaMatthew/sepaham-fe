@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import gsap from "gsap";
+import { useGsapHover } from "../../hooks/useGsapHover";
 import type { RoadmapSummary } from "../../types/roadmap";
 import ProgressBar from "./ProgressBar";
 import { ArrowRightIcon, MapIcon } from "../icons";
@@ -14,23 +13,14 @@ interface RoadmapContinueCardProps {
 }
 
 function RoadmapContinueCard({ roadmap, completed, total, label, onOpen }: RoadmapContinueCardProps) {
-  const cardRef = useRef<HTMLButtonElement>(null);
+  const cardRef = useGsapHover<HTMLButtonElement>({ y: -4, scale: 1 });
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-  const handleEnter = () => {
-    gsap.to(cardRef.current, { y: -4, duration: 0.28, ease: "power3.out" });
-  };
-  const handleLeave = () => {
-    gsap.to(cardRef.current, { y: 0, duration: 0.32, ease: "power3.out" });
-  };
 
   return (
     <button
       ref={cardRef}
       type="button"
       onClick={() => onOpen(roadmap.id)}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       className="group flex w-full flex-col gap-4  p-5 text-left will-change-transform hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
     >
       <div className="flex items-center gap-3">

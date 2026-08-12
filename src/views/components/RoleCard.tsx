@@ -1,5 +1,5 @@
-import { useRef } from "react";
 import gsap from "gsap";
+import { useGsapHover } from "../../hooks/useGsapHover";
 import type { Role } from "../../types/role";
 import { CompassIcon, StarIcon } from "../icons";
 
@@ -12,22 +12,16 @@ interface RoleCardProps {
 }
 
 function RoleCard({ role, selected, recommended = false, onSelect }: RoleCardProps) {
-  const cardRef = useRef<HTMLButtonElement>(null);
-
-  const handleEnter = () => {
-    gsap.to(cardRef.current, { y: -6, duration: 0.28, ease: "power3.out" });
-  };
-
-  const handleLeave = () => {
-    gsap.to(cardRef.current, { y: 0, duration: 0.32, ease: "power3.out" });
-  };
+  const cardRef = useGsapHover<HTMLButtonElement>({ y: -6, scale: 1 });
 
   const handleClick = () => {
-    gsap.fromTo(
-      cardRef.current,
-      { scale: 0.97 },
-      { scale: 1, duration: 0.4, ease: "back.out(2)" },
-    );
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { scale: 0.97 },
+        { scale: 1, duration: 0.4, ease: "back.out(2)", overwrite: "auto" },
+      );
+    }
     onSelect(role.id);
   };
 
@@ -36,8 +30,6 @@ function RoleCard({ role, selected, recommended = false, onSelect }: RoleCardPro
       ref={cardRef}
       type="button"
       onClick={handleClick}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       aria-pressed={selected}
       className={`group relative flex w-full flex-col gap-3 rounded-card border p-5 text-left will-change-transform transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 ${
         selected ? "border-blue" : "border-transparent hover:border-line"

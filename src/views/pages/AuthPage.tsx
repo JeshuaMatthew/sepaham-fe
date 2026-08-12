@@ -10,6 +10,7 @@ import type { AuthCredentials, AuthMode } from "../../types/auth";
 import type { AccountRole } from "../../utils/account";
 import { saveAccount } from "../../utils/account";
 import AuthContainer from "../components/AuthContainer";
+import PageTransition from "../components/animations/PageTransition";
 
 /**
  * AuthPage — Tahap 1.1 (Login/Register).
@@ -68,20 +69,22 @@ function AuthPage() {
   };
 
   return (
-    <AuthContainer
-      mode={mode}
-      role={role}
-      values={values}
-      providers={providers ?? []}
-      isLoadingProviders={isLoading}
-      isSubmitting={mutation.isPending}
-      errorMessage={mutation.error?.message ?? null}
-      onModeChange={handleModeChange}
-      onRoleChange={setRole}
-      onFieldChange={handleFieldChange}
-      onSubmit={() => mutation.mutate()}
-      onSso={handleSso}
-    />
+    <PageTransition className="h-full">
+      <AuthContainer
+        mode={mode}
+        role={role}
+        values={values}
+        providers={providers ?? []}
+        isLoadingProviders={isLoading}
+        isSubmitting={mutation.isPending}
+        errorMessage={mutation.error?.message ?? null}
+        onModeChange={handleModeChange}
+        onRoleChange={setRole}
+        onFieldChange={handleFieldChange}
+        onSubmit={() => mutation.mutate()}
+        onSso={handleSso}
+      />
+    </PageTransition>
   );
 }
 
