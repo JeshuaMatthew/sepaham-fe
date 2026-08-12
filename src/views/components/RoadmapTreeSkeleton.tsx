@@ -15,7 +15,7 @@ const NODE_SPOTS = [
 function RoadmapTreeSkeleton() {
   return (
     <div
-      className="relative mx-auto h-[720px] w-full max-w-2xl sm:h-[820px]"
+      className="relative mx-auto h-180 w-full max-w-2xl sm:h-205"
       aria-hidden="true"
     >
       {NODE_SPOTS.map((spot, index) => (

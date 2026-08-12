@@ -3,14 +3,16 @@ import { clearToken, getToken } from "./authToken";
 import { clearAccount } from "./account";
 import { emitAuthExpired } from "./authEvents";
 
+import { API_BASE_URL } from "../constants/api";
+
 /**
  * Instance axios untuk semua panggilan ke backend Axum.
- * - baseURL dari VITE_API_URL (mis. http://localhost:8080/api)
+ * - baseURL dari VITE_API_BASE_URL + /api (mis. http://localhost:8080/api)
  * - melampirkan JWT (Authorization: Bearer ...) otomatis kalau ada
  * - saat 401 (token basi): bersihkan sesi lalu picu redirect ke /login
  */
 const AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: `${API_BASE_URL}/api`,
   withCredentials: true,
 });
 

@@ -8,7 +8,7 @@ interface ServerRailProps {
 
 function ServerRail({ servers, activeServerId, onSelectServer }: ServerRailProps) {
   return (
-    <nav className="flex h-full w-[68px] shrink-0 flex-col items-center gap-3 border-r border-line bg-surface py-4">
+    <nav className="flex h-full w-17 shrink-0 flex-col items-center gap-3 border-r border-line bg-surface py-4">
       {servers.map((server) => {
         const active = server.id === activeServerId;
         return (
