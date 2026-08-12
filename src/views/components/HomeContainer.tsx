@@ -76,156 +76,162 @@ function HomeContainer({
 
   return (
     <div className="min-h-screen bg-canvas px-6 py-10 sm:px-8">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
-        {/* Hero gradient — sapaan + daily quote + streak + roadmap utama */}
-        <section className="flex flex-col bg-[linear-gradient(135deg,#3358e0_0%,#243b9c_50%,#141c52_100%)]">
-          {/* Baris atas: sapaan + daily quote | daily streak (diperlebar) */}
-          <div className="flex flex-col divide-y divide-white/15 lg:flex-row lg:divide-x lg:divide-y-0">
-            <header className="flex flex-1 flex-col justify-center gap-3 p-6">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 lg:grid-cols-12">
+        
+        {/* LEFT COLUMN: Main Content (Hero & Internships) */}
+        <div className="flex flex-col gap-8 lg:col-span-8">
+          {/* Hero gradient — sapaan + roadmap utama */}
+          <section className="grad-blue flex flex-col">
+            <header className="flex flex-col justify-center gap-3 p-6 sm:p-8">
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
                 Home
               </span>
-              <h1 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
-                Hi, {userName} <SmileIcon className="h-5 w-5 text-accent" />
+              <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-ink sm:text-3xl">
+                Hi, {userName} <SmileIcon className="h-6 w-6 text-accent" />
               </h1>
               {ready ? (
-                <div className="flex flex-col gap-1">
-                  <p className="font-display text-lg font-semibold italic leading-snug text-ink">
+                <div className="flex flex-col gap-1 pt-2">
+                  <p className="font-display text-lg font-semibold italic leading-snug text-ink sm:text-xl">
                     “{feed.quotes[0].text}”
                   </p>
                   <p className="text-sm text-muted">— {feed.quotes[0].author}</p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-2 pt-1">
-                  <div className="h-4 w-3/4 bg-white/10" />
-                  <div className="h-4 w-2/5 bg-white/10" />
+                <div className="flex flex-col gap-2 pt-3">
+                  <div className="h-4 w-3/4 bg-ink/10" />
+                  <div className="h-4 w-2/5 bg-ink/10" />
                 </div>
               )}
             </header>
 
-            {/* Daily streak — diperlebar */}
-            <div className="lg:w-[44%] lg:shrink-0">
-              {ready ? <GithubNudgeCard nudge={feed.nudge} /> : <GithubNudgeCardSkeleton />}
+            {/* Roadmap utama — di dalam gradient */}
+            <div className="border-t border-line/20 p-6 sm:p-8">
+              {roadmapLoading ? (
+                <HomeRoadmapHeroSkeleton />
+              ) : (
+                <HomeRoadmapHero
+                  roadmap={roadmap}
+                  onOpen={onOpenRoadmap}
+                  onBrowse={onBrowseRoadmap}
+                />
+              )}
             </div>
-          </div>
+          </section>
 
-          {/* Roadmap utama — di dalam gradient */}
-          <div className="border-t border-white/15 p-6">
-            {roadmapLoading ? (
-              <HomeRoadmapHeroSkeleton />
-            ) : (
-              <HomeRoadmapHero
-                roadmap={roadmap}
-                onOpen={onOpenRoadmap}
-                onBrowse={onBrowseRoadmap}
-              />
-            )}
-          </div>
-        </section>
-
-        {/* Ringkasan area lain */}
-        <section className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-3">
-          {summaryLoading ? (
-            Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="border-r border-b border-line">
-                <HomeSummaryCardSkeleton />
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="border-r border-b border-line">
-                <HomeSummaryCard
-                  icon={ChatIcon}
-                  value={`${community.channels} channels`}
-                  label="Community"
-                  hint={`${community.servers} discussion servers`}
-                  onClick={onGoCommunity}
-                />
-              </div>
-              <div className="border-r border-b border-line">
-                <HomeSummaryCard
-                  icon={UsersIcon}
-                  value={`${collab.openRequests} teams`}
-                  label="Find a Team"
-                  hint="requests need members"
-                  onClick={onGoCollab}
-                />
-              </div>
-              <div className="border-r border-b border-line">
-                <HomeSummaryCard
-                  icon={CompassIcon}
-                  value={`${career.readiness}%`}
-                  label="Career"
-                  hint="AI insights & progress"
-                  onClick={onGoCareer}
-                />
-              </div>
-            </>
-          )}
-        </section>
-
-        {/* Internship matcher */}
-        <section className="flex flex-col gap-4">
-          <div className="flex flex-col gap-0.5">
-            <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-ink">
-              <TargetIcon className="h-5 w-5 text-accent" /> Internships that fit you
-            </h2>
-            <p className="text-sm text-muted">
-              Matched from your role & tech stack.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2">
-            {ready
-              ? feed.internships.map((internship) => (
-                  <div key={internship.id} className="border-r border-b border-line">
-                    <InternshipCard internship={internship} />
-                  </div>
-                ))
-              : Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className="border-r border-b border-line">
-                    <InternshipCardSkeleton />
-                  </div>
-                ))}
-          </div>
-        </section>
-
-        {/* Cari tim proyek yang cocok */}
-        <section className="flex flex-col gap-4">
-          <div className="flex flex-col gap-0.5">
-            <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-ink">
-              <UsersIcon className="h-5 w-5 text-accent" /> Find a project team that fits you
-            </h2>
-            <p className="text-sm text-muted">
-              Student projects looking for teammates in your field.
-            </p>
-          </div>
-          {!collabLoading && collabRequests.length === 0 ? (
-            <p className="text-sm text-muted">
-              No matching project teams right now.{" "}
-              <button
-                type="button"
-                onClick={onGoCollab}
-                className="cursor-pointer font-semibold text-primary"
-              >
-                Browse all
-              </button>
-            </p>
-          ) : (
+          {/* Internship matcher */}
+          <section className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
+                <TargetIcon className="h-6 w-6 text-accent" /> Internships that fit you
+              </h2>
+              <p className="text-sm text-muted">
+                Matched from your role & tech stack.
+              </p>
+            </div>
             <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2">
-              {collabLoading
-                ? Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="border-r border-b border-line">
-                      <HomeCollabCardSkeleton />
+              {ready
+                ? feed.internships.map((internship) => (
+                    <div key={internship.id} className="border-r border-b border-line">
+                      <InternshipCard internship={internship} />
                     </div>
                   ))
-                : collabRequests.map((request) => (
-                    <div key={request.id} className="border-r border-b border-line">
-                      <HomeCollabCard request={request} onOpen={onGoCollab} />
+                : Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="border-r border-b border-line">
+                      <InternshipCardSkeleton />
                     </div>
                   ))}
             </div>
-          )}
-        </section>
+          </section>
+        </div>
+
+        {/* RIGHT COLUMN: Sidebar (Streak, Summaries, Collab Requests) */}
+        <div className="flex flex-col gap-8 lg:col-span-4">
+          
+          {/* Daily streak */}
+          <section>
+            {ready ? <GithubNudgeCard nudge={feed.nudge} /> : <GithubNudgeCardSkeleton />}
+          </section>
+
+          {/* Ringkasan area lain (Stacked vertically on sidebar) */}
+          <section className="flex flex-col border-l border-t border-line">
+            {summaryLoading ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="border-r border-b border-line">
+                  <HomeSummaryCardSkeleton />
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="border-r border-b border-line">
+                  <HomeSummaryCard
+                    icon={ChatIcon}
+                    value={`${community.channels} channels`}
+                    label="Community"
+                    hint={`${community.servers} discussion servers`}
+                    onClick={onGoCommunity}
+                  />
+                </div>
+                <div className="border-r border-b border-line">
+                  <HomeSummaryCard
+                    icon={UsersIcon}
+                    value={`${collab.openRequests} teams`}
+                    label="Find a Team"
+                    hint="requests need members"
+                    onClick={onGoCollab}
+                  />
+                </div>
+                <div className="border-r border-b border-line">
+                  <HomeSummaryCard
+                    icon={CompassIcon}
+                    value={`${career.readiness}%`}
+                    label="Career"
+                    hint="AI insights & progress"
+                    onClick={onGoCareer}
+                  />
+                </div>
+              </>
+            )}
+          </section>
+
+          {/* Cari tim proyek yang cocok */}
+          <section className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
+                <UsersIcon className="h-5 w-5 text-accent" /> Need teammates?
+              </h2>
+              <p className="text-sm text-muted">
+                Student projects looking for you.
+              </p>
+            </div>
+            {!collabLoading && collabRequests.length === 0 ? (
+              <p className="text-sm text-muted">
+                No matching project teams right now.{" "}
+                <button
+                  type="button"
+                  onClick={onGoCollab}
+                  className="cursor-pointer font-semibold text-primary"
+                >
+                  Browse all
+                </button>
+              </p>
+            ) : (
+              <div className="flex flex-col border-l border-t border-line">
+                {collabLoading
+                  ? Array.from({ length: 3 }).map((_, index) => (
+                      <div key={index} className="border-r border-b border-line">
+                        <HomeCollabCardSkeleton />
+                      </div>
+                    ))
+                  : collabRequests.map((request) => (
+                      <div key={request.id} className="border-r border-b border-line">
+                        <HomeCollabCard request={request} onOpen={onGoCollab} />
+                      </div>
+                    ))}
+              </div>
+            )}
+          </section>
+
+        </div>
       </div>
     </div>
   );

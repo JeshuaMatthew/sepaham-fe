@@ -58,7 +58,7 @@ function RoadmapCatalogContainer({
 
   return (
     <div className="min-h-screen bg-canvas px-6 py-10 sm:px-8">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         {/* Header — bagian penting, dibungkus gradient biru */}
         <header className="grad-blue flex flex-col gap-2 p-6 sm:p-7">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
@@ -116,7 +116,7 @@ function RoadmapCatalogContainer({
         ) : null}
 
         {/* Grid katalog */}
-        <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2">
+        <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => (
                 <div key={index} className="border-r border-b border-line">

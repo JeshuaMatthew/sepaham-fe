@@ -87,8 +87,8 @@ export async function submitAuth(
     // Tampilkan pesan dari backend ({ error: "..." }) kalau ada.
     if (axios.isAxiosError(error)) {
       const message = (error.response?.data as { error?: string } | undefined)?.error;
-      if (message) throw new Error(message);
+      if (message) throw new Error(message, { cause: error });
     }
-    throw new Error("Tidak bisa terhubung ke server. Coba lagi.");
+    throw new Error("Tidak bisa terhubung ke server. Coba lagi.", { cause: error });
   }
 }

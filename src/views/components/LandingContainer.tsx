@@ -111,43 +111,75 @@ function LandingContainer({ onLogin, onRegister }: LandingContainerProps) {
       </header>
 
       {/* Hero */}
-      <section className="px-6 py-20 sm:px-8 sm:py-28">
-        <div className="mx-auto flex max-w-3xl flex-col items-start gap-6">
-          <span
-            data-reveal
-            className="inline-flex items-center gap-1.5 border border-line px-3 py-1 font-mono text-xs uppercase tracking-[0.2em] text-accent"
-          >
-            <SparkleIcon className="h-3.5 w-3.5" /> For IT students
-          </span>
-          <h1 data-reveal className="font-display text-4xl font-bold leading-tight sm:text-6xl">
-            Learn, code, and connect in one place
-          </h1>
-          <p data-reveal className="max-w-xl text-base text-muted sm:text-lg">
-            Sepaham brings together an interactive learning roadmap, a Slack-style community, and
-            project team matching — so your journey to becoming a developer isn't a solo one.
-          </p>
-          <div data-reveal className="flex flex-wrap items-center justify-center gap-6">
-            <button
-              type="button"
-              onClick={onRegister}
-              className="inline-flex cursor-pointer items-center gap-1.5 text-base font-semibold text-primary"
+      <section className="px-6 py-20 sm:px-8 sm:py-28 lg:py-36">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 lg:grid-cols-2">
+          <div className="flex flex-col items-start gap-6">
+            <span
+              data-reveal
+              className="inline-flex items-center gap-1.5 border border-line px-3 py-1 font-mono text-xs uppercase tracking-[0.2em] text-accent"
             >
-              Start for free <ArrowRightIcon className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={onLogin}
-              className="cursor-pointer text-base font-semibold text-muted hover:text-ink"
-            >
-              I already have an account
-            </button>
+              <SparkleIcon className="h-3.5 w-3.5" /> For IT students
+            </span>
+            <h1 data-reveal className="font-display text-4xl font-bold leading-tight sm:text-6xl lg:text-[4rem]">
+              Learn, code, and connect in one place
+            </h1>
+            <p data-reveal className="max-w-xl text-base text-muted sm:text-lg">
+              Sepaham brings together an interactive learning roadmap, a Slack-style community, and
+              project team matching — so your journey to becoming a developer isn't a solo one.
+            </p>
+            <div data-reveal className="flex flex-wrap items-center justify-start gap-6 pt-4">
+              <button
+                type="button"
+                onClick={onRegister}
+                className="inline-flex cursor-pointer items-center gap-2 rounded bg-primary px-6 py-3 text-base font-semibold text-canvas transition-transform hover:scale-105"
+              >
+                Start for free <ArrowRightIcon className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={onLogin}
+                className="cursor-pointer text-base font-semibold text-muted hover:text-ink"
+              >
+                I already have an account
+              </button>
+            </div>
+          </div>
+          
+          {/* Abstract Hero Visual (Right side) */}
+          <div data-reveal className="hidden h-full w-full lg:block">
+            <div className="relative h-[400px] w-full">
+              {/* Decorative floating cards/shapes */}
+              <div className="absolute top-10 right-10 h-64 w-64 rounded-2xl border border-line bg-surface/50 p-6 backdrop-blur-md">
+                <div className="mb-4 h-8 w-8 rounded-full bg-blue" />
+                <div className="mb-2 h-4 w-3/4 rounded bg-line" />
+                <div className="h-4 w-1/2 rounded bg-line" />
+              </div>
+              <div className="absolute top-40 left-10 h-56 w-72 rounded-2xl border border-line bg-surface/80 p-6 shadow-2xl backdrop-blur-xl">
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="h-10 w-10 rounded bg-line" />
+                  <div>
+                    <div className="mb-2 h-3 w-20 rounded bg-line" />
+                    <div className="h-2 w-12 rounded bg-line" />
+                  </div>
+                </div>
+                <div className="mb-2 h-2 w-full rounded bg-line" />
+                <div className="h-2 w-4/5 rounded bg-line" />
+              </div>
+              <div className="absolute -bottom-4 right-32 flex h-24 w-48 items-center gap-3 rounded-xl border border-line bg-canvas p-4 shadow-xl">
+                 <ChatIcon className="h-6 w-6 text-accent" />
+                 <div>
+                   <div className="mb-1.5 h-2 w-16 rounded bg-line" />
+                   <div className="h-1.5 w-10 rounded bg-line" />
+                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features */}
       <section className="px-6 py-16 sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-col gap-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-10">
           <div className="flex flex-col gap-2">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Features</span>
             <h2 className="font-display text-3xl font-bold sm:text-4xl">
@@ -177,7 +209,7 @@ function LandingContainer({ onLogin, onRegister }: LandingContainerProps) {
 
       {/* How it works */}
       <section className="px-6 py-16 sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-col gap-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-10">
           <div className="flex flex-col gap-2">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
               How it works
@@ -198,7 +230,7 @@ function LandingContainer({ onLogin, onRegister }: LandingContainerProps) {
 
       {/* Final CTA */}
       <section className="px-6 py-16 sm:px-8">
-        <div className="mx-auto flex max-w-3xl flex-col items-start gap-5  p-10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 border border-line bg-surface/50 p-12 text-center sm:p-20">
           <h2 className="font-display text-3xl font-bold sm:text-4xl">Ready to start your journey?</h2>
           <p className="max-w-lg text-sm text-muted">
             Free for every student. Sign up now and find the roadmap that fits you.
@@ -215,7 +247,7 @@ function LandingContainer({ onLogin, onRegister }: LandingContainerProps) {
 
       {/* Footer */}
       <footer className="border-t border-line px-6 py-8 text-xs text-muted sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-col items-start gap-2">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-2">
           <div className="flex items-center gap-2 text-primary">
             <BrandIcon className="h-3.5 w-3.5" />
             <span className="font-display text-sm font-semibold">Sepaham</span>

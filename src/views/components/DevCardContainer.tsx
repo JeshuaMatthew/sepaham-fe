@@ -82,21 +82,24 @@ function DevCardContainer({
 
   return (
     <div className="min-h-screen bg-canvas px-6 py-12 sm:px-8">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
         {/* Profil — bagian penting, dibungkus gradient biru */}
-        <div className="grad-blue p-6 sm:p-7">
-          {showProfile ? <ProfileHeader profile={profile} /> : <ProfileHeaderSkeleton />}
+        <div className="grad-blue flex flex-col gap-4 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex-1">
+            {showProfile ? <ProfileHeader profile={profile} /> : <ProfileHeaderSkeleton />}
+          </div>
+          <div className="shrink-0 lg:border-l lg:border-white/20 lg:pl-6">
+            {/* Aksi akun */}
+            <ProfileActions
+              githubConnected={githubConnected}
+              githubUsername={githubUsername}
+              onConnectGithub={onConnectGithub}
+              onDisconnectGithub={onDisconnectGithub}
+              onEdit={onOpenEdit}
+              onLogout={onLogout}
+            />
+          </div>
         </div>
-
-        {/* Aksi akun */}
-        <ProfileActions
-          githubConnected={githubConnected}
-          githubUsername={githubUsername}
-          onConnectGithub={onConnectGithub}
-          onDisconnectGithub={onDisconnectGithub}
-          onEdit={onOpenEdit}
-          onLogout={onLogout}
-        />
 
         {/* Top languages + Badges */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

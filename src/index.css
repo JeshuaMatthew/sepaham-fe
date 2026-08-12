@@ -15,28 +15,22 @@
 /* ================================================================== */
 @theme {
   /* ================================================================ */
-  /*  Monokrom: background abu-abu gelap netral, sisanya abu netral.   */
-  /*  Surface/border/muted = putih transparan di atas background gelap.*/
-  /*  (Warna bahasa di halaman profil dikecualikan — dari data github.)*/
+  /*  Mapping Design Tokens ke CSS Variables dinamis                  */
   /* ================================================================ */
+  --color-canvas: var(--theme-canvas);
+  --color-surface: var(--theme-surface);
+  --color-elevate: var(--theme-elevate);
+  --color-line: var(--theme-line);
 
-  /* ---- Surfaces & lines (dark gray + putih transparan) ---- */
-  --color-canvas: #1c1c1c; /* background utama (neutral dark gray) */
-  --color-surface: rgba(255, 255, 255, 0.045); /* kartu / panel   */
-  --color-elevate: rgba(255, 255, 255, 0.09); /* hover / aktif     */
-  --color-line: rgba(255, 255, 255, 0.15); /* border halus         */
+  --color-primary: var(--theme-primary);
+  --color-primary-soft: var(--theme-primary-soft);
+  --color-accent: var(--theme-accent);
+  --color-neon: var(--theme-neon);
+  --color-danger: var(--theme-danger);
+  --color-blue: var(--theme-blue);
 
-  /* ---- Brand & accents (neutral gray) ---- */
-  --color-primary: #e5e5e5; /* abu terang (aksi utama / highlight) */
-  --color-primary-soft: rgba(229, 229, 229, 0.14); /* tint abu     */
-  --color-accent: #e5e5e5; /* abu terang (aksen teks / link)       */
-  --color-neon: #e5e5e5; /* abu terang                            */
-  --color-danger: #e5e5e5; /* abu terang                          */
-  --color-blue: #3d6fe6; /* biru aksen — dipakai utk bagian/border penting */
-
-  /* ---- Text (neutral gray) ---- */
-  --color-ink: #ededed; /* teks utama (abu sangat terang)       */
-  --color-muted: rgba(237, 237, 237, 0.52); /* teks sekunder     */
+  --color-ink: var(--theme-ink);
+  --color-muted: var(--theme-muted);
 
   /* ---- Typography ---- */
   --font-sans: "Google Sans", ui-sans-serif, system-ui, sans-serif;
@@ -63,21 +57,74 @@
 }
 
 /* ------------------------------------------------------------------ */
+/*  Theme Definitions (CSS Variables)                                  */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    /* Dark theme (default) */
+    --theme-canvas: #1c1c1c;
+    --theme-surface: rgba(255, 255, 255, 0.045);
+    --theme-elevate: rgba(255, 255, 255, 0.09);
+    --theme-line: rgba(255, 255, 255, 0.15);
+    
+    --theme-primary: #e5e5e5;
+    --theme-primary-soft: rgba(229, 229, 229, 0.14);
+    --theme-accent: #e5e5e5;
+    --theme-neon: #e5e5e5;
+    --theme-danger: #e5e5e5;
+    --theme-blue: #3d6fe6;
+    
+    --theme-ink: #ededed;
+    --theme-muted: rgba(237, 237, 237, 0.52);
+
+    --theme-grad-blue: linear-gradient(135deg, #3358e0 0%, #243b9c 50%, #141c52 100%);
+  }
+
+  .light {
+    /* Light theme */
+    --theme-canvas: #f1d3b2; /* warm peach as requested */
+    --theme-surface: #ffffff;
+    --theme-elevate: rgba(15, 23, 42, 0.05); /* very soft dark tint for hover */
+    --theme-line: #e2e8f0;
+    
+    --theme-primary: #0f172a; /* slate-900 */
+    --theme-primary-soft: rgba(15, 23, 42, 0.08);
+    --theme-accent: #0f172a;
+    --theme-neon: #0f172a;
+    --theme-danger: #0f172a;
+    --theme-blue: #3d6fe6; /* keep blue the same */
+    
+    --theme-ink: #0f172a; /* dark text for readability */
+    --theme-muted: #64748b; /* slate-500 */
+
+    --theme-grad-blue: linear-gradient(135deg, #fdfbf7 0%, #f4e8d8 100%); /* very light warm gradient for readability */
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Base layer — reset & default look                                  */
 /* ------------------------------------------------------------------ */
 @layer base {
-  /* Sementara: matikan semua animasi & transisi CSS. */
   /* Tanpa sudut membulat: semua elemen bersudut tajam. */
   *,
   *::before,
   *::after {
-    animation: none !important;
-    transition: none !important;
     border-radius: 0 !important;
+  }
+
+  /* Smooth theme transitions */
+  body, nav, header, main, div, p, span, button, a, h1, h2, h3, h4, h5, h6 {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   html {
     color-scheme: dark;
+  }
+  
+  html.light {
+    color-scheme: light;
   }
 
   /* Pengecualian sudut membulat untuk node/grup roadmap (diatur admin).
@@ -123,5 +170,5 @@
 
 /* Gradient biru untuk membungkus bagian PENTING di tiap halaman (spt di Home). */
 .grad-blue {
-  background-image: linear-gradient(135deg, #3358e0 0%, #243b9c 50%, #141c52 100%);
+  background-image: var(--theme-grad-blue);
 }

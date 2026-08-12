@@ -64,6 +64,8 @@ export {
   FiLogOut as LogoutIcon,
   FiBriefcase as BriefcaseIcon,
   FiAward as AwardIcon,
+  FiSun as SunIcon,
+  FiMoon as MoonIcon,
 } from "react-icons/fi";
 export {
   FaGraduationCap as GradIcon,

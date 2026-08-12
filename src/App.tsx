@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { clearAccount, isFaculty } from "./utils/account";
 import { clearToken, hasValidToken } from "./utils/authToken";
 import { onAuthExpired } from "./utils/authEvents";
+import { ThemeProvider } from "./views/components/ThemeProvider";
 import AppLayout from "./views/layout/AppLayout";
 import FacultyLayout from "./views/layout/FacultyLayout";
 import LandingPage from "./views/pages/LandingPage";
@@ -104,9 +105,11 @@ onAuthExpired(() => {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

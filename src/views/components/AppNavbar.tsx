@@ -9,6 +9,7 @@ import {
   MapIcon,
   UsersIcon,
 } from "../icons";
+import ThemeToggle from "./ThemeToggle";
 
 interface AppNavbarProps {
   avatarUrl: string;
@@ -61,6 +62,7 @@ function AppNavbar({ avatarUrl, isFaculty }: AppNavbarProps) {
       </nav>
 
       {/* Profile */}
+      <ThemeToggle />
       <NavLink
         to="/profile"
         title="Profile"
