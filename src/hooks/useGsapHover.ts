@@ -26,7 +26,7 @@ export function useGsapHover<T extends HTMLElement>(options: HoverOptions = {}) 
     const el = ref.current;
     if (!el) return;
 
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       // Cleanup any existing listeners
       const onEnter = () => {
         gsap.to(el, { 
