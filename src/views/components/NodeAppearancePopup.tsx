@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import type { RoadmapNode } from "../../types/roadmap";
-import { EditIcon, ImageIcon, LockIcon, StarIcon } from "../icons";
+import type { RoadmapNode } from "@/features/roadmap/types/roadmap";
+import { EditIcon, ImageIcon, LockIcon, StarIcon } from "@/shared/icons";
 
 interface NodeAppearancePopupProps {
   node: RoadmapNode;

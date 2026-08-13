@@ -1,6 +1,6 @@
-import type { RoadmapDifficulty, RoadmapSummary } from "../../types/roadmap";
-import { ROLE_OPTIONS } from "../../utils/roleOptions";
-import { EditIcon, SkillIcon } from "../icons";
+import type { RoadmapDifficulty, RoadmapSummary } from "@/features/roadmap/types/roadmap";
+import { ROLE_OPTIONS } from "@/features/onboarding/utils/roleOptions";
+import { EditIcon, SkillIcon } from "@/shared/icons";
 
 interface RoadmapEditorCardProps {
   roadmap: RoadmapSummary;

@@ -1,5 +1,5 @@
-import type { LikertQuestion } from "../../types/onboarding";
-import { ROLE_OPTIONS } from "../../utils/roleOptions";
+import type { LikertQuestion } from "@/features/onboarding/types/onboarding";
+import { ROLE_OPTIONS } from "@/features/onboarding/utils/roleOptions";
 
 interface QuestionEditorRowProps {
   question: LikertQuestion;

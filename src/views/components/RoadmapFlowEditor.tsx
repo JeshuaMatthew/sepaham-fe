@@ -13,10 +13,10 @@ import {
 } from "@xyflow/react";
 import type { Connection, Edge, Node, OnNodesChange } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import type { Roadmap, RoadmapEdge, RoadmapNode, RoadmapStyle } from "../../types/roadmap";
-import { fromFlowPosition, toFlowPosition } from "../../utils/roadmapGraph";
-import { computeGroupBoxes } from "../../utils/flowGroups";
-import { ROLE_OPTIONS } from "../../utils/roleOptions";
+import type { Roadmap, RoadmapEdge, RoadmapNode, RoadmapStyle } from "@/features/roadmap/types/roadmap";
+import { fromFlowPosition, toFlowPosition } from "@/features/roadmap/utils/roadmapGraph";
+import { computeGroupBoxes } from "@/features/roadmap/utils/flowGroups";
+import { ROLE_OPTIONS } from "@/features/onboarding/utils/roleOptions";
 import RoadmapFlowNode from "./RoadmapFlowNode";
 import GroupBoxNode from "./GroupBoxNode";
 import NodeAppearancePopup from "./NodeAppearancePopup";

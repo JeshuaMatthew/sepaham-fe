@@ -1,5 +1,5 @@
 import { useTheme } from "./ThemeProvider";
-import { MoonIcon, SunIcon } from "../icons";
+import { MoonIcon, SunIcon } from "@/shared/icons";
 import { useGsapHover } from "../../hooks/useGsapHover";
 
 export default function ThemeToggle() {

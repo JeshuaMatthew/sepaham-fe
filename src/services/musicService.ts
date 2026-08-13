@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { LofiTrack } from "../types/music";
+import AxiosInstance from "@/lib/axios";
+import type { LofiTrack } from "@/features/chat/types/music";
 
 /**
  * Service musik lo-fi (backend Axum: GET /api/music/lofi). Dipakai host untuk

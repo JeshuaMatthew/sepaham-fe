@@ -3,7 +3,7 @@ import {
   MOD_REQUESTS_QUERY_KEY,
   fetchModRequests,
   toggleCloseRequest,
-} from "../../services/facultyService";
+} from "@/features/faculty/services/facultyService";
 import FacultyRequestsContainer from "../components/FacultyRequestsContainer";
 
 /**

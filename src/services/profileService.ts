@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { Badge, Profile } from "../types/profile";
+import AxiosInstance from "@/lib/axios";
+import type { Badge, Profile } from "@/features/profile/types/profile";
 
 /**
  * Service Profil & Badges (backend Axum: GET/PUT /api/profile, GET /api/badges).

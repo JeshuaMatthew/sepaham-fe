@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { QuizQuestion } from "../../types/roadmap";
+import type { QuizQuestion } from "@/features/roadmap/types/roadmap";
 
 interface QuizRunnerProps {
   questions: QuizQuestion[];

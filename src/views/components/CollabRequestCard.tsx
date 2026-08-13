@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import gsap from "gsap";
-import type { CollabRequest } from "../../types/collab";
-import { DmIcon, ExternalIcon, PackageIcon, UsersIcon } from "../icons";
+import type { CollabRequest } from "@/features/collab/types/collab";
+import { DmIcon, ExternalIcon, PackageIcon, UsersIcon } from "@/shared/icons";
 
 interface CollabRequestCardProps {
   request: CollabRequest;

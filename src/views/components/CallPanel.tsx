@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Room, RoomEvent, Track } from "livekit-client";
 import type { Participant, RemoteTrack } from "livekit-client";
-import type { ActiveCall } from "../../types/chat";
+import type { ActiveCall } from "@/features/chat/types/chat";
 import CallMusicPlayer from "./CallMusicPlayer";
-import { MicIcon, MicOffIcon, PhoneIcon, PhoneOffIcon, VideoIcon, VideoOffIcon } from "../icons";
+import { MicIcon, MicOffIcon, PhoneIcon, PhoneOffIcon, VideoIcon, VideoOffIcon } from "@/shared/icons";
 
 interface CallPanelProps {
   call: ActiveCall;

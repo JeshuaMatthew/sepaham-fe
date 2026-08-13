@@ -5,10 +5,10 @@ import type {
   RoadmapNode,
   SubmissionPayload,
   SubmissionState,
-} from "../../types/roadmap";
+} from "@/features/roadmap/types/roadmap";
 import MarkdownView from "./MarkdownView";
 import NodeSubmissionPanel from "./NodeSubmissionPanel";
-import { AlertIcon, ArrowLeftIcon, CheckIcon, SkillIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, CheckIcon, SkillIcon } from "@/shared/icons";
 
 interface RoadmapNodeContainerProps {
   roadmap: Roadmap | null;

@@ -1,9 +1,9 @@
-import type { CollabRequest, NewCollabInput } from "../../types/collab";
+import type { CollabRequest, NewCollabInput } from "@/features/collab/types/collab";
 import CollabFilters from "./CollabFilters";
 import CollabRequestCard from "./CollabRequestCard";
 import CollabRequestCardSkeleton from "./CollabRequestCardSkeleton";
 import CreateRequestModal from "./CreateRequestModal";
-import { AlertIcon, SearchIcon } from "../icons";
+import { AlertIcon, SearchIcon } from "@/shared/icons";
 
 interface CollabContainerProps {
   requests: CollabRequest[];

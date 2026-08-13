@@ -1,8 +1,8 @@
 import { Handle, Position } from "@xyflow/react";
 import type { NodeProps } from "@xyflow/react";
 import type { CSSProperties } from "react";
-import type { NodeStatus, RoadmapStyle } from "../../types/roadmap";
-import { AlertIcon, CheckIcon, LockIcon, SkillIcon } from "../icons";
+import type { NodeStatus, RoadmapStyle } from "@/features/roadmap/types/roadmap";
+import { AlertIcon, CheckIcon, LockIcon, SkillIcon } from "@/shared/icons";
 
 export interface RoadmapFlowNodeData {
   title: string;

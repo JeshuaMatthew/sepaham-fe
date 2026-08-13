@@ -3,9 +3,9 @@ import type { CSSProperties } from "react";
 import { ReactFlow, Background } from "@xyflow/react";
 import type { Edge, Node, NodeMouseHandler } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import type { NodeStatus, Roadmap } from "../../types/roadmap";
-import { getRoadmapEdges, toFlowPosition } from "../../utils/roadmapGraph";
-import { computeGroupBoxes } from "../../utils/flowGroups";
+import type { NodeStatus, Roadmap } from "@/features/roadmap/types/roadmap";
+import { getRoadmapEdges, toFlowPosition } from "@/features/roadmap/utils/roadmapGraph";
+import { computeGroupBoxes } from "@/features/roadmap/utils/flowGroups";
 import RoadmapFlowNode from "./RoadmapFlowNode";
 import GroupBoxNode from "./GroupBoxNode";
 

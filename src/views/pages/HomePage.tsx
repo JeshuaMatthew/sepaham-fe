@@ -1,31 +1,31 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { AI_FEED_QUERY_KEY, fetchAiFeed } from "../../services/aiService";
-import { PROFILE_QUERY_KEY, fetchProfile } from "../../services/profileService";
+import { AI_FEED_QUERY_KEY, fetchAiFeed } from "@/features/home/services/aiService";
+import { PROFILE_QUERY_KEY, fetchProfile } from "@/features/profile/services/profileService";
 import {
   ROADMAP_CATALOG_QUERY_KEY,
   fetchRoadmapCatalog,
   fetchRoadmapTree,
   roadmapTreeQueryKey,
-} from "../../services/roadmapService";
+} from "@/features/roadmap/services/roadmapService";
 import {
   SERVERS_QUERY_KEY,
   CHANNELS_QUERY_KEY,
   fetchServers,
   fetchChannels,
-} from "../../services/chatService";
-import { COLLAB_QUERY_KEY, fetchCollabRequests } from "../../services/collabService";
-import { GITHUB_QUERY_KEY, fetchGithubStats } from "../../services/githubService";
-import { buildCareerProfile } from "../../services/careerService";
+} from "@/features/chat/services/chatService";
+import { COLLAB_QUERY_KEY, fetchCollabRequests } from "@/features/collab/services/collabService";
+import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
+import { buildCareerProfile } from "@/features/career/services/careerService";
 import type { RoadmapHeroData } from "../components/HomeRoadmapHero";
-import type { CollabRequest } from "../../types/collab";
-import { getPreference } from "../../utils/preference";
-import { getSubmissions } from "../../utils/submissionStore";
-import { computeStatuses } from "../../utils/roadmapGraph";
-import { getStoredCommunities } from "../../utils/communityStore";
-import { getCv } from "../../utils/cv";
-import { isGithubConnected } from "../../utils/githubConnection";
+import type { CollabRequest } from "@/features/collab/types/collab";
+import { getPreference } from "@/features/onboarding/utils/preference";
+import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
+import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
+import { getStoredCommunities } from "@/features/chat/utils/communityStore";
+import { getCv } from "@/features/profile/utils/cv";
+import { isGithubConnected } from "@/features/profile/utils/githubConnection";
 import HomeContainer from "../components/HomeContainer";
 
 /**

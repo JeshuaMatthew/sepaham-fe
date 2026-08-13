@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import gsap from "gsap";
-import type { Internship } from "../../types/ai";
+import type { Internship } from "@/features/home/types/ai";
 import StackBadge from "./StackBadge";
-import { BriefcaseIcon, PinIcon } from "../icons";
+import { BriefcaseIcon, PinIcon } from "@/shared/icons";
 
 interface InternshipCardProps {
   internship: Internship;
@@ -55,7 +55,7 @@ function InternshipCard({ internship }: InternshipCardProps) {
       </div>
 
       <div className="flex flex-wrap gap-1.5">
-        {internship.tags.map((tag) => (
+        {internship.tags.map((tag: string) => (
           <StackBadge key={tag} tech={tag} />
         ))}
       </div>

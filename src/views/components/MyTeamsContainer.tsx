@@ -1,6 +1,6 @@
-import type { ApplicantStatus } from "../../types/collab";
-import type { MyTeam } from "../../utils/myTeamsStore";
-import { ArrowLeftIcon, CheckIcon, CloseIcon, LinkIcon, UsersIcon } from "../icons";
+import type { ApplicantStatus } from "@/features/collab/types/collab";
+import type { MyTeam } from "@/features/collab/utils/myTeamsStore";
+import { ArrowLeftIcon, CheckIcon, CloseIcon, LinkIcon, UsersIcon } from "@/shared/icons";
 
 interface MyTeamsContainerProps {
   teams: MyTeam[];

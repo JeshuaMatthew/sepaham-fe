@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import type { FacultyStudent } from "../../types/student";
-import { AlertIcon, ArrowLeftIcon, DocIcon, CloseIcon, UsersIcon } from "../icons";
+import type { FacultyStudent } from "@/features/faculty/types/student";
+import { AlertIcon, ArrowLeftIcon, DocIcon, CloseIcon, UsersIcon } from "@/shared/icons";
 
 interface StudentRow {
   student: FacultyStudent;

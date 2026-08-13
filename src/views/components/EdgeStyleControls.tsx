@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ArrowRightIcon, StarIcon } from "../icons";
+import { ArrowRightIcon, StarIcon } from "@/shared/icons";
 
 interface EdgeStyleControlsProps {
   dashed: boolean;

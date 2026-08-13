@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import gsap from "gsap";
-import type { NewCollabInput } from "../../types/collab";
-import { CloseIcon, ImageIcon } from "../icons";
+import type { NewCollabInput } from "@/features/collab/types/collab";
+import { CloseIcon, ImageIcon } from "@/shared/icons";
 
 interface CreateRequestModalProps {
   /** komunitas yang sudah ada untuk dipilih. */

@@ -1,7 +1,7 @@
 import type { ChangeEvent, ComponentType } from "react";
-import type { CareerMatch } from "../../services/careerService";
-import type { CareerProfile } from "../../types/career";
-import type { InternshipContact } from "../../types/internship";
+import type { CareerMatch } from "@/features/career/services/careerService";
+import type { CareerProfile } from "@/features/career/types/career";
+import type { InternshipContact } from "@/features/career/types/internship";
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -13,7 +13,7 @@ import {
   PinIcon,
   SparkleIcon,
   UsersIcon,
-} from "../icons";
+} from "@/shared/icons";
 
 interface CareerContainerProps {
   topMatches: CareerMatch[];

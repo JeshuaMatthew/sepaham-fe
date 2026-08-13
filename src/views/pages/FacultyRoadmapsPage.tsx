@@ -7,9 +7,9 @@ import {
   resetRoadmapCatalog,
   saveRoadmapCatalog,
   saveRoadmapTree,
-} from "../../services/roadmapService";
-import type { RoadmapSummary } from "../../types/roadmap";
-import { getAccount } from "../../utils/account";
+} from "@/features/roadmap/services/roadmapService";
+import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
+import { getAccount } from "@/features/auth/utils/account";
 import FacultyRoadmapsContainer from "../components/FacultyRoadmapsContainer";
 
 /**

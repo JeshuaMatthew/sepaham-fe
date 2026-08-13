@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import type { CollabRequest } from "../../types/collab";
-import { AlertIcon, ArrowLeftIcon, UsersIcon } from "../icons";
+import type { CollabRequest } from "@/features/collab/types/collab";
+import { AlertIcon, ArrowLeftIcon, UsersIcon } from "@/shared/icons";
 
 interface FacultyRequestsContainerProps {
   requests: CollabRequest[];

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { RoadmapSummary } from "../../types/roadmap";
+import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
 import RoadmapEditorCard from "./RoadmapEditorCard";
-import { AlertIcon, ArrowLeftIcon, MapIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, MapIcon } from "@/shared/icons";
 
 interface FacultyRoadmapsContainerProps {
   roadmaps: RoadmapSummary[];

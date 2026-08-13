@@ -1,11 +1,11 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { LikertQuestion } from "../types/onboarding";
+import AxiosInstance from "@/lib/axios";
+import type { LikertQuestion } from "@/features/onboarding/types/onboarding";
 import {
   QUESTIONS_KEY,
   readOverride,
   removeOverride,
   writeOverride,
-} from "../utils/contentStore";
+} from "@/features/roadmap/utils/contentStore";
 
 /**
  * Service Onboarding (kuesioner Likert).

@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import gsap from "gsap";
-import type { CollabRequest } from "../../types/collab";
+import type { CollabRequest } from "@/features/collab/types/collab";
 import StackBadge from "./StackBadge";
-import { ArrowRightIcon, UsersIcon } from "../icons";
+import { ArrowRightIcon, UsersIcon } from "@/shared/icons";
 
 interface HomeCollabCardProps {
   request: CollabRequest;

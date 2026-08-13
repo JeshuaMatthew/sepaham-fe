@@ -7,15 +7,15 @@ import {
   fetchBadges,
   fetchProfile,
   updateProfile,
-} from "../../services/profileService";
+} from "@/features/profile/services/profileService";
 import {
   GITHUB_QUERY_KEY,
   fetchGithubStats,
-} from "../../services/githubService";
-import type { Profile } from "../../types/profile";
-import { clearAccount } from "../../utils/account";
-import { isGithubConnected, setGithubConnected } from "../../utils/githubConnection";
-import { connectGithub } from "../../services/githubService";
+} from "@/features/profile/services/githubService";
+import type { Profile } from "@/features/profile/types/profile";
+import { clearAccount } from "@/features/auth/utils/account";
+import { isGithubConnected, setGithubConnected } from "@/features/profile/utils/githubConnection";
+import { connectGithub } from "@/features/profile/services/githubService";
 import DevCardContainer from "../components/DevCardContainer";
 
 /**

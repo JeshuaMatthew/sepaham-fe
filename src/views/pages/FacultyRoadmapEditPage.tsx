@@ -8,9 +8,9 @@ import {
   roadmapTreeQueryKey,
   saveRoadmapCatalog,
   saveRoadmapTree,
-} from "../../services/roadmapService";
-import type { Roadmap, RoadmapSummary } from "../../types/roadmap";
-import { getRoadmapEdges } from "../../utils/roadmapGraph";
+} from "@/features/roadmap/services/roadmapService";
+import type { Roadmap, RoadmapSummary } from "@/features/roadmap/types/roadmap";
+import { getRoadmapEdges } from "@/features/roadmap/utils/roadmapGraph";
 import FacultyRoadmapEditContainer from "../components/FacultyRoadmapEditContainer";
 
 /**

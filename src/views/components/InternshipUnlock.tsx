@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { InternshipContact } from "../../types/internship";
+import type { InternshipContact } from "@/features/career/types/internship";
 import InternshipContactCard from "./InternshipContactCard";
 import InternshipContactCardSkeleton from "./InternshipContactCardSkeleton";
-import { LockIcon, PartyIcon } from "../icons";
+import { LockIcon, PartyIcon } from "@/shared/icons";
 
 interface InternshipUnlockProps {
   contacts: InternshipContact[];

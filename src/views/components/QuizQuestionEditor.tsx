@@ -1,5 +1,5 @@
-import type { QuizQuestion } from "../../types/roadmap";
-import { CloseIcon } from "../icons";
+import type { QuizQuestion } from "@/features/roadmap/types/roadmap";
+import { CloseIcon } from "@/shared/icons";
 
 interface QuizQuestionEditorProps {
   question: QuizQuestion;

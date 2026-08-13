@@ -1,12 +1,12 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { Roadmap, RoadmapSummary, SubmissionState } from "../types/roadmap";
+import AxiosInstance from "@/lib/axios";
+import type { Roadmap, RoadmapSummary, SubmissionState } from "@/features/roadmap/types/roadmap";
 import {
   CATALOG_KEY,
   readOverride,
   removeOverride,
   treeKey,
   writeOverride,
-} from "../utils/contentStore";
+} from "@/features/roadmap/utils/contentStore";
 
 /**
  * Service Roadmap (multi-roadmap, bisa diedit dosen).

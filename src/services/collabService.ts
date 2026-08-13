@@ -1,11 +1,11 @@
-import AxiosInstance from "../utils/Axiosinstance";
+import AxiosInstance from "@/lib/axios";
 import type {
   ApplicantStatus,
   CollabApplicant,
   CollabRequest,
   NewCollabInput,
-} from "../types/collab";
-import type { MyTeam } from "../utils/myTeamsStore";
+} from "@/features/collab/types/collab";
+import type { MyTeam } from "@/features/collab/utils/myTeamsStore";
 
 /**
  * Service "Cari Tim" (backend Axum, /api/collab/*).

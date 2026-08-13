@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ApplicantStatus } from "../../types/collab";
+import type { ApplicantStatus } from "@/features/collab/types/collab";
 import {
   MY_TEAMS_QUERY_KEY,
   fetchMyTeams,
   setApplicantStatus,
-} from "../../services/collabService";
+} from "@/features/collab/services/collabService";
 import MyTeamsContainer from "../components/MyTeamsContainer";
 
 /**

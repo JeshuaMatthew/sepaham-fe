@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { ChatMessage, SendPayload } from "../../types/chat";
+import type { ChatMessage, SendPayload } from "@/features/chat/types/chat";
 import MessageItem from "./MessageItem";
 import MessageComposer from "./MessageComposer";
-import { CloseIcon } from "../icons";
+import { CloseIcon } from "@/shared/icons";
 
 interface ThreadPanelProps {
   message: ChatMessage;

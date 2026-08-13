@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { GithubNudge } from "../../types/ai";
-import { ArrowRightIcon, FireIcon } from "../icons";
+import type { GithubNudge } from "@/features/home/types/ai";
+import { ArrowRightIcon, FireIcon } from "@/shared/icons";
 
 interface GithubNudgeCardProps {
   nudge: GithubNudge;

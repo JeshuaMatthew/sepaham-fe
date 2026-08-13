@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import type { Server } from "../../types/chat";
-import { AlertIcon, ArrowLeftIcon, ChatIcon, LockIcon } from "../icons";
+import type { Server } from "@/features/chat/types/chat";
+import { AlertIcon, ArrowLeftIcon, ChatIcon, LockIcon } from "@/shared/icons";
 
 interface FacultyGroupsContainerProps {
   groups: Server[];

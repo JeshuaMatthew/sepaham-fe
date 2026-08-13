@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { LanguageStat } from "../../types/github";
+import type { LanguageStat } from "@/features/profile/types/github";
 
 interface LanguageChartProps {
   languages: LanguageStat[];

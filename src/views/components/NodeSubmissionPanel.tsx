@@ -3,9 +3,9 @@ import type {
   NodeSubmission,
   SubmissionPayload,
   SubmissionState,
-} from "../../types/roadmap";
-import { DEFAULT_PASSING_SCORE } from "../../utils/nodeContent";
-import { ArrowRightIcon, AttachIcon, CheckIcon } from "../icons";
+} from "@/features/roadmap/types/roadmap";
+import { DEFAULT_PASSING_SCORE } from "@/features/roadmap/utils/nodeContent";
+import { ArrowRightIcon, AttachIcon, CheckIcon } from "@/shared/icons";
 
 interface NodeSubmissionPanelProps {
   submission: NodeSubmission;

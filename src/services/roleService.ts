@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { Role, RoleRecommendation } from "../types/role";
+import AxiosInstance from "@/lib/axios";
+import type { Role, RoleRecommendation } from "@/features/onboarding/types/role";
 
 /**
  * Service Role IT (backend Axum: GET /api/roles).

@@ -1,6 +1,6 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { Server } from "../types/chat";
-import type { CollabRequest } from "../types/collab";
+import AxiosInstance from "@/lib/axios";
+import type { Server } from "@/features/chat/types/chat";
+import type { CollabRequest } from "@/features/collab/types/collab";
 
 /**
  * Moderasi dosen (backend Axum, /api/faculty/*): ban community & tutup request,

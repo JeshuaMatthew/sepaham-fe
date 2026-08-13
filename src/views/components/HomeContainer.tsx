@@ -1,5 +1,5 @@
-import type { AiFeed } from "../../types/ai";
-import type { CollabRequest } from "../../types/collab";
+import type { AiFeed, Internship } from "@/features/home/types/ai";
+import type { CollabRequest } from "@/features/collab/types/collab";
 import type { RoadmapHeroData } from "./HomeRoadmapHero";
 import HomeRoadmapHero from "./HomeRoadmapHero";
 import HomeRoadmapHeroSkeleton from "./HomeRoadmapHeroSkeleton";
@@ -11,7 +11,7 @@ import InternshipCard from "./InternshipCard";
 import InternshipCardSkeleton from "./InternshipCardSkeleton";
 import HomeCollabCard from "./HomeCollabCard";
 import HomeCollabCardSkeleton from "./HomeCollabCardSkeleton";
-import { AlertIcon, ChatIcon, CompassIcon, SmileIcon, TargetIcon, UsersIcon } from "../icons";
+import { AlertIcon, ChatIcon, CompassIcon, SmileIcon, TargetIcon, UsersIcon } from "@/shared/icons";
 
 interface HomeContainerProps {
   userName: string;
@@ -130,7 +130,7 @@ function HomeContainer({
             </div>
             <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2">
               {ready
-                ? feed.internships.map((internship) => (
+                ? feed.internships.map((internship: Internship) => (
                     <div key={internship.id} className="border-r border-b border-line">
                       <InternshipCard internship={internship} />
                     </div>

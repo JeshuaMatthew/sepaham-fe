@@ -1,10 +1,10 @@
-import type { NodeStatus, Roadmap } from "../../types/roadmap";
-import type { InternshipContact } from "../../types/internship";
+import type { NodeStatus, Roadmap } from "@/features/roadmap/types/roadmap";
+import type { InternshipContact } from "@/features/career/types/internship";
 import ProgressBar from "./ProgressBar";
 import RoadmapFlow from "./RoadmapFlow";
 import RoadmapTreeSkeleton from "./RoadmapTreeSkeleton";
 import InternshipUnlock from "./InternshipUnlock";
-import { AlertIcon, ArrowLeftIcon, UserIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, UserIcon } from "@/shared/icons";
 
 interface RoadmapContainerProps {
   roadmap: Roadmap | null;

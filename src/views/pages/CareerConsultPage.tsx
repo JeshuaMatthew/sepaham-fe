@@ -5,20 +5,20 @@ import {
   fetchRoadmapCatalog,
   fetchRoadmapTree,
   roadmapTreeQueryKey,
-} from "../../services/roadmapService";
-import { GITHUB_QUERY_KEY, fetchGithubStats } from "../../services/githubService";
+} from "@/features/roadmap/services/roadmapService";
+import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
 import {
   CAREER_SUGGESTIONS,
   answerCareerQuestion,
   buildCareerProfile,
-} from "../../services/careerService";
-import type { CareerMessage } from "../../types/career";
-import { getPreference } from "../../utils/preference";
-import { getSubmissions } from "../../utils/submissionStore";
-import { computeStatuses } from "../../utils/roadmapGraph";
-import { getStoredCommunities } from "../../utils/communityStore";
-import { getCv } from "../../utils/cv";
-import { isGithubConnected } from "../../utils/githubConnection";
+} from "@/features/career/services/careerService";
+import type { CareerMessage } from "@/features/career/types/career";
+import { getPreference } from "@/features/onboarding/utils/preference";
+import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
+import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
+import { getStoredCommunities } from "@/features/chat/utils/communityStore";
+import { getCv } from "@/features/profile/utils/cv";
+import { isGithubConnected } from "@/features/profile/utils/githubConnection";
 import CareerConsultContainer from "../components/CareerConsultContainer";
 
 /**

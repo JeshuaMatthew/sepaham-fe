@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { DevQuote } from "../../types/ai";
+import type { DevQuote } from "@/features/home/types/ai";
 
 interface QuoteCardProps {
   quotes: DevQuote[];

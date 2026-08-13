@@ -1,7 +1,7 @@
 import { useGsapHover } from "../../hooks/useGsapHover";
-import type { RoadmapSummary } from "../../types/roadmap";
+import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
 import ProgressBar from "./ProgressBar";
-import { ArrowRightIcon, MapIcon } from "../icons";
+import { ArrowRightIcon, MapIcon } from "@/shared/icons";
 
 interface RoadmapContinueCardProps {
   roadmap: RoadmapSummary;

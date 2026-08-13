@@ -1,5 +1,5 @@
-import type { CareerProfile, CareerSource } from "../types/career";
-import type { Role } from "../types/role";
+import type { CareerProfile, CareerSource } from "@/features/career/types/career";
+import type { Role } from "@/features/onboarding/types/role";
 
 export interface CareerMatch {
   role: Role;

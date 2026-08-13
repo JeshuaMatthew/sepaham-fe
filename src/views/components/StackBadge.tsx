@@ -1,4 +1,4 @@
-import { techIcon } from "../techIcons";
+import { techIcon } from "@/shared/techIcons";
 
 interface StackBadgeProps {
   tech: string;

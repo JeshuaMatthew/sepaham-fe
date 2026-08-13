@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { Profile } from "../../types/profile";
-import { CalendarIcon, GradIcon, PinIcon } from "../icons";
+import type { Profile } from "@/features/profile/types/profile";
+import { CalendarIcon, GradIcon, PinIcon } from "@/shared/icons";
 
 interface ProfileHeaderProps {
   profile: Profile;

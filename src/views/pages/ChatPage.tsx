@@ -12,8 +12,8 @@ import {
   messagesQueryKey,
   sendChannelMessage,
   sendDmMessage,
-} from "../../services/chatService";
-import { PROFILE_QUERY_KEY, fetchProfile } from "../../services/profileService";
+} from "@/features/chat/services/chatService";
+import { PROFILE_QUERY_KEY, fetchProfile } from "@/features/profile/services/profileService";
 import type {
   ActiveCall,
   ActiveView,
@@ -21,14 +21,14 @@ import type {
   ChatMessage,
   DirectConversation,
   SendPayload,
-} from "../../types/chat";
+} from "@/features/chat/types/chat";
 import {
   MY_COMMUNITIES_QUERY_KEY,
   fetchMyCommunities,
   joinCommunity,
-} from "../../services/communityService";
-import { getToken } from "../../utils/authToken";
-import { fetchCallToken } from "../../services/callService";
+} from "@/features/chat/services/communityService";
+import { getToken } from "@/features/auth/utils/authToken";
+import { fetchCallToken } from "@/features/chat/services/callService";
 import ChatContainer from "../components/ChatContainer";
 
 /** Sisipkan pesan channel dari event WS ke cache (dedup by id). */

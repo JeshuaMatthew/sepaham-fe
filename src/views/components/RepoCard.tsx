@@ -1,6 +1,6 @@
 import { useGsapHover } from "../../hooks/useGsapHover";
-import type { Repo } from "../../types/github";
-import { ForkIcon, PackageIcon, StarIcon } from "../icons";
+import type { Repo } from "@/features/profile/types/github";
+import { ForkIcon, PackageIcon, StarIcon } from "@/shared/icons";
 
 interface RepoCardProps {
   repo: Repo;

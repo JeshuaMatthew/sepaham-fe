@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { GithubStats } from "../types/github";
+import AxiosInstance from "@/lib/axios";
+import type { GithubStats } from "@/features/profile/types/github";
 
 /**
  * Service GitHub Dev-Card (backend Axum: GET/POST /api/github).

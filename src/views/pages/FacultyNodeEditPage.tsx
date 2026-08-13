@@ -5,8 +5,8 @@ import {
   fetchRoadmapTree,
   roadmapTreeQueryKey,
   saveRoadmapTree,
-} from "../../services/roadmapService";
-import type { NodeSubmission } from "../../types/roadmap";
+} from "@/features/roadmap/services/roadmapService";
+import type { NodeSubmission } from "@/features/roadmap/types/roadmap";
 import FacultyNodeEditContainer from "../components/FacultyNodeEditContainer";
 
 /**

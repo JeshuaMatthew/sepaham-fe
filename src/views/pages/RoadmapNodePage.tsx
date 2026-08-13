@@ -6,12 +6,12 @@ import {
   pushActivity,
   pushSubmission,
   roadmapTreeQueryKey,
-} from "../../services/roadmapService";
-import type { SubmissionPayload, SubmissionState } from "../../types/roadmap";
-import { evaluateSubmission, nodeArticle, nodeSubmission } from "../../utils/nodeContent";
-import { computeStatuses } from "../../utils/roadmapGraph";
-import { getSubmissions, saveSubmission } from "../../utils/submissionStore";
-import { markRoadmapActive } from "../../utils/roadmapActivity";
+} from "@/features/roadmap/services/roadmapService";
+import type { SubmissionPayload, SubmissionState } from "@/features/roadmap/types/roadmap";
+import { evaluateSubmission, nodeArticle, nodeSubmission } from "@/features/roadmap/utils/nodeContent";
+import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
+import { getSubmissions, saveSubmission } from "@/features/roadmap/utils/submissionStore";
+import { markRoadmapActive } from "@/features/roadmap/utils/roadmapActivity";
 import RoadmapNodeContainer from "../components/RoadmapNodeContainer";
 
 /**

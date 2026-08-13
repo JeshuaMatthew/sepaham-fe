@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import gsap from "gsap";
-import type { Badge } from "../../types/profile";
-import { AwardIcon, LockIcon } from "../icons";
+import type { Badge } from "@/features/profile/types/profile";
+import { AwardIcon, LockIcon } from "@/shared/icons";
 
 interface BadgeItemProps {
   badge: Badge;

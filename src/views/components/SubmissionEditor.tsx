@@ -1,4 +1,4 @@
-import type { NodeSubmission, QuizQuestion, SubmissionType } from "../../types/roadmap";
+import type { NodeSubmission, QuizQuestion, SubmissionType } from "@/features/roadmap/types/roadmap";
 import QuizQuestionEditor from "./QuizQuestionEditor";
 
 interface SubmissionEditorProps {

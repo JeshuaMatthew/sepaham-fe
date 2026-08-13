@@ -7,14 +7,14 @@ import type {
   DirectConversation,
   SendPayload,
   Server,
-} from "../../types/chat";
+} from "@/features/chat/types/chat";
 import ServerRail from "./ServerRail";
 import ServerRailSkeleton from "./ServerRailSkeleton";
 import ChannelSidebar from "./ChannelSidebar";
 import ChannelSidebarSkeleton from "./ChannelSidebarSkeleton";
 import MessageList from "./MessageList";
 import MessageListSkeleton from "./MessageListSkeleton";
-import { AlertIcon, CheckIcon, CloseIcon, MaskIcon, PhoneIcon, VideoIcon } from "../icons";
+import { AlertIcon, CheckIcon, CloseIcon, MaskIcon, PhoneIcon, VideoIcon } from "@/shared/icons";
 import MessageComposer from "./MessageComposer";
 import ThreadPanel from "./ThreadPanel";
 import CallPanel from "./CallPanel";

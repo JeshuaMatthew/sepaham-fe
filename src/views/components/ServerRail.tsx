@@ -1,4 +1,4 @@
-import type { Server } from "../../types/chat";
+import type { Server } from "@/features/chat/types/chat";
 
 interface ServerRailProps {
   servers: Server[];

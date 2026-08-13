@@ -1,7 +1,7 @@
 import { useGsapHover } from "../../hooks/useGsapHover";
-import type { RoadmapSummary } from "../../types/roadmap";
+import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
 import ProgressBar from "./ProgressBar";
-import { ChartIcon, MapIcon, SkillIcon, StarIcon, UserIcon } from "../icons";
+import { ChartIcon, MapIcon, SkillIcon, StarIcon, UserIcon } from "@/shared/icons";
 
 interface RoadmapCatalogCardProps {
   roadmap: RoadmapSummary;

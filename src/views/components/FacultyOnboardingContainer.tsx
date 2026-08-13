@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { LikertQuestion } from "../../types/onboarding";
+import type { LikertQuestion } from "@/features/onboarding/types/onboarding";
 import QuestionEditorRow from "./QuestionEditorRow";
-import { AlertIcon, ArrowLeftIcon, DocIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, DocIcon } from "@/shared/icons";
 
 interface FacultyOnboardingContainerProps {
   questions: LikertQuestion[];

@@ -7,21 +7,21 @@ import {
   fetchRoadmapCatalog,
   fetchRoadmapTree,
   roadmapTreeQueryKey,
-} from "../../services/roadmapService";
-import { GITHUB_QUERY_KEY, fetchGithubStats } from "../../services/githubService";
-import { ROLES_QUERY_KEY, fetchRoles } from "../../services/roleService";
+} from "@/features/roadmap/services/roadmapService";
+import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
+import { ROLES_QUERY_KEY, fetchRoles } from "@/features/onboarding/services/roleService";
 import {
   INTERNSHIP_CONTACTS_QUERY_KEY,
   fetchInternshipContacts,
-} from "../../services/internshipService";
-import { buildCareerProfile, topCareers } from "../../services/careerService";
-import { getPreference } from "../../utils/preference";
-import { getSubmissions } from "../../utils/submissionStore";
-import { computeStatuses } from "../../utils/roadmapGraph";
-import { getStoredCommunities } from "../../utils/communityStore";
-import { getCv, saveCv } from "../../utils/cv";
-import { isGithubConnected, setGithubConnected } from "../../utils/githubConnection";
-import { connectGithub } from "../../services/githubService";
+} from "@/features/career/services/internshipService";
+import { buildCareerProfile, topCareers } from "@/features/career/services/careerService";
+import { getPreference } from "@/features/onboarding/utils/preference";
+import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
+import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
+import { getStoredCommunities } from "@/features/chat/utils/communityStore";
+import { getCv, saveCv } from "@/features/profile/utils/cv";
+import { isGithubConnected, setGithubConnected } from "@/features/profile/utils/githubConnection";
+import { connectGithub } from "@/features/profile/services/githubService";
 import CareerContainer from "../components/CareerContainer";
 
 /**

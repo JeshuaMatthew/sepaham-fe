@@ -1,4 +1,4 @@
-import { EditIcon, GithubIcon, LogoutIcon } from "../icons";
+import { EditIcon, GithubIcon, LogoutIcon } from "@/shared/icons";
 
 interface ProfileActionsProps {
   githubConnected: boolean;

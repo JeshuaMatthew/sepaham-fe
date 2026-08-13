@@ -1,5 +1,5 @@
-import type { ActiveView, Channel, DirectConversation } from "../../types/chat";
-import { MaskIcon } from "../icons";
+import type { ActiveView, Channel, DirectConversation } from "@/features/chat/types/chat";
+import { MaskIcon } from "@/shared/icons";
 
 interface ChannelSidebarProps {
   serverName: string;

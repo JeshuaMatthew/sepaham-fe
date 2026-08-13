@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { Roadmap } from "../../types/roadmap";
+import type { Roadmap } from "@/features/roadmap/types/roadmap";
 import RoadmapFlowEditor from "./RoadmapFlowEditor";
-import { AlertIcon, ArrowLeftIcon, EditIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, EditIcon } from "@/shared/icons";
 
 interface FacultyRoadmapEditContainerProps {
   initialRoadmap: Roadmap | null;

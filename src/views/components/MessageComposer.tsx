@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { KeyboardEvent } from "react";
-import type { Attachment, SendPayload } from "../../types/chat";
-import { AttachIcon, CloseIcon, CodeIcon, ImageIcon, MaskIcon } from "../icons";
+import type { Attachment, SendPayload } from "@/features/chat/types/chat";
+import { AttachIcon, CloseIcon, CodeIcon, ImageIcon, MaskIcon } from "@/shared/icons";
 
 interface MessageComposerProps {
   placeholder: string;

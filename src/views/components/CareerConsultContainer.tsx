@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import type { CareerMessage, CareerProfile } from "../../types/career";
-import { ArrowLeftIcon, ArrowRightIcon, SparkleIcon } from "../icons";
+import type { CareerMessage, CareerProfile } from "@/features/career/types/career";
+import { ArrowLeftIcon, ArrowRightIcon, SparkleIcon } from "@/shared/icons";
 
 interface CareerConsultContainerProps {
   profile: CareerProfile | null;

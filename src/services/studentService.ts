@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { FacultyStudent } from "../types/student";
+import AxiosInstance from "@/lib/axios";
+import type { FacultyStudent } from "@/features/faculty/types/student";
 
 /**
  * Daftar mahasiswa untuk dashboard dosen (backend Axum: GET /api/faculty/students).

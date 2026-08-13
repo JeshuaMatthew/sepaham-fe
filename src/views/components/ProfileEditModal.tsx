@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type { Profile } from "../../types/profile";
-import { CloseIcon } from "../icons";
+import type { Profile } from "@/features/profile/types/profile";
+import { CloseIcon } from "@/shared/icons";
 
 interface ProfileEditModalProps {
   profile: Profile;

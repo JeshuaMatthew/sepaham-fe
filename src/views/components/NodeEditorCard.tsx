@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
-import type { NodeSubmission, RoadmapNode } from "../../types/roadmap";
+import type { NodeSubmission, RoadmapNode } from "@/features/roadmap/types/roadmap";
 import SubmissionEditor from "./SubmissionEditor";
-import { DocIcon, ImageIcon, LockIcon, SkillIcon, StarIcon } from "../icons";
+import { DocIcon, ImageIcon, LockIcon, SkillIcon, StarIcon } from "@/shared/icons";
 
 interface NodeEditorCardProps {
   node: RoadmapNode;

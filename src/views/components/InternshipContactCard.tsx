@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import gsap from "gsap";
-import type { InternshipContact } from "../../types/internship";
-import { BriefcaseIcon, DmIcon, LinkIcon, MailIcon, PinIcon, UserIcon } from "../icons";
+import type { InternshipContact } from "@/features/career/types/internship";
+import { BriefcaseIcon, DmIcon, LinkIcon, MailIcon, PinIcon, UserIcon } from "@/shared/icons";
 
 interface InternshipContactCardProps {
   contact: InternshipContact;

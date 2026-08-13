@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { ChatMessage } from "../../types/chat";
+import type { ChatMessage } from "@/features/chat/types/chat";
 import MessageItem from "./MessageItem";
-import { SmileIcon } from "../icons";
+import { SmileIcon } from "@/shared/icons";
 
 interface MessageListProps {
   messages: ChatMessage[];

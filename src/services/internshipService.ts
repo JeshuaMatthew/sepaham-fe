@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { InternshipContact } from "../types/internship";
+import AxiosInstance from "@/lib/axios";
+import type { InternshipContact } from "@/features/career/types/internship";
 
 /**
  * Service kontak magang (backend Axum: GET /api/internships/contacts).

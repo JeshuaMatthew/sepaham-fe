@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { StoredCommunity } from "../utils/communityStore";
+import AxiosInstance from "@/lib/axios";
+import type { StoredCommunity } from "@/features/chat/utils/communityStore";
 
 /**
  * Service komunitas (backend Axum, /api/community/*): komunitas milik user,

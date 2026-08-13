@@ -1,6 +1,6 @@
-import type { ChatMessage } from "../../types/chat";
+import type { ChatMessage } from "@/features/chat/types/chat";
 import CodeBlock from "./CodeBlock";
-import { ChatIcon, FileIcon, ImageIcon, MaskIcon } from "../icons";
+import { ChatIcon, FileIcon, ImageIcon, MaskIcon } from "@/shared/icons";
 
 interface MessageItemProps {
   message: ChatMessage;

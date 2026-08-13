@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import type { NodeSubmission } from "../../types/roadmap";
+import type { NodeSubmission } from "@/features/roadmap/types/roadmap";
 import MarkdownView from "./MarkdownView";
 import SubmissionEditor from "./SubmissionEditor";
-import { AlertIcon, ArrowLeftIcon, DocIcon, EditIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, DocIcon, EditIcon } from "@/shared/icons";
 
 interface FacultyNodeEditContainerProps {
   roadmapId: string;

@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRightIcon, ChatIcon, DocIcon, GradIcon, MapIcon, TargetIcon, UsersIcon } from "../icons";
+import { ArrowRightIcon, ChatIcon, DocIcon, GradIcon, MapIcon, TargetIcon, UsersIcon } from "@/shared/icons";
 
 const CARDS: {
   to: string;

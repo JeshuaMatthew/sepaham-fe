@@ -1,6 +1,6 @@
-import type { QuizQuestion, Roadmap, RoadmapNode } from "../../types/roadmap";
+import type { QuizQuestion, Roadmap, RoadmapNode } from "@/features/roadmap/types/roadmap";
 import QuizRunner from "./QuizRunner";
-import { AlertIcon, ArrowLeftIcon, QuizIcon } from "../icons";
+import { AlertIcon, ArrowLeftIcon, QuizIcon } from "@/shared/icons";
 
 interface RoadmapQuizContainerProps {
   roadmap: Roadmap | null;

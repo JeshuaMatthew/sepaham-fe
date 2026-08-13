@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Track } from "livekit-client";
 import type { LocalTrackPublication, Room } from "livekit-client";
-import type { PlaylistTrack } from "../../types/music";
+import type { PlaylistTrack } from "@/features/chat/types/music";
 import {
   MusicIcon,
   NextIcon,
@@ -13,7 +13,7 @@ import {
   TrashIcon,
   UploadIcon,
   VolumeIcon,
-} from "../icons";
+} from "@/shared/icons";
 
 interface CallMusicPlayerProps {
   /** Room LiveKit — dipakai untuk menyiarkan musik ke semua peserta. */

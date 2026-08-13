@@ -1,5 +1,5 @@
-import type { Badge, Profile } from "../../types/profile";
-import type { GithubStats } from "../../types/github";
+import type { Badge, Profile } from "@/features/profile/types/profile";
+import type { GithubStats } from "@/features/profile/types/github";
 import ProfileHeader from "./ProfileHeader";
 import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
 import ProfileActions from "./ProfileActions";
@@ -12,7 +12,7 @@ import CommitStreakSkeleton from "./CommitStreakSkeleton";
 import RepoCard from "./RepoCard";
 import RepoCardSkeleton from "./RepoCardSkeleton";
 import BadgeItem from "./BadgeItem";
-import { AlertIcon } from "../icons";
+import { AlertIcon } from "@/shared/icons";
 import BadgeItemSkeleton from "./BadgeItemSkeleton";
 
 interface DevCardContainerProps {

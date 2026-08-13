@@ -1,15 +1,15 @@
 import axios from "axios";
-import AxiosInstance from "../utils/Axiosinstance";
-import { saveAccount, type AccountRole } from "../utils/account";
-import { setToken } from "../utils/authToken";
-import { savePreference } from "../utils/preference";
+import AxiosInstance from "@/lib/axios";
+import { saveAccount, type AccountRole } from "@/features/auth/utils/account";
+import { setToken } from "@/features/auth/utils/authToken";
+import { savePreference } from "@/features/onboarding/utils/preference";
 import { fetchPreference } from "./preferenceService";
 import type {
   AuthCredentials,
   AuthMode,
   AuthProvider,
   AuthSession,
-} from "../types/auth";
+} from "@/features/auth/types/auth";
 
 /**
  * Service Autentikasi.

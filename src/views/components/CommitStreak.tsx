@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { GithubSummary } from "../../types/github";
-import { FireIcon } from "../icons";
+import type { GithubSummary } from "@/features/profile/types/github";
+import { FireIcon } from "@/shared/icons";
 
 interface CommitStreakProps {
   weeks: number[][];

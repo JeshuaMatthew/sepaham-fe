@@ -1,5 +1,5 @@
 import type { NodeProps } from "@xyflow/react";
-import type { RoadmapStyle } from "../../types/roadmap";
+import type { RoadmapStyle } from "@/features/roadmap/types/roadmap";
 
 /** Backdrop area untuk sekelompok node roadmap (lihat computeGroupBoxes). */
 function GroupBoxNode({ data }: NodeProps) {

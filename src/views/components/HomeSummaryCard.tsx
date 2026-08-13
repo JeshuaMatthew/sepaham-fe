@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { ArrowRightIcon } from "../icons";
+import { ArrowRightIcon } from "@/shared/icons";
 
 interface HomeSummaryCardProps {
   icon: ComponentType<{ className?: string }>;

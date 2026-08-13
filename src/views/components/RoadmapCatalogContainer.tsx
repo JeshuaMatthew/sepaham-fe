@@ -1,5 +1,5 @@
-import type { RoadmapSummary } from "../../types/roadmap";
-import { AlertIcon } from "../icons";
+import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
+import { AlertIcon } from "@/shared/icons";
 import RoadmapCatalogCard from "./RoadmapCatalogCard";
 import RoadmapCatalogCardSkeleton from "./RoadmapCatalogCardSkeleton";
 import RoadmapContinueCard from "./RoadmapContinueCard";

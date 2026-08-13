@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { Preference } from "../utils/preference";
+import AxiosInstance from "@/lib/axios";
+import type { Preference } from "@/features/onboarding/utils/preference";
 
 /**
  * Sinkronisasi preferensi onboarding (hasil kuesioner) dengan backend Axum.

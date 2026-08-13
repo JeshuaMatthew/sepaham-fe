@@ -1,11 +1,11 @@
-import AxiosInstance from "../utils/Axiosinstance";
+import AxiosInstance from "@/lib/axios";
 import type {
   Channel,
   ChatMessage,
   DirectConversation,
   SendPayload,
   Server,
-} from "../types/chat";
+} from "@/features/chat/types/chat";
 
 /**
  * Service Komunikasi & Komunitas (backend Axum).

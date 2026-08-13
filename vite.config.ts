@@ -12,4 +12,9 @@ export default defineConfig({
     // Tailwind v4 sebagai plugin Vite tersendiri — BUKAN babel preset.
     tailwindcss(),
   ],
+  resolve: {
+    alias: {
+      '@': import.meta.dirname + '/src',
+    },
+  },
 })

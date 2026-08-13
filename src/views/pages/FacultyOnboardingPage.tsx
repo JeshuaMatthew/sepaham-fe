@@ -5,8 +5,8 @@ import {
   fetchOnboardingQuestions,
   resetOnboardingQuestions,
   saveOnboardingQuestions,
-} from "../../services/onboardingService";
-import type { LikertQuestion } from "../../types/onboarding";
+} from "@/features/onboarding/services/onboardingService";
+import type { LikertQuestion } from "@/features/onboarding/types/onboarding";
 import FacultyOnboardingContainer from "../components/FacultyOnboardingContainer";
 
 /**

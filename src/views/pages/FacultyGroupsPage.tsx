@@ -3,7 +3,7 @@ import {
   MOD_SERVERS_QUERY_KEY,
   fetchModServers,
   toggleBanServer,
-} from "../../services/facultyService";
+} from "@/features/faculty/services/facultyService";
 import FacultyGroupsContainer from "../components/FacultyGroupsContainer";
 
 /**

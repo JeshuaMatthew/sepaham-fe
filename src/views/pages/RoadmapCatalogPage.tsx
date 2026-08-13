@@ -3,11 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ROADMAP_CATALOG_QUERY_KEY,
   fetchRoadmapCatalog,
-} from "../../services/roadmapService";
-import type { RoadmapSummary } from "../../types/roadmap";
-import { getPreference } from "../../utils/preference";
-import { getSubmissions } from "../../utils/submissionStore";
-import { getRoadmapActivity } from "../../utils/roadmapActivity";
+} from "@/features/roadmap/services/roadmapService";
+import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
+import { getPreference } from "@/features/onboarding/utils/preference";
+import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
+import { getRoadmapActivity } from "@/features/roadmap/utils/roadmapActivity";
 import RoadmapCatalogContainer from "../components/RoadmapCatalogContainer";
 
 /**

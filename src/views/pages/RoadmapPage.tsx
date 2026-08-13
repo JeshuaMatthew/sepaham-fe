@@ -6,16 +6,16 @@ import {
   fetchSubmissions,
   pushActivity,
   roadmapTreeQueryKey,
-} from "../../services/roadmapService";
+} from "@/features/roadmap/services/roadmapService";
 import {
   INTERNSHIP_CONTACTS_QUERY_KEY,
   INTERNSHIP_UNLOCK_PERCENT,
   fetchInternshipContacts,
-} from "../../services/internshipService";
-import type { SubmissionState } from "../../types/roadmap";
-import { computeStatuses } from "../../utils/roadmapGraph";
-import { getSubmissions, saveSubmission } from "../../utils/submissionStore";
-import { markRoadmapActive } from "../../utils/roadmapActivity";
+} from "@/features/career/services/internshipService";
+import type { SubmissionState } from "@/features/roadmap/types/roadmap";
+import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
+import { getSubmissions, saveSubmission } from "@/features/roadmap/utils/submissionStore";
+import { markRoadmapActive } from "@/features/roadmap/utils/roadmapActivity";
 import RoadmapContainer from "../components/RoadmapContainer";
 
 /**

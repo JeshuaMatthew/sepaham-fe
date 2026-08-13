@@ -1,5 +1,5 @@
-import AxiosInstance from "../utils/Axiosinstance";
-import type { AiFeed } from "../types/ai";
+import AxiosInstance from "@/lib/axios";
+import type { AiFeed } from "@/features/home/types/ai";
 
 /**
  * Service AI & Reminder (backend Axum: GET /api/ai/feed).

@@ -6,15 +6,15 @@ import {
   pushActivity,
   pushSubmission,
   roadmapTreeQueryKey,
-} from "../../services/roadmapService";
-import type { SubmissionState } from "../../types/roadmap";
+} from "@/features/roadmap/services/roadmapService";
+import type { SubmissionState } from "@/features/roadmap/types/roadmap";
 import {
   DEFAULT_PASSING_SCORE,
   evaluateSubmission,
   nodeSubmission,
-} from "../../utils/nodeContent";
-import { computeStatuses } from "../../utils/roadmapGraph";
-import { getSubmissions, saveSubmission } from "../../utils/submissionStore";
+} from "@/features/roadmap/utils/nodeContent";
+import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
+import { getSubmissions, saveSubmission } from "@/features/roadmap/utils/submissionStore";
 import RoadmapQuizContainer from "../components/RoadmapQuizContainer";
 
 /**

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { STUDENTS_QUERY_KEY, fetchStudents } from "../../services/studentService";
-import { buildCareerProfile } from "../../services/careerService";
-import type { FacultyStudent } from "../../types/student";
+import { STUDENTS_QUERY_KEY, fetchStudents } from "@/features/faculty/services/studentService";
+import { buildCareerProfile } from "@/features/career/services/careerService";
+import type { FacultyStudent } from "@/features/faculty/types/student";
 import FacultyStudentsContainer from "../components/FacultyStudentsContainer";
 
 /**

@@ -6,12 +6,12 @@ import {
   MY_TEAMS_QUERY_KEY,
   createCollabRequest,
   fetchCollabRequests,
-} from "../../services/collabService";
+} from "@/features/collab/services/collabService";
 import {
   MY_COMMUNITIES_QUERY_KEY,
   fetchMyCommunities,
-} from "../../services/communityService";
-import type { CollabRequest, NewCollabInput } from "../../types/collab";
+} from "@/features/chat/services/communityService";
+import type { CollabRequest, NewCollabInput } from "@/features/collab/types/collab";
 import CollabContainer from "../components/CollabContainer";
 
 /**

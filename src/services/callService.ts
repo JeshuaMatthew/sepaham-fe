@@ -1,4 +1,4 @@
-import AxiosInstance from "../utils/Axiosinstance";
+import AxiosInstance from "@/lib/axios";
 
 /**
  * Call service — meminta LiveKit access token dari backend untuk join sebuah

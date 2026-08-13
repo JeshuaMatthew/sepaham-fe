@@ -1,5 +1,5 @@
 import ProgressBar from "./ProgressBar";
-import { ArrowRightIcon, MapIcon } from "../icons";
+import { ArrowRightIcon, MapIcon } from "@/shared/icons";
 
 /** Ringkasan roadmap utama yang ditonjolkan di beranda. */
 export interface RoadmapHeroData {

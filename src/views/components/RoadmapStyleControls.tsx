@@ -1,4 +1,4 @@
-import type { RoadmapStyle } from "../../types/roadmap";
+import type { RoadmapStyle } from "@/features/roadmap/types/roadmap";
 
 interface RoadmapStyleControlsProps {
   style: RoadmapStyle;
