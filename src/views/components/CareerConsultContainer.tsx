@@ -103,7 +103,7 @@ function CareerConsultContainer({
                 if (event.key === "Enter") handleSubmit();
               }}
               placeholder="Ask about your career progress…"
-              className="flex-1 border border-line bg-canvas px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+              className="flex-1 border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
             />
             <button
               type="button"
@@ -123,3 +123,4 @@ function CareerConsultContainer({
 }
 
 export default CareerConsultContainer;
+

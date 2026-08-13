@@ -125,7 +125,7 @@ function AuthCard({
             placeholder="you@student.ac.id"
             value={values.email}
             onChange={(event) => onFieldChange("email", event.target.value)}
-            className="border border-line bg-canvas px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="border border-line bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
         </label>
 
@@ -137,7 +137,7 @@ function AuthCard({
             placeholder="At least 6 characters"
             value={values.password}
             onChange={(event) => onFieldChange("password", event.target.value)}
-            className="border border-line bg-canvas px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="border border-line bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
         </label>
 
@@ -180,3 +180,4 @@ function AuthCard({
 }
 
 export default AuthCard;
+

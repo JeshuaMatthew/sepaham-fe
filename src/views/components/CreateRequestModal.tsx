@@ -90,7 +90,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             placeholder="Contoh: Aplikasi split bill anak kos"
-            className="rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
         </label>
 
@@ -101,7 +101,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
             onChange={(event) => setDescription(event.target.value)}
             rows={3}
             placeholder="Jelaskan idenya, tujuan (tugas/startup/hackathon), dan timeline."
-            className="resize-none rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="resize-none rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
         </label>
 
@@ -112,7 +112,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
               value={neededRoles}
               onChange={(event) => setNeededRoles(event.target.value)}
               placeholder="Backend, UI/UX"
-              className="rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+              className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -122,7 +122,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
               value={membersNeeded}
               onChange={(event) => setMembersNeeded(event.target.value)}
               min="2"
-              className="rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink focus:border-primary focus:outline-none"
+              className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:border-primary focus:outline-none"
             />
           </label>
         </div>
@@ -133,7 +133,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
             value={repoUrl}
             onChange={(event) => setRepoUrl(event.target.value)}
             placeholder="https://github.com/username/nama-project"
-            className="rounded-xl border border-line bg-canvas px-4 py-2.5 font-mono text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="rounded-xl border border-line bg-surface px-4 py-2.5 font-mono text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
         </label>
 
@@ -145,7 +145,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
           <select
             value={communityChoice}
             onChange={(event) => setCommunityChoice(event.target.value)}
-            className="rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink focus:border-primary focus:outline-none"
+            className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:border-primary focus:outline-none"
           >
             <option value={NEW_COMMUNITY}>+ Buat community baru</option>
             {communities.map((community) => (
@@ -160,7 +160,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
             value={newCommunityName}
             onChange={(event) => setNewCommunityName(event.target.value)}
             placeholder={title.trim() || "Nama community baru"}
-            className="rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
         ) : null}
 

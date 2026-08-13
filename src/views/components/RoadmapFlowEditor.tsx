@@ -478,12 +478,12 @@ function RoadmapFlowEditor({
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           placeholder="Judul roadmap"
-          className="flex-1 rounded-lg border border-line bg-canvas px-3 py-2 text-sm font-semibold text-ink focus:border-primary focus:outline-none"
+          className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-semibold text-ink focus:border-primary focus:outline-none"
         />
         <select
           value={roleId}
           onChange={(event) => setRoleId(event.target.value)}
-          className="rounded-lg border border-line bg-canvas px-2 py-2 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-2 text-xs text-ink focus:border-primary focus:outline-none"
         >
           <option value="">(role)</option>
           {ROLE_OPTIONS.map((role) => (
@@ -631,3 +631,4 @@ function RoadmapFlowEditor({
 }
 
 export default RoadmapFlowEditor;
+

@@ -30,7 +30,7 @@ function SubmissionEditor({ submission, onChange }: SubmissionEditorProps) {
         <select
           value={submission.type}
           onChange={(event) => onChange({ ...submission, type: event.target.value as SubmissionType })}
-          className="rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
         >
           {TYPES.map((type) => (
             <option key={type.value} value={type.value}>{type.label}</option>
@@ -43,7 +43,7 @@ function SubmissionEditor({ submission, onChange }: SubmissionEditorProps) {
           value={submission.prompt ?? ""}
           onChange={(event) => onChange({ ...submission, prompt: event.target.value })}
           placeholder="Petunjuk untuk mahasiswa (mis. Tempel link GitHub repo)"
-          className="rounded-lg border border-line bg-canvas px-3 py-2 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-3 py-2 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
       ) : null}
 
@@ -57,7 +57,7 @@ function SubmissionEditor({ submission, onChange }: SubmissionEditorProps) {
               max="100"
               value={submission.passingScore ?? 60}
               onChange={(event) => onChange({ ...submission, passingScore: Number(event.target.value) })}
-              className="w-20 rounded-lg border border-line bg-canvas px-2 py-1 text-ink focus:border-primary focus:outline-none"
+              className="w-20 rounded-lg border border-line bg-surface px-2 py-1 text-ink focus:border-primary focus:outline-none"
             />
           </label>
           {questions.map((question, index) => (
@@ -93,3 +93,4 @@ function SubmissionEditor({ submission, onChange }: SubmissionEditorProps) {
 }
 
 export default SubmissionEditor;
+

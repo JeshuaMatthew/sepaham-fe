@@ -85,7 +85,7 @@
     --theme-canvas: #f1d3b2; /* warm peach as requested */
     --theme-surface: #ffffff;
     --theme-elevate: rgba(15, 23, 42, 0.05); /* very soft dark tint for hover */
-    --theme-line: #e2e8f0;
+    --theme-line: #a8a29e; /* stone-400 for visible borders on peach */
     
     --theme-primary: #0f172a; /* slate-900 */
     --theme-primary-soft: rgba(15, 23, 42, 0.08);
@@ -95,7 +95,7 @@
     --theme-blue: #3d6fe6; /* keep blue the same */
     
     --theme-ink: #0f172a; /* dark text for readability */
-    --theme-muted: #64748b; /* slate-500 */
+    --theme-muted: #334155; /* slate-700 for better contrast on peach */
 
     --theme-grad-blue: linear-gradient(135deg, #fdfbf7 0%, #f4e8d8 100%); /* very light warm gradient for readability */
   }

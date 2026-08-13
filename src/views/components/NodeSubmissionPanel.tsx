@@ -83,7 +83,7 @@ function NodeSubmissionPanel({ submission, state, onSubmit, onStartQuiz }: NodeS
           value={text}
           onChange={(event) => setText(event.target.value)}
           placeholder="https://github.com/username/repo"
-          className="border border-line bg-canvas px-4 py-2.5 font-mono text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="border border-line bg-surface px-4 py-2.5 font-mono text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
         {done ? (
           <p className="inline-flex items-center gap-1 text-xs text-neon">
@@ -138,3 +138,4 @@ function NodeSubmissionPanel({ submission, state, onSubmit, onStartQuiz }: NodeS
 }
 
 export default NodeSubmissionPanel;
+

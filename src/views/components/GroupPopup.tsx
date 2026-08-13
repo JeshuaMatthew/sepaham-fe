@@ -29,7 +29,7 @@ function GroupPopup({ name, memberCount, onRename, onUngroup }: GroupPopupProps)
           if (event.key === "Enter") event.currentTarget.blur();
         }}
         placeholder="Nama grup"
-        className="rounded-lg border border-line bg-canvas px-2.5 py-1.5 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+        className="rounded-lg border border-line bg-surface px-2.5 py-1.5 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
       />
       <button
         type="button"
@@ -43,3 +43,4 @@ function GroupPopup({ name, memberCount, onRename, onUngroup }: GroupPopupProps)
 }
 
 export default GroupPopup;
+

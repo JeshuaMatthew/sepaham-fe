@@ -31,7 +31,7 @@ function QuizQuestionEditor({ question, index, onChange, onDelete }: QuizQuestio
           value={question.question}
           onChange={(event) => onChange(index, { question: event.target.value })}
           placeholder="Tulis pertanyaan"
-          className="flex-1 rounded-lg border border-line bg-canvas px-2 py-1.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="flex-1 rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
         <button
           type="button"
@@ -56,7 +56,7 @@ function QuizQuestionEditor({ question, index, onChange, onDelete }: QuizQuestio
               value={option}
               onChange={(event) => updateOption(i, event.target.value)}
               placeholder={`Opsi ${String.fromCharCode(65 + i)}`}
-              className="flex-1 rounded-lg border border-line bg-canvas px-2 py-1 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+              className="flex-1 rounded-lg border border-line bg-surface px-2 py-1 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
             />
             <button
               type="button"
@@ -82,3 +82,4 @@ function QuizQuestionEditor({ question, index, onChange, onDelete }: QuizQuestio
 }
 
 export default QuizQuestionEditor;
+

@@ -41,7 +41,7 @@ function ProfileEditModal({ profile, onClose, onSave }: ProfileEditModalProps) {
   };
 
   const fieldClass =
-    "rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none";
+    "rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none";
 
   return (
     <div
@@ -138,3 +138,4 @@ function ProfileEditModal({ profile, onClose, onSave }: ProfileEditModalProps) {
 }
 
 export default ProfileEditModal;
+

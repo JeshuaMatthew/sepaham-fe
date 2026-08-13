@@ -18,7 +18,7 @@ function QuestionEditorRow({ question, index, onChange, onDelete }: QuestionEdit
           onChange={(event) => onChange(index, { text: event.target.value })}
           rows={2}
           placeholder="Tulis pernyataan… (contoh: Saya suka mendesain antarmuka)"
-          className="flex-1 resize-none rounded-xl border border-line bg-canvas px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="flex-1 resize-none rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
       </div>
       <div className="flex flex-wrap items-center gap-2 pl-6">
@@ -26,7 +26,7 @@ function QuestionEditorRow({ question, index, onChange, onDelete }: QuestionEdit
         <select
           value={question.roleId}
           onChange={(event) => onChange(index, { roleId: event.target.value })}
-          className="rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
         >
           {ROLE_OPTIONS.map((role) => (
             <option key={role.id} value={role.id}>
@@ -47,3 +47,4 @@ function QuestionEditorRow({ question, index, onChange, onDelete }: QuestionEdit
 }
 
 export default QuestionEditorRow;
+

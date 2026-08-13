@@ -53,7 +53,7 @@ function NodeEditorCard({ node, index, groups, selected, onChange, onDelete }: N
           value={node.title}
           onChange={(event) => onChange(node.id, { title: event.target.value })}
           placeholder="Nama skill"
-          className="flex-1 rounded-lg border border-line bg-canvas px-3 py-2 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
         <button
           type="button"
@@ -92,7 +92,7 @@ function NodeEditorCard({ node, index, groups, selected, onChange, onDelete }: N
           onChange={(event) => onChange(node.id, { group: event.target.value })}
           list={groupListId}
           placeholder="mis. Dasar (kosongkan bila tanpa grup)"
-          className="flex-1 rounded-lg border border-line bg-canvas px-3 py-2 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
         <datalist id={groupListId}>
           {groups.map((group) => (
@@ -161,7 +161,7 @@ function NodeEditorCard({ node, index, groups, selected, onChange, onDelete }: N
           onChange={(event) => onChange(node.id, { article: event.target.value })}
           rows={5}
           placeholder={"## Judul\n\nTulis materi pakai **Markdown**…"}
-          className="resize-y rounded-xl border border-line bg-canvas px-3 py-2 font-mono text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="resize-y rounded-xl border border-line bg-surface px-3 py-2 font-mono text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
       </div>
 
@@ -178,3 +178,4 @@ function NodeEditorCard({ node, index, groups, selected, onChange, onDelete }: N
 }
 
 export default NodeEditorCard;
+

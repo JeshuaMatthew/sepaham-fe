@@ -49,7 +49,7 @@ function NodeAppearancePopup({
         value={node.title}
         onChange={(event) => onChange(node.id, { title: event.target.value })}
         placeholder="Nama skill"
-        className="rounded-lg border border-line bg-canvas px-2.5 py-1.5 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+        className="rounded-lg border border-line bg-surface px-2.5 py-1.5 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
       />
 
       {/* Grup (opsional) */}
@@ -58,7 +58,7 @@ function NodeAppearancePopup({
         onChange={(event) => onChange(node.id, { group: event.target.value })}
         list={groupListId}
         placeholder="Grup (opsional)"
-        className="rounded-lg border border-line bg-canvas px-2.5 py-1.5 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+        className="rounded-lg border border-line bg-surface px-2.5 py-1.5 text-xs text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
       />
       <datalist id={groupListId}>
         {groups.map((group) => (
@@ -135,3 +135,4 @@ function NodeAppearancePopup({
 }
 
 export default NodeAppearancePopup;
+

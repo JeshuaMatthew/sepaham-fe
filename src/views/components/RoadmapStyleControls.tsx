@@ -79,7 +79,7 @@ function RoadmapStyleControls({ style, onChange }: RoadmapStyleControlsProps) {
         <select
           value={style.textAlign ?? "center"}
           onChange={(event) => set({ textAlign: event.target.value as RoadmapStyle["textAlign"] })}
-          className="rounded-lg border border-line bg-canvas px-2 py-1 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1 text-xs text-ink focus:border-primary focus:outline-none"
         >
           <option value="left">Kiri</option>
           <option value="center">Tengah</option>
@@ -95,7 +95,7 @@ function RoadmapStyleControls({ style, onChange }: RoadmapStyleControlsProps) {
           onChange={(event) =>
             set({ textPosition: event.target.value as RoadmapStyle["textPosition"] })
           }
-          className="rounded-lg border border-line bg-canvas px-2 py-1 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1 text-xs text-ink focus:border-primary focus:outline-none"
         >
           <option value="bottom">Bawah logo</option>
           <option value="top">Atas logo</option>
@@ -141,3 +141,4 @@ function RoadmapStyleControls({ style, onChange }: RoadmapStyleControlsProps) {
 }
 
 export default RoadmapStyleControls;
+

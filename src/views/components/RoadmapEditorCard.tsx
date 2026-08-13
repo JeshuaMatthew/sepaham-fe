@@ -19,7 +19,7 @@ function RoadmapEditorCard({ roadmap, onChange, onEditContent, onDelete }: Roadm
           value={roadmap.title}
           onChange={(event) => onChange(roadmap.id, { title: event.target.value })}
           placeholder="Judul roadmap"
-          className="flex-1 rounded-xl border border-line bg-canvas px-3 py-2.5 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+          className="flex-1 rounded-xl border border-line bg-surface px-3 py-2.5 text-sm font-semibold text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
         />
         <input
           type="color"
@@ -35,14 +35,14 @@ function RoadmapEditorCard({ roadmap, onChange, onEditContent, onDelete }: Roadm
         onChange={(event) => onChange(roadmap.id, { description: event.target.value })}
         rows={2}
         placeholder="Deskripsi singkat roadmap"
-        className="resize-none rounded-xl border border-line bg-canvas px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+        className="resize-none rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
       />
 
       <div className="flex flex-wrap items-center gap-2">
         <select
           value={roadmap.roleId}
           onChange={(event) => onChange(roadmap.id, { roleId: event.target.value })}
-          className="rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
         >
           {ROLE_OPTIONS.map((role) => (
             <option key={role.id} value={role.id}>{role.label}</option>
@@ -53,7 +53,7 @@ function RoadmapEditorCard({ roadmap, onChange, onEditContent, onDelete }: Roadm
           onChange={(event) =>
             onChange(roadmap.id, { difficulty: event.target.value as RoadmapDifficulty })
           }
-          className="rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
         >
           {DIFFICULTIES.map((level) => (
             <option key={level} value={level}>{level}</option>
@@ -85,3 +85,4 @@ function RoadmapEditorCard({ roadmap, onChange, onEditContent, onDelete }: Roadm
 }
 
 export default RoadmapEditorCard;
+

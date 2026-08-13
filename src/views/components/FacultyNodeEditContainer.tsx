@@ -95,7 +95,7 @@ function FacultyNodeEditContainer({
                   onChange={(event) => onArticleChange(event.target.value)}
                   rows={22}
                   placeholder={"## Judul materi\n\nTulis penjelasan pakai **Markdown**…\n\n- poin\n- poin"}
-                  className="h-[520px] resize-none rounded-card border border-line bg-canvas px-4 py-3 font-mono text-xs leading-relaxed text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+                  className="h-[520px] resize-none rounded-card border border-line bg-surface px-4 py-3 font-mono text-xs leading-relaxed text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -136,3 +136,4 @@ function FacultyNodeEditContainer({
 }
 
 export default FacultyNodeEditContainer;
+
