@@ -52,7 +52,7 @@ function FacultyNodeEditContainer({
             <button
               type="button"
               onClick={onRetry}
-              className="cursor-pointer rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
+              className="cursor-pointer rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95"
             >
               Coba lagi
             </button>
@@ -123,7 +123,7 @@ function FacultyNodeEditContainer({
               <button
                 type="button"
                 onClick={onSave}
-                className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
+                className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95"
               >
                 Simpan
               </button>

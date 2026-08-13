@@ -123,7 +123,7 @@ function CollabRequestCard({ request, onContact }: CollabRequestCardProps) {
           className={`shrink-0 cursor-pointer rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
             isFull
               ? "cursor-not-allowed bg-elevate text-muted"
-              : "bg-primary text-ink hover:scale-105 active:scale-95"
+              : "bg-primary text-canvas hover:scale-105 active:scale-95"
           }`}
         >
           {isFull ? (

@@ -74,7 +74,7 @@ function QuizRunner({
         type="button"
         onClick={() => onSubmit(answers)}
         disabled={!allAnswered}
-        className="w-fit cursor-pointer rounded-full bg-primary px-7 py-3 text-sm font-semibold text-ink transition-transform hover:enabled:scale-105 active:enabled:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-fit cursor-pointer rounded-full bg-primary px-7 py-3 text-sm font-semibold text-canvas transition-transform hover:enabled:scale-105 active:enabled:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {hasScore ? "Kumpulkan ulang" : "Kumpulkan jawaban"}
       </button>

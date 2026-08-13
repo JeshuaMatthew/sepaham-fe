@@ -10,7 +10,7 @@ function GroupBoxNode({ data }: NodeProps) {
 
   return (
     <div
-      className={`relative h-full w-full border border-dashed border-white/30 ${
+      className={`relative h-full w-full border border-dashed border-line ${
         rounded ? "rf-rounded" : ""
       }`}
       style={{ background }}

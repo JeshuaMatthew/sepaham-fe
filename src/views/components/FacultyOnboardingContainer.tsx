@@ -118,7 +118,7 @@ function FacultyOnboardingContainer({
               disabled={!dirty}
               className={`rounded-full px-7 py-2.5 text-sm font-semibold transition-all ${
                 dirty
-                  ? "cursor-pointer bg-primary text-ink hover:scale-105 active:scale-95"
+                  ? "cursor-pointer bg-primary text-canvas hover:scale-105 active:scale-95"
                   : "cursor-not-allowed bg-elevate text-muted"
               }`}
             >

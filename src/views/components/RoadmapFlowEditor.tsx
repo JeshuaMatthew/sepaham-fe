@@ -621,7 +621,7 @@ function RoadmapFlowEditor({
         <button
           type="button"
           onClick={handleSave}
-          className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
+          className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95"
         >
           Simpan
         </button>

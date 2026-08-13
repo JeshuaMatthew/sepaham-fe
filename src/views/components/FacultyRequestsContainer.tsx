@@ -28,7 +28,7 @@ function FacultyRequestsContainer({
           <button
             type="button"
             onClick={onRetry}
-            className="cursor-pointer rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-ink"
+            className="cursor-pointer rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-canvas"
           >
             Try again
           </button>

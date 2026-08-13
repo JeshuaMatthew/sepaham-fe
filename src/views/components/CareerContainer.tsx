@@ -233,7 +233,7 @@ function CareerContainer({
               <p className="text-sm text-muted">Ranked from your questionnaire, roadmap & activity.</p>
             </div>
 
-            <div className="grid grid-cols-1 divide-y divide-white/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <div className="grid grid-cols-1 divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               {topMatches.map((match, index) => (
                 <div key={match.role.id} className="flex flex-col gap-2 p-4">
                   <div className="flex items-center justify-between gap-2">
@@ -246,7 +246,7 @@ function CareerContainer({
                     {match.role.techStack.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="border border-white/20 px-1.5 py-0.5 font-mono text-[10px] text-muted"
+                        className="border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted"
                       >
                         {tech}
                       </span>

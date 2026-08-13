@@ -193,7 +193,7 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
           type="button"
           onClick={submit}
           disabled={!canSubmit}
-          className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-ink transition-transform hover:enabled:scale-[1.02] active:enabled:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-canvas transition-transform hover:enabled:scale-[1.02] active:enabled:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Posting request
         </button>

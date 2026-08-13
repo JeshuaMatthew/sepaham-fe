@@ -88,7 +88,7 @@ function DevCardContainer({
           <div className="flex-1">
             {showProfile ? <ProfileHeader profile={profile} /> : <ProfileHeaderSkeleton />}
           </div>
-          <div className="shrink-0 lg:border-l lg:border-white/20 lg:pl-6">
+          <div className="shrink-0 lg:border-l lg:border-line lg:pl-6">
             {/* Aksi akun */}
             <ProfileActions
               githubConnected={githubConnected}

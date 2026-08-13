@@ -73,7 +73,7 @@ function InternshipContactCard({ contact }: InternshipContactCardProps) {
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="mt-auto inline-flex w-fit items-center gap-1.5 cursor-pointer rounded-full bg-primary px-4 py-2 text-xs font-semibold text-ink transition-transform hover:scale-105 active:scale-95"
+        className="mt-auto inline-flex w-fit items-center gap-1.5 cursor-pointer rounded-full bg-primary px-4 py-2 text-xs font-semibold text-canvas transition-transform hover:scale-105 active:scale-95"
       >
         <ContactIcon className="h-4 w-4" /> {label}
       </a>
