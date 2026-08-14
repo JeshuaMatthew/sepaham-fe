@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import type { CareerMessage, CareerProfile } from "@/features/career/types/career";
+import MarkdownView from "@/components/ui/MarkdownView";
 import { ArrowLeftIcon, ArrowRightIcon, SparkleIcon } from "@/shared/icons";
 
 interface CareerConsultContainerProps {
   profile: CareerProfile | null;
   isLoading: boolean;
+  isAiTyping: boolean;
   messages: CareerMessage[];
   input: string;
   suggestions: string[];
@@ -16,6 +18,7 @@ interface CareerConsultContainerProps {
 function CareerConsultContainer({
   profile,
   isLoading,
+  isAiTyping,
   messages,
   input,
   suggestions,
@@ -26,7 +29,7 @@ function CareerConsultContainer({
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
-  }, [messages]);
+  }, [messages, isAiTyping]);
 
   const handleSubmit = () => {
     const text = input.trim();
@@ -60,22 +63,39 @@ function CareerConsultContainer({
             {isLoading ? (
               <span className="text-sm text-muted">Loading your career data…</span>
             ) : (
-              messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                >
+              <>
+                {messages.map((message) => (
                   <div
-                    className={`max-w-[80%] whitespace-pre-line px-3 py-2 text-sm ${
-                      message.role === "user"
-                        ? "grad-blue text-ink"
-                        : "border border-line bg-canvas text-ink/90"
-                    }`}
+                    key={message.id}
+                    className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                   >
-                    {message.text}
+                    <div
+                      className={`max-w-[80%] px-3 py-2 text-sm ${
+                        message.role === "user"
+                          ? "grad-blue whitespace-pre-line text-ink"
+                          : "border border-line bg-canvas text-ink/90"
+                      }`}
+                    >
+                      {message.role === "ai" ? (
+                        <MarkdownView content={message.text} />
+                      ) : (
+                        message.text
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
+                ))}
+
+                {/* Typing indicator — tampil saat menunggu respons Gemini */}
+                {isAiTyping && (
+                  <div className="flex justify-start">
+                    <div className="flex items-center gap-1.5 border border-line bg-canvas px-3 py-2.5">
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:0ms]" />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:150ms]" />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:300ms]" />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -86,8 +106,8 @@ function CareerConsultContainer({
                 key={suggestion}
                 type="button"
                 onClick={() => onSend(suggestion)}
-                disabled={!profile}
-                className="cursor-pointer border border-line px-2.5 py-1 text-[11px] text-muted transition-colors hover:text-ink disabled:cursor-not-allowed"
+                disabled={!profile || isAiTyping}
+                className="cursor-pointer border border-line px-2.5 py-1 text-[11px] text-muted transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {suggestion}
               </button>
@@ -102,15 +122,16 @@ function CareerConsultContainer({
               onKeyDown={(event) => {
                 if (event.key === "Enter") handleSubmit();
               }}
-              placeholder="Ask about your career progress…"
-              className="flex-1 border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"
+              placeholder={isAiTyping ? "AI is thinking…" : "Ask about your career progress…"}
+              disabled={isAiTyping}
+              className="flex-1 border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
             />
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={!input.trim() || !profile}
+              disabled={!input.trim() || !profile || isAiTyping}
               className={`inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold ${
-                input.trim() && profile ? "cursor-pointer text-primary" : "cursor-not-allowed text-muted"
+                input.trim() && profile && !isAiTyping ? "cursor-pointer text-primary" : "cursor-not-allowed text-muted"
               }`}
             >
               Send <ArrowRightIcon className="h-4 w-4" />

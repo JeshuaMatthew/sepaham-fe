@@ -9,9 +9,9 @@ import {
 import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
 import {
   CAREER_SUGGESTIONS,
-  answerCareerQuestion,
   buildCareerProfile,
 } from "@/features/career/services/careerService";
+import { callAiAssist } from "@/features/home/services/aiService";
 import type { CareerMessage } from "@/features/career/types/career";
 import { getPreference } from "@/features/onboarding/utils/preference";
 import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
@@ -97,17 +97,34 @@ function CareerConsultPage() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [isAiTyping, setIsAiTyping] = useState(false);
 
-  const handleSend = (text: string) => {
-    if (!profile) return;
+  const handleSend = async (text: string) => {
+    if (!profile || isAiTyping) return;
+
     const userMessage: CareerMessage = { id: crypto.randomUUID().slice(0, 8), role: "user", text };
-    const aiMessage: CareerMessage = {
-      id: crypto.randomUUID().slice(0, 8),
-      role: "ai",
-      text: answerCareerQuestion(text, profile),
-    };
-    setMessages((prev) => [...prev, userMessage, aiMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setIsAiTyping(true);
+
+    try {
+      const responseText = await callAiAssist(text, "career_path");
+      const aiMessage: CareerMessage = {
+        id: crypto.randomUUID().slice(0, 8),
+        role: "ai",
+        text: responseText,
+      };
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch {
+      const errorMessage: CareerMessage = {
+        id: crypto.randomUUID().slice(0, 8),
+        role: "ai",
+        text: "Sorry, I couldn't reach the AI service right now. Please try again in a moment.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsAiTyping(false);
+    }
   };
 
   const isLoading =
@@ -117,6 +134,7 @@ function CareerConsultPage() {
     <CareerConsultContainer
       profile={profile}
       isLoading={isLoading}
+      isAiTyping={isAiTyping}
       messages={messages}
       input={input}
       suggestions={CAREER_SUGGESTIONS}
