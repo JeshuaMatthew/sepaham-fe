@@ -1,20 +1,8 @@
 import AxiosInstance from "@/lib/axios";
-import type { Channel, ChatMessage, DirectConversation, SendPayload, Server } from "@/features/chat/types/chat";
+import type { ChatMessage, DirectConversation, SendPayload } from "@/features/chat/types/chat";
 
-export const SERVERS_QUERY_KEY = ["chat", "servers"] as const;
-export const CHANNELS_QUERY_KEY = ["chat", "channels"] as const;
 export const DMS_QUERY_KEY = ["chat", "dms"] as const;
 export const messagesQueryKey = (channelId: string) => ["chat", "messages", channelId] as const;
-
-export async function fetchServers(): Promise<Server[]> {
-  const { data } = await AxiosInstance.get<{ servers: Server[] }>("/community/servers");
-  return data.servers;
-}
-
-export async function fetchChannels(): Promise<Channel[]> {
-  const { data } = await AxiosInstance.get<{ channels: Channel[] }>("/community/channels");
-  return data.channels;
-}
 
 export async function fetchChannelMessages(channelId: string): Promise<ChatMessage[]> {
   const { data } = await AxiosInstance.get<ChatMessage[]>(`/channels/${channelId}/messages`);

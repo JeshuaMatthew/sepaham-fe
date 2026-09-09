@@ -10,11 +10,9 @@ import {
   roadmapTreeQueryKey,
 } from "@/features/roadmap/services/roadmapService";
 import {
-  SERVERS_QUERY_KEY,
-  CHANNELS_QUERY_KEY,
-  fetchServers,
-  fetchChannels,
-} from "@/features/chat/services/chatService";
+  MY_COMMUNITIES_QUERY_KEY,
+  fetchMyCommunities,
+} from "@/features/chat/services/communityService";
 import { COLLAB_QUERY_KEY, fetchCollabRequests } from "@/features/collab/services/collabService";
 import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
 import { buildCareerProfile } from "@/features/career/services/careerService";
@@ -53,8 +51,10 @@ function HomePage() {
     queryKey: ROADMAP_CATALOG_QUERY_KEY,
     queryFn: fetchRoadmapCatalog,
   });
-  const serversQuery = useQuery({ queryKey: SERVERS_QUERY_KEY, queryFn: fetchServers });
-  const channelsQuery = useQuery({ queryKey: CHANNELS_QUERY_KEY, queryFn: fetchChannels });
+  const serversQuery = useQuery({
+    queryKey: MY_COMMUNITIES_QUERY_KEY,
+    queryFn: fetchMyCommunities,
+  });
   const collabQuery = useQuery({ queryKey: COLLAB_QUERY_KEY, queryFn: fetchCollabRequests });
   const githubQuery = useQuery({ queryKey: GITHUB_QUERY_KEY, queryFn: fetchGithubStats });
 
@@ -125,7 +125,7 @@ function HomePage() {
       roadmap={roadmap}
       roadmapLoading={catalogQuery.isLoading || (primary != null && treeQuery.isLoading)}
       community={{
-        channels: channelsQuery.data?.length ?? 0,
+        channels: (serversQuery.data ?? []).reduce((sum, c) => sum + (c.channels?.length ?? 0), 0),
         servers: serversQuery.data?.length ?? 0,
       }}
       collab={{
@@ -134,7 +134,6 @@ function HomePage() {
       career={{ readiness: careerReadiness }}
       summaryLoading={
         serversQuery.isLoading ||
-        channelsQuery.isLoading ||
         collabQuery.isLoading ||
         githubQuery.isLoading
       }

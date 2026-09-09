@@ -11,7 +11,7 @@ import { API_BASE_URL } from "@/constants/api";
  * - saat 401 (token basi): bersihkan sesi lalu picu redirect ke /login
  */
 const AxiosInstance = axios.create({
-  baseURL: `${API_BASE_URL}/api`,
+  baseURL: API_BASE_URL,
   withCredentials: true,
 });
 

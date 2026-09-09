@@ -2,13 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  CHANNELS_QUERY_KEY,
   DMS_QUERY_KEY,
-  SERVERS_QUERY_KEY,
-  fetchChannels,
   fetchChannelMessages,
   fetchDirectConversations,
-  fetchServers,
   messagesQueryKey,
   sendChannelMessage,
   sendDmMessage,
@@ -86,8 +82,6 @@ function nowLabel(): string {
 }
 
 function ChatPage() {
-  const serversQuery = useQuery({ queryKey: SERVERS_QUERY_KEY, queryFn: fetchServers });
-  const channelsQuery = useQuery({ queryKey: CHANNELS_QUERY_KEY, queryFn: fetchChannels });
   const dmsQuery = useQuery({ queryKey: DMS_QUERY_KEY, queryFn: fetchDirectConversations });
   const profileQuery = useQuery({ queryKey: PROFILE_QUERY_KEY, queryFn: fetchProfile });
   const myCommunitiesQuery = useQuery({
@@ -141,7 +135,7 @@ function ChatPage() {
   useEffect(() => {
     const token = getToken();
     if (!token) return;
-    const base = (import.meta.env.VITE_API_URL as string) || "http://localhost:8080/api";
+    const base = (import.meta.env.VITE_API_BASE_URL as string) || "http://localhost:8000/api";
     const url = `${base.replace(/^http/, "ws")}/ws?token=${encodeURIComponent(token)}`;
     const ws = new WebSocket(url);
     ws.onmessage = (event) => {
@@ -171,13 +165,10 @@ function ChatPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Komunitas tim milik user (dari backend) tampil paling atas.
+  // Servers dan channels semuanya dari /community/mine — satu-satunya endpoint yang ada.
   const myCommunities = myCommunitiesQuery.data ?? [];
-  const servers = [...myCommunities.map((c) => c.server), ...(serversQuery.data ?? [])];
-  const channels = [
-    ...myCommunities.flatMap((c) => c.channels),
-    ...(channelsQuery.data ?? []),
-  ];
+  const servers = myCommunities.map((c) => c.server);
+  const channels = myCommunities.flatMap((c) => c.channels);
   const dms = [...extraDms, ...(dmsQuery.data ?? [])];
 
   // Invite link: join server dari ?join=serverId ke backend lalu buka.
@@ -394,9 +385,9 @@ function ChatPage() {
       activeCall={call}
       joinNotice={joinNotice}
       onDismissJoinNotice={() => setJoinNotice(null)}
-      isLoading={serversQuery.isLoading || channelsQuery.isLoading || dmsQuery.isLoading}
+      isLoading={myCommunitiesQuery.isLoading || dmsQuery.isLoading}
       isMessagesLoading={messagesQuery.isLoading}
-      isError={serversQuery.isError || channelsQuery.isError || dmsQuery.isError}
+      isError={myCommunitiesQuery.isError || dmsQuery.isError}
       onSelectServer={handleSelectServer}
       onSelectChannel={handleSelectChannel}
       onSelectDm={handleSelectDm}
@@ -407,8 +398,7 @@ function ChatPage() {
       onStartCall={handleStartCall}
       onEndCall={() => setCall(null)}
       onRetry={() => {
-        void serversQuery.refetch();
-        void channelsQuery.refetch();
+        void myCommunitiesQuery.refetch();
         void dmsQuery.refetch();
       }}
     />

@@ -172,3 +172,12 @@
 .grad-blue {
   background-image: var(--theme-grad-blue);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Sidebar — garis indikator aktif kiri                               */
+/*  NavLink menambah class .active saat route cocok (React Router v6). */
+/*  Span .nav-indicator di dalam item tersebut akan terlihat.          */
+/* ------------------------------------------------------------------ */
+.active > .nav-indicator {
+  opacity: 1;
+}
