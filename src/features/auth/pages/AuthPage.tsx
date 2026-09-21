@@ -27,7 +27,7 @@ function AuthPage() {
   const [values, setValues] = useState<AuthCredentials>({ email: "", password: "" });
 
   const goToApp = (accountRole: AccountRole) => {
-    void navigate(accountRole === "faculty" ? "/faculty" : "/onboarding");
+    void navigate(accountRole === "faculty" ? "/faculty" : "/home");
   };
 
   const enterAppMock = () => {
