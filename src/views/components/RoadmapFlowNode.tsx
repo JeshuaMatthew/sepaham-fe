@@ -17,7 +17,7 @@ export interface RoadmapFlowNodeData {
   [key: string]: unknown;
 }
 
-const WARN_COLOR = "#f59e0b";
+const WARN_COLOR = "var(--color-warning, #f59e0b)";
 
 // Handle jelas (dot biru) saat bisa dihubungkan (editor); tersembunyi saat read-only (mahasiswa).
 const connectHandleStyle = {
@@ -56,7 +56,7 @@ function RoadmapFlowNode({ data, isConnectable }: NodeProps) {
   const media = node.image ? (
     <img
       src={node.image}
-      alt=""
+      alt={node.title ? `Ilustrasi skill ${node.title}` : "Ilustrasi skill"}
       className={`object-cover ${roundedClass}`}
       style={
         node.titleInside
@@ -151,7 +151,7 @@ function RoadmapFlowNode({ data, isConnectable }: NodeProps) {
       {warning ? (
         <span
           className="pointer-events-none absolute -top-5 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-1 whitespace-nowrap px-1.5 py-0.5 text-[9px] font-bold"
-          style={{ background: WARN_COLOR, color: "#1c1c1c" }}
+          style={{ background: WARN_COLOR, color: "var(--color-canvas)" }}
         >
           <AlertIcon className="h-2.5 w-2.5" /> akan overlap
         </span>

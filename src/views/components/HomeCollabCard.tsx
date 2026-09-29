@@ -3,6 +3,7 @@ import gsap from "gsap";
 import type { CollabRequest } from "@/features/collab/types/collab";
 import StackBadge from "./StackBadge";
 import { ArrowRightIcon, UsersIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface HomeCollabCardProps {
   request: CollabRequest;
@@ -59,10 +60,10 @@ function HomeCollabCard({ request, onOpen }: HomeCollabCardProps) {
       {/* Footer */}
       <div className="mt-1 flex items-center justify-between gap-3">
         <span className="inline-flex items-center gap-2 text-xs text-muted">
-          <img
+          <Avatar
             src={request.author.avatar}
-            alt={request.author.name}
-            className="h-5 w-5 rounded-full object-cover"
+            name={request.author.name}
+            className="h-5 w-5 rounded-full"
           />
           <span className="inline-flex items-center gap-1">
             <UsersIcon className="h-3 w-3" /> {request.membersCurrent}/{request.membersNeeded}

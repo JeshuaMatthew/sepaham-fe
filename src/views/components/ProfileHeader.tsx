@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import type { Profile } from "@/features/profile/types/profile";
 import { CalendarIcon, GradIcon, PinIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface ProfileHeaderProps {
   profile: Profile;
@@ -28,11 +29,12 @@ function ProfileHeader({ profile }: ProfileHeaderProps) {
       ref={rootRef}
       className="flex flex-col items-center gap-5 rounded-card  p-6 text-center sm:flex-row sm:items-start sm:text-left"
     >
-      <img
-        data-intro
+      <Avatar
+        dataIntro
         src={profile.avatarUrl}
-        alt={profile.name}
-        className="h-24 w-24 shrink-0 rounded-2xl border border-line object-cover"
+        name={profile.name}
+        className="h-24 w-24 rounded-2xl border border-line"
+        fallbackClassName="rounded-2xl"
       />
 
       <div className="flex flex-col gap-3">

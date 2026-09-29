@@ -13,8 +13,14 @@ import HomeCollabCard from "./HomeCollabCard";
 import HomeCollabCardSkeleton from "./HomeCollabCardSkeleton";
 import { AlertIcon, ChatIcon, CompassIcon, SmileIcon, TargetIcon, UsersIcon } from "@/shared/icons";
 
+/** "1 channel" / "5 channels" — kalimat ringkasan tidak boleh "1 channels". */
+function countLabel(count: number, singular: string): string {
+  return `${count} ${count === 1 ? singular : `${singular}s`}`;
+}
+
 interface HomeContainerProps {
   userName: string;
+  isFaculty: boolean;
   roadmap: RoadmapHeroData | null;
   roadmapLoading: boolean;
   community: { channels: number; servers: number };
@@ -36,6 +42,7 @@ interface HomeContainerProps {
 
 function HomeContainer({
   userName,
+  isFaculty,
   roadmap,
   roadmapLoading,
   community,
@@ -104,18 +111,20 @@ function HomeContainer({
               )}
             </header>
 
-            {/* Roadmap utama — di dalam gradient */}
-            <div className="border-t border-line/20 p-6 sm:p-8">
-              {roadmapLoading ? (
-                <HomeRoadmapHeroSkeleton />
-              ) : (
-                <HomeRoadmapHero
-                  roadmap={roadmap}
-                  onOpen={onOpenRoadmap}
-                  onBrowse={onBrowseRoadmap}
-                />
-              )}
-            </div>
+            {/* Roadmap utama — khusus mahasiswa */}
+            {!isFaculty && (
+              <div className="border-t border-line/20 p-6 sm:p-8">
+                {roadmapLoading ? (
+                  <HomeRoadmapHeroSkeleton />
+                ) : (
+                  <HomeRoadmapHero
+                    roadmap={roadmap}
+                    onOpen={onOpenRoadmap}
+                    onBrowse={onBrowseRoadmap}
+                  />
+                )}
+              </div>
+            )}
           </section>
 
           {/* Internship matcher */}
@@ -162,74 +171,82 @@ function HomeContainer({
               ))
             ) : (
               <>
-                <div className="border-r border-b border-line">
-                  <HomeSummaryCard
-                    icon={ChatIcon}
-                    value={`${community.channels} channels`}
-                    label="Community"
-                    hint={`${community.servers} discussion servers`}
-                    onClick={onGoCommunity}
-                  />
-                </div>
-                <div className="border-r border-b border-line">
-                  <HomeSummaryCard
-                    icon={UsersIcon}
-                    value={`${collab.openRequests} teams`}
-                    label="Find a Team"
-                    hint="requests need members"
-                    onClick={onGoCollab}
-                  />
-                </div>
-                <div className="border-r border-b border-line">
-                  <HomeSummaryCard
-                    icon={CompassIcon}
-                    value={`${career.readiness}%`}
-                    label="Career"
-                    hint="AI insights & progress"
-                    onClick={onGoCareer}
-                  />
-                </div>
+                {!isFaculty && (
+                  <div className="border-r border-b border-line">
+                    <HomeSummaryCard
+                      icon={ChatIcon}
+                      value={countLabel(community.channels, "channel")}
+                      label="Community"
+                      hint={countLabel(community.servers, "discussion server")}
+                      onClick={onGoCommunity}
+                    />
+                  </div>
+                )}
+                {!isFaculty && (
+                  <div className="border-r border-b border-line">
+                    <HomeSummaryCard
+                      icon={UsersIcon}
+                      value={countLabel(collab.openRequests, "team")}
+                      label="Find a Team"
+                      hint={collab.openRequests === 1 ? "request needs members" : "requests need members"}
+                      onClick={onGoCollab}
+                    />
+                  </div>
+                )}
+                {!isFaculty && (
+                  <div className="border-r border-b border-line">
+                    <HomeSummaryCard
+                      icon={CompassIcon}
+                      value={`${career.readiness}%`}
+                      label="Career"
+                      hint="AI insights & progress"
+                      onClick={onGoCareer}
+                    />
+                  </div>
+                )}
               </>
             )}
           </section>
 
-          {/* Cari tim proyek yang cocok */}
-          <section className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <h2 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
-                <UsersIcon className="h-5 w-5 text-accent" /> Need teammates?
-              </h2>
-              <p className="text-sm text-muted">
-                Student projects looking for you.
-              </p>
-            </div>
-            {!collabLoading && collabRequests.length === 0 ? (
-              <p className="text-sm text-muted">
-                No matching project teams right now.{" "}
-                <button
-                  type="button"
-                  onClick={onGoCollab}
-                  className="cursor-pointer font-semibold text-primary"
-                >
-                  Browse all
-                </button>
-              </p>
-            ) : (
-              <div className="flex flex-col border-l border-t border-line">
-                {collabLoading
-                  ? Array.from({ length: 3 }).map((_, index) => (
-                      <div key={index} className="border-r border-b border-line">
-                        <HomeCollabCardSkeleton />
-                      </div>
-                    ))
-                  : collabRequests.map((request) => (
-                      <div key={request.id} className="border-r border-b border-line">
-                        <HomeCollabCard request={request} onOpen={onGoCollab} />
-                      </div>
-                    ))}
+          {/* Cari tim proyek yang cocok — khusus mahasiswa */}
+          {!isFaculty && (
+            <section className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
+                <h2 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
+                  <UsersIcon className="h-5 w-5 text-accent" /> Need teammates?
+                </h2>
+                <p className="text-sm text-muted">
+                  Student projects looking for you.
+                </p>
               </div>
-            )}
-          </section>
+              {!collabLoading && collabRequests.length === 0 ? (
+                <p className="text-sm text-muted">
+                  No matching project teams right now.{" "}
+                  <button
+                    type="button"
+                    onClick={onGoCollab}
+                    className="cursor-pointer font-semibold text-primary"
+                  >
+                    Browse all
+                  </button>
+                </p>
+              ) : (
+                <div className="flex flex-col border-l border-t border-line">
+                  {collabLoading
+                    ? Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="border-r border-b border-line">
+                          <HomeCollabCardSkeleton />
+                        </div>
+                      ))
+                    : collabRequests.map((request) => (
+                        <div key={request.id} className="border-r border-b border-line">
+                          <HomeCollabCard request={request} onOpen={onGoCollab} />
+                        </div>
+                      ))}
+                </div>
+              )}
+            </section>
+          )}
 
         </div>
       </div>

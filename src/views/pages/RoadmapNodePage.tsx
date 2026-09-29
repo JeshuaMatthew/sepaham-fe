@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   fetchRoadmapTree,
+  fetchSubmissions,
   pushActivity,
   pushSubmission,
   roadmapTreeQueryKey,
 } from "@/features/roadmap/services/roadmapService";
 import type { SubmissionPayload, SubmissionState } from "@/features/roadmap/types/roadmap";
-import { evaluateSubmission, nodeArticle, nodeSubmission } from "@/features/roadmap/utils/nodeContent";
+import { nodeArticle, nodeSubmission } from "@/features/roadmap/utils/nodeContent";
 import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
-import { getSubmissions, saveSubmission } from "@/features/roadmap/utils/submissionStore";
-import { markRoadmapActive } from "@/features/roadmap/utils/roadmapActivity";
+import { reportError } from "@/shared/errors";
 import RoadmapNodeContainer from "../components/RoadmapNodeContainer";
 
 /**
@@ -30,14 +30,22 @@ function RoadmapNodePage() {
     enabled: roadmapId != null,
   });
 
-  const [submissions, setSubmissions] = useState<Record<string, SubmissionState>>(() =>
-    getSubmissions(roadmapId ?? ""),
-  );
+  const queryClient = useQueryClient();
+
+  const submissionsQuery = useQuery({
+    queryKey: ["submissions", roadmapId],
+    queryFn: () => fetchSubmissions(roadmapId as string),
+    enabled: roadmapId != null,
+  });
+  const submissions = submissionsQuery.data ?? {};
 
   const roadmap = data ?? null;
   const node = roadmap?.nodes.find((item) => item.id === nodeId) ?? null;
   const statusById = roadmap ? computeStatuses(roadmap, submissions).statusById : {};
   const status = nodeId ? statusById[nodeId] ?? "locked" : "locked";
+
+  // Hook harus di atas `return` kondisional di bawah.
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Node terkunci / tidak ada → kembali ke tree.
   if (roadmap && (!node || status === "locked")) {
@@ -46,15 +54,24 @@ function RoadmapNodePage() {
 
   const submission = node ? nodeSubmission(node) : { type: "checkmark" as const };
 
+  // Kirim bukti ke server dan pakai penilaian yang dikembalikannya. Node
+  // `file` harus sudah mengunggah berkasnya lewat `uploadSubmissionFile`
+  // sebelum payload ini dikirim, kalau tidak server tidak akan menandai selesai.
   const handleSubmit = (payload: SubmissionPayload) => {
     if (!node || !roadmapId) return;
-    const next = evaluateSubmission(submission, payload);
-    saveSubmission(roadmapId, node.id, next);
-    markRoadmapActive(roadmapId);
-    setSubmissions((prev) => ({ ...prev, [node.id]: next }));
-    // Sinkronkan ke backend (best-effort).
-    void pushSubmission(roadmapId, node.id, next).catch(() => {});
-    void pushActivity(roadmapId).catch(() => {});
+    setSubmitError(null);
+    void pushSubmission(roadmapId, node.id, payload)
+      .then((next) => {
+        queryClient.setQueryData<Record<string, SubmissionState>>(
+          ["submissions", roadmapId],
+          (prev = {}) => ({ ...prev, [node.id]: next }),
+        );
+        void pushActivity(roadmapId).catch((error) => reportError("pushActivity", error));
+      })
+      .catch((error) => {
+        reportError("pushSubmission", error);
+        setSubmitError("Gagal menyimpan. Periksa koneksimu lalu coba lagi.");
+      });
   };
 
   return (
@@ -65,6 +82,7 @@ function RoadmapNodePage() {
       article={node ? nodeArticle(node) : ""}
       submission={submission}
       submissionState={nodeId ? submissions[nodeId] : undefined}
+      submitError={submitError}
       isLoading={isLoading}
       isError={isError}
       onBack={() => navigate(`/roadmap/${roadmapId}`)}

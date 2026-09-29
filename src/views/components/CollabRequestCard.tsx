@@ -2,6 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import type { CollabRequest } from "@/features/collab/types/collab";
 import { DmIcon, ExternalIcon, PackageIcon, UsersIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface CollabRequestCardProps {
   request: CollabRequest;
@@ -51,8 +52,14 @@ function CollabRequestCard({ request, onContact }: CollabRequestCardProps) {
             <img
               key={index}
               src={src}
-              alt=""
+              alt={`Screenshot proyek ${request.title} (${index + 1})`}
               className="h-14 w-14 border border-line object-cover"
+              loading="lazy"
+              onError={(event) => {
+                // Sembunyikan gambar yang gagal dimuat (URL basi / berkas
+                // terhapus) supaya tidak tampil ikon gambar rusak.
+                (event.target as HTMLImageElement).style.display = "none";
+              }}
             />
           ))}
         </div>
@@ -103,10 +110,10 @@ function CollabRequestCard({ request, onContact }: CollabRequestCardProps) {
       {/* Footer */}
       <div className="mt-1 flex items-center justify-between gap-3 border-t border-line pt-3">
         <div className="flex items-center gap-2">
-          <img
+          <Avatar
             src={request.author.avatar}
-            alt={request.author.name}
-            className="h-7 w-7 rounded-full object-cover"
+            name={request.author.name}
+            className="h-7 w-7 rounded-full"
           />
           <div className="flex flex-col">
             <span className="text-xs font-medium text-ink">{request.author.name}</span>

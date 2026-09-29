@@ -22,11 +22,12 @@ interface DevCardContainerProps {
   githubConnected: boolean;
   githubUsername: string;
   isEditOpen: boolean;
+  saveError: string | null;
   isProfileLoading: boolean;
   isGithubLoading: boolean;
+  isGithubError: boolean;
   isBadgesLoading: boolean;
   isError: boolean;
-  onConnectGithub: () => void;
   onDisconnectGithub: () => void;
   onOpenEdit: () => void;
   onCloseEdit: () => void;
@@ -42,11 +43,12 @@ function DevCardContainer({
   githubConnected,
   githubUsername,
   isEditOpen,
+  saveError,
   isProfileLoading,
   isGithubLoading,
+  isGithubError,
   isBadgesLoading,
   isError,
-  onConnectGithub,
   onDisconnectGithub,
   onOpenEdit,
   onCloseEdit,
@@ -78,7 +80,20 @@ function DevCardContainer({
   }
 
   const showProfile = !isProfileLoading && profile !== null;
-  const showGithub = !isGithubLoading && github !== null;
+  // GitHub: hanya tampil kalau datanya benar-benar ada. Kalau query masih
+  // loading tampilkan skeleton; kalau error atau null (belum connect),
+  // tampilkan empty state yang jujur — bukan kartu berisi nol.
+  const showGithub = !isGithubLoading && !isGithubError && github !== null;
+  const showGithubEmpty = !isGithubLoading && (isGithubError || github === null);
+
+  // Commit streak hanya bisa ditampilkan kalau angkanya diketahui. `null`
+  // berarti GitHub tidak menyediakannya tanpa token — bukan nol.
+  const hasStreakData =
+    showGithub &&
+    github.stats.currentStreak != null &&
+    github.stats.longestStreak != null &&
+    github.stats.totalCommits != null &&
+    github.weeks.length > 0;
 
   return (
     <div className="min-h-screen bg-canvas px-6 py-12 sm:px-8">
@@ -93,7 +108,6 @@ function DevCardContainer({
             <ProfileActions
               githubConnected={githubConnected}
               githubUsername={githubUsername}
-              onConnectGithub={onConnectGithub}
               onDisconnectGithub={onDisconnectGithub}
               onEdit={onOpenEdit}
               onLogout={onLogout}
@@ -105,9 +119,19 @@ function DevCardContainer({
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <SectionCard title="Top Languages" subtitle="Language breakdown from public repos">
             {showGithub ? (
-              <LanguageChart languages={github.topLanguages} />
-            ) : (
+              github.topLanguages.length > 0 ? (
+                <LanguageChart languages={github.topLanguages} />
+              ) : (
+                <p className="py-6 text-center text-sm text-muted">
+                  Belum ada data bahasa dari repo publik.
+                </p>
+              )
+            ) : isGithubLoading ? (
               <LanguageChartSkeleton />
+            ) : (
+              <p className="py-6 text-center text-sm text-muted">
+                Belum ada data GitHub yang terhubung ke akun ini.
+              </p>
             )}
           </SectionCard>
 
@@ -124,10 +148,16 @@ function DevCardContainer({
 
         {/* Commit streak */}
         <SectionCard title="Commit Activity" subtitle="Contributions over the last 12 months">
-          {showGithub ? (
+          {showGithub && hasStreakData ? (
             <CommitStreak weeks={github.weeks} summary={github.stats} />
-          ) : (
+          ) : isGithubLoading ? (
             <CommitStreakSkeleton />
+          ) : (
+            <p className="py-6 text-center text-sm text-muted">
+              {showGithubEmpty && githubConnected
+                ? "GitHub terhubung, tapi data commit dan streak tidak tersedia tanpa akses token GitHub."
+                : "Belum ada data GitHub yang terhubung ke akun ini."}
+            </p>
           )}
         </SectionCard>
 
@@ -135,23 +165,35 @@ function DevCardContainer({
         <SectionCard title="Top Repositories" subtitle="3 hand-picked top repos">
           <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-3">
             {showGithub
-              ? github.topRepos.map((repo) => (
-                  <div key={repo.id} className="border-r border-b border-line">
-                    <RepoCard repo={repo} />
-                  </div>
-                ))
-              : Array.from({ length: 3 }).map((_, index) => (
-                  <div key={index} className="border-r border-b border-line">
-                    <RepoCardSkeleton />
-                  </div>
-                ))}
+              ? github.topRepos.length > 0
+                ? github.topRepos.map((repo) => (
+                    <div key={repo.id} className="border-r border-b border-line">
+                      <RepoCard repo={repo} />
+                    </div>
+                  ))
+                : (
+                  <p className="col-span-full px-4 py-6 text-center text-sm text-muted">
+                    Belum ada repo publik yang tersimpan.
+                  </p>
+                )
+              : isGithubLoading
+                ? Array.from({ length: 3 }).map((_, index) => (
+                    <div key={index} className="border-r border-b border-line">
+                      <RepoCardSkeleton />
+                    </div>
+                  ))
+                : (
+                  <p className="col-span-full px-4 py-6 text-center text-sm text-muted">
+                    Belum ada data GitHub yang terhubung ke akun ini.
+                  </p>
+                )}
           </div>
         </SectionCard>
       </div>
 
       {/* Modal edit profil */}
       {isEditOpen && profile ? (
-        <ProfileEditModal profile={profile} onClose={onCloseEdit} onSave={onSaveProfile} />
+        <ProfileEditModal profile={profile} saveError={saveError} onClose={onCloseEdit} onSave={onSaveProfile} />
       ) : null}
     </div>
   );

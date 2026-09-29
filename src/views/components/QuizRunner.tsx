@@ -1,12 +1,16 @@
 import { useState } from "react";
 import type { QuizQuestion } from "@/features/roadmap/types/roadmap";
+import { AlertIcon } from "@/shared/icons";
 
 interface QuizRunnerProps {
   questions: QuizQuestion[];
   passingScore: number;
   initialAnswers: Record<string, number>;
+  /** Skor dari server. `undefined` berarti belum pernah dikumpulkan. */
   score: number | undefined;
   passed: boolean;
+  isSubmitting?: boolean;
+  submitError?: string | null;
   onSubmit: (answers: Record<string, number>) => void;
 }
 
@@ -16,12 +20,14 @@ function QuizRunner({
   initialAnswers,
   score,
   passed,
+  isSubmitting = false,
+  submitError = null,
   onSubmit,
 }: QuizRunnerProps) {
   const [answers, setAnswers] = useState<Record<string, number>>(initialAnswers);
 
   const allAnswered = questions.every((question) => answers[question.id] !== undefined);
-  const hasScore = score !== undefined;
+  const hasScore = score !== undefined && score !== null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -70,13 +76,24 @@ function QuizRunner({
         </div>
       ) : null}
 
+      {submitError ? (
+        <p className="flex items-center gap-2 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-danger">
+          <AlertIcon className="h-4 w-4 shrink-0" />
+          {submitError}
+        </p>
+      ) : null}
+
       <button
         type="button"
         onClick={() => onSubmit(answers)}
-        disabled={!allAnswered}
+        disabled={!allAnswered || isSubmitting}
         className="w-fit cursor-pointer rounded-full bg-primary px-7 py-3 text-sm font-semibold text-canvas transition-transform hover:enabled:scale-105 active:enabled:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {hasScore ? "Kumpulkan ulang" : "Kumpulkan jawaban"}
+        {isSubmitting
+          ? "Menilai…"
+          : hasScore
+            ? "Kumpulkan ulang"
+            : "Kumpulkan jawaban"}
       </button>
     </div>
   );

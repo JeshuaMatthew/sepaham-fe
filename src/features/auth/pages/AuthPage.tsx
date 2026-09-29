@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useGoogleLogin } from "@react-oauth/google";
 import {
   AUTH_PROVIDERS_QUERY_KEY,
   fetchAuthProviders,
   submitAuth,
+  submitGoogleAuth,
 } from "@/features/auth/services/authService";
 import type { AuthCredentials, AuthMode } from "@/features/auth/types/auth";
 import type { AccountRole } from "@/features/auth/utils/account";
-import { saveAccount } from "@/features/auth/utils/account";
 import AuthContainer from "@/features/auth/components/AuthContainer";
 import PageTransition from "@/components/animations/PageTransition";
 
@@ -23,21 +24,37 @@ function AuthPage() {
   });
 
   const [mode, setMode] = useState<AuthMode>(initialMode);
-  const [role, setRole] = useState<AccountRole>("student");
   const [values, setValues] = useState<AuthCredentials>({ email: "", password: "" });
 
+  // Tidak ada pilihan peran di form. Server yang menentukan peran dari akun
+  // yang dibuat, dan pendaftaran baru selalu menghasilkan akun mahasiswa.
+  // Tab "Sign in as Faculty" yang pernah ada di sini hanya mengirim
+  // `role: "faculty"` ke API yang sekarang mengabaikannya, jadi menampilkan
+  // pilihan itu hanya menjanjikan sesuatu yang tidak terjadi.
   const goToApp = (accountRole: AccountRole) => {
     void navigate(accountRole === "faculty" ? "/faculty" : "/home");
   };
 
-  const enterAppMock = () => {
-    saveAccount({ role, name: role === "faculty" ? "Dosen" : "Mahasiswa" });
-    goToApp(role);
-  };
-
   const mutation = useMutation({
-    mutationFn: () => submitAuth(mode, values, role),
+    mutationFn: () => submitAuth(mode, values),
     onSuccess: (session) => goToApp(session.role),
+  });
+
+  const googleMutation = useMutation({
+    mutationFn: (accessToken: string) => submitGoogleAuth(accessToken),
+    onSuccess: (session) => goToApp(session.role),
+  });
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      // `useGoogleLogin` mengembalikan OAuth ACCESS token, bukan ID token JWT.
+      // Kirim ke field `access_token`; backend menukaranya ke endpoint
+      // userinfo Google untuk memverifikasi identitas.
+      googleMutation.mutate(tokenResponse.access_token);
+    },
+    onError: () => {
+      // diamkan — user membatalkan atau popup diblokir
+    },
   });
 
   const handleFieldChange = (field: keyof AuthCredentials, value: string) => {
@@ -50,22 +67,23 @@ function AuthPage() {
   };
 
   const handleSso = (providerId: string) => {
-    console.log("sso login", providerId);
-    enterAppMock();
+    // Hanya Google yang didukung — satu-satunya provider di PROVIDERS yang
+    // punya implementasi OAuth (kredensial + package `@react-oauth/google`).
+    if (providerId === "google") {
+      googleLogin();
+    }
   };
 
   return (
     <PageTransition className="h-full">
       <AuthContainer
         mode={mode}
-        role={role}
         values={values}
         providers={providers ?? []}
         isLoadingProviders={isLoading}
-        isSubmitting={mutation.isPending}
-        errorMessage={mutation.error?.message ?? null}
+        isSubmitting={mutation.isPending || googleMutation.isPending}
+        errorMessage={mutation.error?.message ?? googleMutation.error?.message ?? null}
         onModeChange={handleModeChange}
-        onRoleChange={setRole}
         onFieldChange={handleFieldChange}
         onSubmit={() => mutation.mutate()}
         onSso={handleSso}

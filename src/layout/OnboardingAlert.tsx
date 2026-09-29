@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowRightIcon, CloseIcon } from "@/shared/icons";
 
 /**
  * OnboardingAlert — notifikasi dismissible di kanan atas yang muncul
  * selama user belum menyelesaikan onboarding.
  *
- * Menerima prop `onboardingDone` dari AppLayout. Begitu onboarding selesai
- * (preference tersimpan), komponen ini tidak dirender sama sekali.
+ * Tidak menerima prop — AppLayout me-render komponen ini hanya kalau
+ * onboarding belum selesai (preference kosong). Begitu onboarding selesai,
+ * komponen ini tidak dirender sama sekali.
  *
  * Dismissed state disimpan di sessionStorage sehingga muncul lagi
  * setiap sesi baru (tab baru / refresh) sampai onboarding betul-betul selesai.
@@ -53,10 +55,7 @@ function OnboardingAlert() {
           aria-label="Tutup notifikasi"
           className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-muted transition-colors hover:text-ink"
         >
-          {/* Close × */}
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
-          </svg>
+          <CloseIcon className="h-3 w-3" />
         </button>
       </div>
 
@@ -69,9 +68,9 @@ function OnboardingAlert() {
       <button
         type="button"
         onClick={handleGoOnboarding}
-        className="mt-1 self-start border border-line px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-elevate"
+        className="mt-1 inline-flex items-center gap-1.5 self-start border border-line px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-elevate"
       >
-        Mulai Onboarding →
+        Mulai Onboarding <ArrowRightIcon className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
     </div>
   );

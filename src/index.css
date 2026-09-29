@@ -69,9 +69,13 @@
     
     --theme-primary: #e5e5e5;
     --theme-primary-soft: rgba(229, 229, 229, 0.14);
-    --theme-accent: #e5e5e5;
-    --theme-neon: #e5e5e5;
-    --theme-danger: #e5e5e5;
+    /* accent / neon / danger dulunya semua #e5e5e5 (= primary), sehingga
+       label "Direkomendasikan AI", badge "Open", dan tombol "Close request"
+       tampil warna yang sama dan tidak bisa dibedakan. Ketiganya kini punya
+       warna sendiri; semua rasio kontras >= 4.5:1 di atas canvas #1c1c1c. */
+    --theme-accent: #38bdf8; /* sky-400   —  7.96:1 */
+    --theme-neon: #4ade80; /* green-400 —  9.78:1 */
+    --theme-danger: #f87171; /* red-400   —  6.16:1 */
     --theme-blue: #3d6fe6;
     
     --theme-ink: #ededed;
@@ -89,9 +93,11 @@
     
     --theme-primary: #0f172a; /* slate-900 */
     --theme-primary-soft: rgba(15, 23, 42, 0.08);
-    --theme-accent: #0f172a;
-    --theme-neon: #0f172a;
-    --theme-danger: #0f172a;
+    /* Sama seperti tema gelap: accent/neon/danger harus berbeda satu sama
+       lain. Di canvas peach #f1d3b2 ketiga warna ini >= 4.5:1. */
+    --theme-accent: #1e40af; /* blue-800  —  6.11:1 */
+    --theme-neon: #166534; /* green-800 —  4.99:1 */
+    --theme-danger: #991b1b; /* red-800   —  5.82:1 */
     --theme-blue: #3d6fe6; /* keep blue the same */
     
     --theme-ink: #0f172a; /* dark text for readability */

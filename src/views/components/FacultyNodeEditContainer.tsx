@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import type { NodeSubmission } from "@/features/roadmap/types/roadmap";
-import MarkdownView from "./MarkdownView";
+import type { EditableNodeSubmission } from "@/features/roadmap/types/roadmap";
+import MarkdownView from "@/components/ui/MarkdownView";
 import SubmissionEditor from "./SubmissionEditor";
 import { AlertIcon, ArrowLeftIcon, DocIcon, EditIcon } from "@/shared/icons";
 
@@ -8,13 +8,15 @@ interface FacultyNodeEditContainerProps {
   roadmapId: string;
   nodeTitle: string;
   article: string;
-  submission: NodeSubmission;
+  /** Tipe editable: editor soal perlu melihat dan mengubah kunci jawaban. */
+  submission: EditableNodeSubmission;
   notice: string | null;
   isLoading: boolean;
+  isSaving: boolean;
   isError: boolean;
   notFound: boolean;
   onArticleChange: (value: string) => void;
-  onSubmissionChange: (submission: NodeSubmission) => void;
+  onSubmissionChange: (submission: EditableNodeSubmission) => void;
   onSave: () => void;
   onRetry: () => void;
 }
@@ -26,6 +28,7 @@ function FacultyNodeEditContainer({
   submission,
   notice,
   isLoading,
+  isSaving,
   isError,
   notFound,
   onArticleChange,
@@ -123,9 +126,10 @@ function FacultyNodeEditContainer({
               <button
                 type="button"
                 onClick={onSave}
-                className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95"
+                disabled={isSaving}
+                className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
               >
-                Simpan
+                {isSaving ? "Menyimpan…" : "Simpan"}
               </button>
             </div>
           </>

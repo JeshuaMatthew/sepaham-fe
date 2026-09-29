@@ -1,9 +1,13 @@
-import type { NodeSubmission, QuizQuestion, SubmissionType } from "@/features/roadmap/types/roadmap";
+import type {
+  EditableNodeSubmission,
+  QuizQuestionWithKey,
+  SubmissionType,
+} from "@/features/roadmap/types/roadmap";
 import QuizQuestionEditor from "./QuizQuestionEditor";
 
 interface SubmissionEditorProps {
-  submission: NodeSubmission;
-  onChange: (submission: NodeSubmission) => void;
+  submission: EditableNodeSubmission;
+  onChange: (submission: EditableNodeSubmission) => void;
 }
 
 const TYPES: { value: SubmissionType; label: string }[] = [
@@ -16,7 +20,7 @@ const TYPES: { value: SubmissionType; label: string }[] = [
 function SubmissionEditor({ submission, onChange }: SubmissionEditorProps) {
   const questions = submission.questions ?? [];
 
-  const updateQuestion = (index: number, patch: Partial<QuizQuestion>) => {
+  const updateQuestion = (index: number, patch: Partial<QuizQuestionWithKey>) => {
     onChange({
       ...submission,
       questions: questions.map((question, idx) => (idx === index ? { ...question, ...patch } : question)),

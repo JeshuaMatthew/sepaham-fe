@@ -7,7 +7,9 @@ interface FacultyRoadmapsContainerProps {
   roadmaps: RoadmapSummary[];
   dirty: boolean;
   notice: string | null;
+  error: string | null;
   isLoading: boolean;
+  isSaving: boolean;
   isError: boolean;
   onChange: (id: string, patch: Partial<RoadmapSummary>) => void;
   onAdd: () => void;
@@ -22,7 +24,9 @@ function FacultyRoadmapsContainer({
   roadmaps,
   dirty,
   notice,
+  error,
   isLoading,
+  isSaving,
   isError,
   onChange,
   onAdd,
@@ -102,26 +106,29 @@ function FacultyRoadmapsContainer({
 
       <footer className="fixed inset-x-0 bottom-0 border-t border-line bg-surface/90 px-6 py-4 backdrop-blur sm:px-8">
         <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3">
-          <span className="text-sm text-neon">{notice}</span>
+          <div className="flex flex-col">
+            {notice ? <span className="text-sm text-neon">{notice}</span> : null}
+            {error ? <span className="text-sm text-danger">{error}</span> : null}
+          </div>
           <div className="ml-auto flex items-center gap-3">
             <button
               type="button"
               onClick={onReset}
               className="cursor-pointer rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
             >
-              Reset ke default
+              Batalkan perubahan
             </button>
             <button
               type="button"
               onClick={onSave}
-              disabled={!dirty}
+              disabled={!dirty || isSaving}
               className={`rounded-full px-7 py-2.5 text-sm font-semibold transition-all ${
-                dirty
+                dirty && !isSaving
                   ? "cursor-pointer bg-primary text-canvas hover:scale-105 active:scale-95"
                   : "cursor-not-allowed bg-elevate text-muted"
               }`}
             >
-              Simpan
+              {isSaving ? "Menyimpan…" : "Simpan"}
             </button>
           </div>
         </div>

@@ -6,7 +6,7 @@ import type {
   SubmissionPayload,
   SubmissionState,
 } from "@/features/roadmap/types/roadmap";
-import MarkdownView from "./MarkdownView";
+import MarkdownView from "@/components/ui/MarkdownView";
 import NodeSubmissionPanel from "./NodeSubmissionPanel";
 import { AlertIcon, ArrowLeftIcon, CheckIcon, SkillIcon } from "@/shared/icons";
 
@@ -17,6 +17,8 @@ interface RoadmapNodeContainerProps {
   article: string;
   submission: NodeSubmission;
   submissionState: SubmissionState | undefined;
+  /** Pesan error saat penyimpanan submission gagal. */
+  submitError: string | null;
   isLoading: boolean;
   isError: boolean;
   onBack: () => void;
@@ -39,6 +41,7 @@ function RoadmapNodeContainer({
   article,
   submission,
   submissionState,
+  submitError,
   isLoading,
   isError,
   onBack,
@@ -114,8 +117,15 @@ function RoadmapNodeContainer({
             <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
               {SUBMISSION_LABEL[submission.type]}
             </h2>
+            {submitError ? (
+              <p className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-danger">
+                {submitError}
+              </p>
+            ) : null}
             <NodeSubmissionPanel
               key={node.id}
+              roadmapId={roadmap?.id ?? ""}
+              nodeKey={node.id}
               submission={submission}
               state={submissionState}
               onSubmit={onSubmit}

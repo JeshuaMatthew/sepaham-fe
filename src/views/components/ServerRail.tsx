@@ -1,12 +1,14 @@
 import type { Server } from "@/features/chat/types/chat";
+import { PlusIcon } from "@/shared/icons";
 
 interface ServerRailProps {
   servers: Server[];
   activeServerId: string | null;
   onSelectServer: (id: string) => void;
+  onOpenDiscover: () => void;
 }
 
-function ServerRail({ servers, activeServerId, onSelectServer }: ServerRailProps) {
+function ServerRail({ servers, activeServerId, onSelectServer, onOpenDiscover }: ServerRailProps) {
   return (
     <nav className="flex h-full w-17 shrink-0 flex-col items-center gap-3 border-r border-line bg-surface py-4">
       {servers.map((server) => {
@@ -33,10 +35,12 @@ function ServerRail({ servers, activeServerId, onSelectServer }: ServerRailProps
 
       <button
         type="button"
-        title="Tambah server (segera)"
-        className="mt-1 flex h-11 w-11 items-center justify-center rounded-2xl border border-dashed border-line text-lg text-muted transition-colors hover:border-primary hover:text-primary"
+        onClick={onOpenDiscover}
+        title="Temukan komunitas"
+        aria-label="Temukan komunitas"
+        className="mt-1 flex h-11 w-11 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-line text-muted transition-colors hover:border-primary hover:text-primary"
       >
-        +
+        <PlusIcon className="h-5 w-5" />
       </button>
     </nav>
   );

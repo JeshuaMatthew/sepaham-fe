@@ -4,9 +4,12 @@ import {
   BrandIcon, ChatIcon, CompassIcon, GradIcon, HomeIcon, MapIcon, UsersIcon,
 } from "@/shared/icons";
 import ThemeToggle from "@/theme/ThemeToggle";
+import Avatar from "@/components/ui/Avatar";
 
 interface AppNavbarProps {
   avatarUrl: string;
+  /** Nama user — dipakai untuk inisial saat avatar kosong/gagal dimuat. */
+  userName: string;
   isFaculty: boolean;
 }
 
@@ -20,13 +23,13 @@ const NAV_ITEMS: { to: string; icon: ComponentType<{ className?: string }>; labe
 
 const FACULTY_ITEM = { to: "/faculty", icon: GradIcon, label: "Faculty" };
 
-function AppNavbar({ avatarUrl, isFaculty }: AppNavbarProps) {
+function AppNavbar({ avatarUrl, userName, isFaculty }: AppNavbarProps) {
   const items = isFaculty
     ? [...NAV_ITEMS.filter((item) => item.to !== "/community"), FACULTY_ITEM]
     : NAV_ITEMS;
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-3 border-b border-line bg-surface px-4 sm:px-6">
+    <header className="flex h-14 shrink-0 items-center gap-3 border-b border-line bg-surface px-4 sm:px-6 md:hidden">
       <NavLink to="/home" title="Sepaham" className="flex shrink-0 items-center gap-2 text-primary">
         <BrandIcon className="h-5 w-5" />
         <span className="hidden font-display text-base font-bold sm:block">Sepaham</span>
@@ -61,7 +64,12 @@ function AppNavbar({ avatarUrl, isFaculty }: AppNavbarProps) {
           }`
         }
       >
-        <img src={avatarUrl} alt="Profile" className="h-7 w-7 object-cover" />
+        <Avatar
+          src={avatarUrl}
+          name={userName}
+          alt="Profile"
+          className="h-7 w-7 rounded-full"
+        />
       </NavLink>
     </header>
   );

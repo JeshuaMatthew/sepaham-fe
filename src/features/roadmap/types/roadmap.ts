@@ -18,6 +18,18 @@ export interface QuizQuestion {
   id: string;
   question: string;
   options: string[];
+  // Sengaja tidak ada `correctIndex`. Backend membuangnya dari payload sebelum
+  // dikirim ke browser, dan penilaian quiz terjadi di server.
+}
+
+/**
+ * Soal yang SEDANG DIEDIT oleh dosen, jadi masih punya kunci jawaban.
+ *
+ * Hanya dipakai di editor faculty. Jangan pakai tipe ini di komponen
+ * mahasiswa: begitu `correctIndex` masuk ke state yang terkirim ke browser,
+ * penilaian bisa dimanipulasi dari sisi klien.
+ */
+export interface QuizQuestionWithKey extends QuizQuestion {
   correctIndex: number;
 }
 
@@ -25,7 +37,23 @@ export interface NodeSubmission {
   type: SubmissionType;
   prompt?: string;
   questions?: QuizQuestion[];
+  /** Ambang kelulusan, dikirim backend supaya UI tidak perlu menebak. */
   passingScore?: number;
+}
+
+/** Varian yang dipakai editor dosen: menyertakan kunci jawaban. */
+export interface EditableNodeSubmission extends Omit<NodeSubmission, "questions"> {
+  questions?: QuizQuestionWithKey[];
+}
+
+/** Node roadmap di sisi editor dosen: submission-nya boleh punya kunci. */
+export interface EditableRoadmapNode extends Omit<RoadmapNode, "submission"> {
+  submission?: EditableNodeSubmission;
+}
+
+/** Roadmap utuh di sisi editor dosen. */
+export interface EditableRoadmap extends Omit<Roadmap, "nodes"> {
+  nodes: EditableRoadmapNode[];
 }
 
 export interface RoadmapNode {
@@ -59,8 +87,17 @@ export interface SubmissionState {
   done: boolean;
   fileName?: string;
   text?: string;
-  score?: number;
+  /** Skor dari server. `null`/undefined berarti belum dinilai atau bukan quiz. */
+  score?: number | null;
   quizAnswers?: Record<string, number>;
+  /** Rincian penilaian yang dihitung server. */
+  scoreDetail?: {
+    correct: number;
+    total: number;
+    passingScore: number;
+    questions: { questionId: string; correct: boolean }[];
+    selfDeclared?: boolean;
+  } | null;
 }
 
 export interface SubmissionPayload {

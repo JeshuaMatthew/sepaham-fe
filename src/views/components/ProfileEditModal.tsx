@@ -5,11 +5,12 @@ import { CloseIcon } from "@/shared/icons";
 
 interface ProfileEditModalProps {
   profile: Profile;
+  saveError: string | null;
   onClose: () => void;
   onSave: (patch: Partial<Profile>) => void;
 }
 
-function ProfileEditModal({ profile, onClose, onSave }: ProfileEditModalProps) {
+function ProfileEditModal({ profile, saveError, onClose, onSave }: ProfileEditModalProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const [name, setName] = useState(profile.name);
@@ -116,6 +117,7 @@ function ProfileEditModal({ profile, onClose, onSave }: ProfileEditModalProps) {
         </div>
 
         <div className="mt-1 flex items-center justify-end gap-2">
+          {saveError ? <span className="mr-auto text-xs text-danger">{saveError}</span> : null}
           <button
             type="button"
             onClick={onClose}

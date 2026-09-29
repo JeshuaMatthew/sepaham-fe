@@ -5,6 +5,8 @@
 export type CollabStatus = "open" | "full";
 
 export interface CollabAuthor {
+  /** `null` untuk request yang penulisnya sudah tidak ada di database. */
+  id: string | null;
   name: string;
   avatar: string;
   role: string;
@@ -50,4 +52,10 @@ export interface NewCollabInput {
   images: string[];
   communityId?: string;
   newCommunityName?: string;
+}
+
+export interface MyTeam {
+  request: CollabRequest;
+  applicants: CollabApplicant[];
+  communityServerId: string;
 }

@@ -1,5 +1,5 @@
 import type { RoadmapDifficulty, RoadmapSummary } from "@/features/roadmap/types/roadmap";
-import { ROLE_OPTIONS } from "@/features/onboarding/utils/roleOptions";
+import { useRoleOptions } from "@/features/onboarding/utils/roleOptions";
 import { EditIcon, SkillIcon } from "@/shared/icons";
 
 interface RoadmapEditorCardProps {
@@ -12,6 +12,7 @@ interface RoadmapEditorCardProps {
 const DIFFICULTIES: RoadmapDifficulty[] = ["Beginner", "Intermediate", "Advanced"];
 
 function RoadmapEditorCard({ roadmap, onChange, onEditContent, onDelete }: RoadmapEditorCardProps) {
+  const { options: roleOptions } = useRoleOptions();
   return (
     <div className="flex flex-col gap-3 rounded-card  p-5">
       <div className="flex items-center gap-3">
@@ -44,7 +45,7 @@ function RoadmapEditorCard({ roadmap, onChange, onEditContent, onDelete }: Roadm
           onChange={(event) => onChange(roadmap.id, { roleId: event.target.value })}
           className="rounded-lg border border-line bg-surface px-2 py-1.5 text-xs text-ink focus:border-primary focus:outline-none"
         >
-          {ROLE_OPTIONS.map((role) => (
+          {roleOptions.map((role) => (
             <option key={role.id} value={role.id}>{role.label}</option>
           ))}
         </select>

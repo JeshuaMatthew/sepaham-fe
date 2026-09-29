@@ -15,6 +15,8 @@ interface CollabContainerProps {
   isError: boolean;
   onRoleFilterChange: (role: string) => void;
   onContact: (request: CollabRequest) => void;
+  /** Pesan error saat DM gagal dibuka, mis. penulis request tidak punya akun. */
+  contactError: string | null;
   onOpenCreate: () => void;
   onCloseCreate: () => void;
   onCreate: (input: NewCollabInput) => void;
@@ -32,6 +34,7 @@ function CollabContainer({
   isError,
   onRoleFilterChange,
   onContact,
+  contactError,
   onOpenCreate,
   onCloseCreate,
   onCreate,
@@ -111,13 +114,21 @@ function CollabContainer({
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2">
-            {requests.map((request) => (
-              <div key={request.id} className="border-r border-b border-line">
-                <CollabRequestCard request={request} onContact={onContact} />
-              </div>
-            ))}
-          </div>
+          <>
+            {contactError ? (
+              <p className="mb-4 flex items-center gap-2 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-danger">
+                <AlertIcon className="h-4 w-4 shrink-0" />
+                {contactError}
+              </p>
+            ) : null}
+            <div className="grid grid-cols-1 border-l border-t border-line sm:grid-cols-2">
+              {requests.map((request) => (
+                <div key={request.id} className="border-r border-b border-line">
+                  <CollabRequestCard request={request} onContact={onContact} />
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

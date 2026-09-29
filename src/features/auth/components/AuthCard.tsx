@@ -1,43 +1,29 @@
 import { useEffect, useRef } from "react";
-import type { ComponentType, FormEvent } from "react";
+import type { FormEvent } from "react";
 import gsap from "gsap";
 import type { AuthCredentials, AuthMode, AuthProvider } from "@/features/auth/types/auth";
-import type { AccountRole } from "@/features/auth/utils/account";
-import { BrandIcon, GradIcon, UserIcon } from "@/shared/icons";
+import { BrandIcon } from "@/shared/icons";
 import SsoButton from "@/features/auth/components/SsoButton";
 
 interface AuthCardProps {
   mode: AuthMode;
-  role: AccountRole;
   values: AuthCredentials;
   providers: AuthProvider[];
   isSubmitting: boolean;
   errorMessage: string | null;
   onModeChange: (mode: AuthMode) => void;
-  onRoleChange: (role: AccountRole) => void;
   onFieldChange: (field: keyof AuthCredentials, value: string) => void;
   onSubmit: () => void;
   onSso: (providerId: string) => void;
 }
 
-const ROLE_TABS: {
-  value: AccountRole;
-  label: string;
-  icon: ComponentType<{ className?: string }>;
-}[] = [
-  { value: "student", label: "Student", icon: UserIcon },
-  { value: "faculty", label: "Faculty", icon: GradIcon },
-];
-
 function AuthCard({
   mode,
-  role,
   values,
   providers,
   isSubmitting,
   errorMessage,
   onModeChange,
-  onRoleChange,
   onFieldChange,
   onSubmit,
   onSso,
@@ -77,28 +63,6 @@ function AuthCard({
         </div>
       </div>
 
-      <div className="mb-6 flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Sign in as</span>
-        <div className="flex gap-6">
-          {ROLE_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              type="button"
-              onClick={() => onRoleChange(tab.value)}
-              aria-pressed={role === tab.value}
-              className={`flex items-center gap-1.5 border-b-2 py-2 text-sm font-semibold ${
-                role === tab.value
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted hover:text-ink"
-              }`}
-            >
-              <tab.icon className="h-4 w-4" />
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       <div className="flex flex-col gap-3">
         {providers.map((provider) => (
           <SsoButton
@@ -134,7 +98,7 @@ function AuthCard({
           <input
             type="password"
             autoComplete={isRegister ? "new-password" : "current-password"}
-            placeholder="At least 6 characters"
+            placeholder={isRegister ? "At least 8 characters" : "Your password"}
             value={values.password}
             onChange={(event) => onFieldChange("password", event.target.value)}
             className="border border-line bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-primary focus:outline-none"

@@ -1,6 +1,6 @@
-import type { ApplicantStatus } from "@/features/collab/types/collab";
-import type { MyTeam } from "@/features/collab/utils/myTeamsStore";
+import type { ApplicantStatus, MyTeam } from "@/features/collab/types/collab";
 import { ArrowLeftIcon, CheckIcon, CloseIcon, LinkIcon, UsersIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface MyTeamsContainerProps {
   teams: MyTeam[];
@@ -70,8 +70,12 @@ function MyTeamsContainer({
                       <img
                         key={index}
                         src={src}
-                        alt=""
+                        alt={`Screenshot proyek ${request.title} (${index + 1} dari ${request.images!.length})`}
                         className="h-20 w-20 border border-line object-cover"
+                        loading="lazy"
+                        onError={(event) => {
+                          (event.target as HTMLImageElement).style.display = "none";
+                        }}
                       />
                     ))}
                   </div>
@@ -107,10 +111,10 @@ function MyTeamsContainer({
                         key={applicant.id}
                         className="flex items-center gap-3 border-r border-b border-line p-3"
                       >
-                        <img
+                        <Avatar
                           src={applicant.avatar}
-                          alt={applicant.name}
-                          className="h-9 w-9 rounded-full object-cover"
+                          name={applicant.name}
+                          className="h-9 w-9 rounded-full"
                         />
                         <div className="flex min-w-0 flex-col">
                           <span className="truncate text-sm font-semibold text-ink">

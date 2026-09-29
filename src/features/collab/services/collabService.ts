@@ -1,6 +1,5 @@
 import AxiosInstance from "@/lib/axios";
-import type { ApplicantStatus, CollabApplicant, CollabRequest, NewCollabInput } from "@/features/collab/types/collab";
-import type { MyTeam } from "@/features/collab/utils/myTeamsStore";
+import type { ApplicantStatus, CollabApplicant, CollabRequest, NewCollabInput, MyTeam } from "@/features/collab/types/collab";
 
 export const COLLAB_QUERY_KEY = ["collab", "requests"] as const;
 export const MY_TEAMS_QUERY_KEY = ["collab", "my-teams"] as const;

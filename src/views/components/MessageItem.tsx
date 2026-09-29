@@ -1,6 +1,7 @@
 import type { ChatMessage } from "@/features/chat/types/chat";
 import CodeBlock from "./CodeBlock";
 import { ChatIcon, FileIcon, ImageIcon, MaskIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface MessageItemProps {
   message: ChatMessage;
@@ -26,10 +27,10 @@ function MessageItem({
           <MaskIcon className="h-5 w-5" />
         </div>
       ) : (
-        <img
+        <Avatar
           src={message.authorAvatar}
-          alt={message.authorName}
-          className="h-10 w-10 shrink-0 rounded-xl object-cover"
+          name={message.authorName}
+          className="h-10 w-10 rounded-xl"
         />
       )}
 
@@ -64,7 +65,18 @@ function MessageItem({
               )}
             </span>
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-ink">{message.attachment.name}</span>
+              {message.attachment.url ? (
+                <a
+                  href={message.attachment.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-xs font-medium text-primary hover:underline"
+                >
+                  {message.attachment.name}
+                </a>
+              ) : (
+                <span className="text-xs font-medium text-ink">{message.attachment.name}</span>
+              )}
               <span className="text-[11px] text-muted">{message.attachment.size}</span>
             </div>
           </div>

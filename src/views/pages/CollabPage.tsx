@@ -10,6 +10,7 @@ import {
 import {
   MY_COMMUNITIES_QUERY_KEY,
   fetchMyCommunities,
+  openDm,
 } from "@/features/chat/services/communityService";
 import type { CollabRequest, NewCollabInput } from "@/features/collab/types/collab";
 import CollabContainer from "../components/CollabContainer";
@@ -17,16 +18,10 @@ import CollabContainer from "../components/CollabContainer";
 /**
  * CollabPage — "Cari Tim": request mengajak user lain bikin aplikasi bareng.
  *
- * Data dari backend Axum (list + create). Tombol "Gabung via DM" mengarahkan ke
- * chat untuk DM langsung dengan penulis. TIDAK ADA class Tailwind di sini.
+ * Data dari backend (list + create). Tombol "Gabung via DM" membuka DM
+ * sungguhan lewat `POST /api/dms` lalu navigasi ke chat. TIDAK ADA class
+ * Tailwind di sini.
  */
-
-function slug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 function CollabPage() {
   const navigate = useNavigate();
@@ -43,6 +38,7 @@ function CollabPage() {
 
   const [roleFilter, setRoleFilter] = useState("semua");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
 
   // Komunitas yang bisa dipilih di modal = komunitas milik user (tim).
   const communities = useMemo(
@@ -77,19 +73,41 @@ function CollabPage() {
     },
   });
 
-  const handleContact = (request: CollabRequest) => {
-    // Integrasi DM: buka chat 1-on-1 dengan penulis request.
-    void navigate("/community", {
-      state: {
-        dmWith: {
-          userId: slug(request.author.name),
-          userName: request.author.name,
-          avatar: request.author.avatar,
-          role: request.author.role,
+  // Buka DM dengan penulis request.
+  //
+  // Sebelumnya userId dibuat dari slug NAMA penulis lalu halamannya membuat
+  // percakapan palsu di browser. Sekarang id diambil dari `author.id` milik
+  // server, dan percakapan benar-benar dibuat lewat API. Kalau `author.id`
+  // kosong (request lama yang penulisnya sudah tidak ada di database),
+  // percakapan tidak bisa dibuat dan itu harus detto, bukan ditebak.
+  const contactMutation = useMutation({
+    mutationFn: (request: CollabRequest) => {
+      if (!request.author.id) {
+        return Promise.reject(new Error("AUTHOR_ID_MISSING"));
+      }
+      return openDm(request.author.id);
+    },
+    onSuccess: (dm) => {
+      setContactError(null);
+      void navigate("/community", {
+        state: {
+          dmWith: {
+            userId: dm.userId,
+            userName: dm.userName,
+            avatar: dm.avatar,
+            role: dm.role,
+          },
         },
-      },
-    });
-  };
+      });
+    },
+    onError: (error) => {
+      setContactError(
+        error instanceof Error && error.message === "AUTHOR_ID_MISSING"
+          ? "Penulis request ini tidak punya akun, jadi DM tidak bisa dibuka."
+          : "Gagal membuka DM. Coba lagi.",
+      );
+    },
+  });
 
   return (
     <CollabContainer
@@ -101,7 +119,8 @@ function CollabPage() {
       isLoading={isLoading}
       isError={isError}
       onRoleFilterChange={setRoleFilter}
-      onContact={handleContact}
+      onContact={(request) => contactMutation.mutate(request)}
+      contactError={contactError}
       onOpenCreate={() => setIsCreateOpen(true)}
       onCloseCreate={() => setIsCreateOpen(false)}
       onCreate={(input) => createMutation.mutate(input)}

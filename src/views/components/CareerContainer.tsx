@@ -22,9 +22,9 @@ interface CareerContainerProps {
   isLoading: boolean;
   hasCv: boolean;
   cvName: string | null;
+  cvError: string | null;
   githubConnected: boolean;
   onUploadCv: (event: ChangeEvent<HTMLInputElement>) => void;
-  onConnectGithub: () => void;
   onGoConsult: () => void;
   onGoRoadmap: () => void;
   onGoPartner: () => void;
@@ -63,9 +63,9 @@ function CareerContainer({
   isLoading,
   hasCv,
   cvName,
+  cvError,
   githubConnected,
   onUploadCv,
-  onConnectGithub,
   onGoConsult,
   onGoRoadmap,
   onGoPartner,
@@ -120,18 +120,11 @@ function CareerContainer({
                     />
                   </label>
                 )}
-                {githubConnected ? (
+                {cvError ? <span className="text-xs text-danger">{cvError}</span> : null}
+                {githubConnected && (
                   <span className="inline-flex items-center gap-1.5 text-sm text-muted">
                     <CheckIcon className="h-4 w-4 text-primary" /> GitHub connected
                   </span>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={onConnectGithub}
-                    className="inline-flex cursor-pointer items-center gap-1.5 border border-line px-3 py-1.5 text-sm font-semibold text-primary w-max"
-                  >
-                    <GithubIcon className="h-4 w-4" /> Connect GitHub
-                  </button>
                 )}
               </div>
             </section>
@@ -230,31 +223,49 @@ function CareerContainer({
                 <SparkleIcon className="h-3.5 w-3.5" /> AI career match
               </span>
               <h2 className="font-display text-2xl font-bold text-ink">Top careers for you</h2>
-              <p className="text-sm text-muted">Ranked from your questionnaire, roadmap & activity.</p>
+              <p className="text-sm text-muted">
+                {topMatches.length > 0
+                  ? "Ranked from your onboarding assessment. The percentage is relative to your best-matching role."
+                  : "Ranked from your onboarding assessment."}
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-              {topMatches.map((match, index) => (
-                <div key={match.role.id} className="flex flex-col gap-2 p-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-xs text-muted">#{index + 1}</span>
-                    <span className="font-display text-xl font-bold text-ink">{match.fitPercent}%</span>
+            {topMatches.length === 0 ? (
+              // Tanpa skor onboarding tidak ada yang bisa diurutkan. Versi lama
+              // menampilkan tiga role dengan persentase karangan supaya kolom
+              // ini tidak terlihat kosong — itu data yang tidak milik siapa pun.
+              <p className="rounded-xl border border-line bg-surface p-4 text-sm text-muted">
+                Belum ada assessment onboarding, jadi belum ada role yang bisa
+                diperingkatkan.{" "}
+                <a href="/onboarding" className="font-semibold text-primary hover:underline">
+                  Kerjakan onboarding
+                </a>{" "}
+                untuk mendapatkan rekomendasi berdasarkan jawabanmu.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                {topMatches.map((match, index) => (
+                  <div key={match.role.id} className="flex flex-col gap-2 p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-muted">#{index + 1}</span>
+                      <span className="font-display text-xl font-bold text-ink">{match.fitPercent}%</span>
+                    </div>
+                    <h3 className="font-display text-base font-semibold text-ink leading-tight">{match.role.title}</h3>
+                    <p className="text-xs leading-relaxed text-muted">{match.role.tagline}</p>
+                    <div className="mt-auto flex flex-wrap gap-1 pt-2">
+                      {match.role.techStack.slice(0, 3).map((tech) => (
+                        <span
+                          key={tech}
+                          className="border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <h3 className="font-display text-base font-semibold text-ink leading-tight">{match.role.title}</h3>
-                  <p className="text-xs leading-relaxed text-muted">{match.role.tagline}</p>
-                  <div className="mt-auto flex flex-wrap gap-1 pt-2">
-                    {match.role.techStack.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* 2. Kontak perusahaan */}

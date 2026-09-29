@@ -16,7 +16,7 @@ import "@xyflow/react/dist/style.css";
 import type { Roadmap, RoadmapEdge, RoadmapNode, RoadmapStyle } from "@/features/roadmap/types/roadmap";
 import { fromFlowPosition, toFlowPosition } from "@/features/roadmap/utils/roadmapGraph";
 import { computeGroupBoxes } from "@/features/roadmap/utils/flowGroups";
-import { ROLE_OPTIONS } from "@/features/onboarding/utils/roleOptions";
+import { useRoleOptions } from "@/features/onboarding/utils/roleOptions";
 import RoadmapFlowNode from "./RoadmapFlowNode";
 import GroupBoxNode from "./GroupBoxNode";
 import NodeAppearancePopup from "./NodeAppearancePopup";
@@ -27,6 +27,7 @@ import RoadmapStyleControls from "./RoadmapStyleControls";
 interface RoadmapFlowEditorProps {
   initialRoadmap: Roadmap;
   notice: string | null;
+  isSaving: boolean;
   onSave: (roadmap: Roadmap) => void;
   onReset: () => void;
   /** buka halaman edit materi/markdown untuk sebuah node. */
@@ -193,6 +194,7 @@ function findFreePos(nodes: Node[]): { x: number; y: number } {
 function RoadmapFlowEditor({
   initialRoadmap,
   notice,
+  isSaving,
   onSave,
   onReset,
   onOpenNodePage,
@@ -200,6 +202,7 @@ function RoadmapFlowEditor({
   const [title, setTitle] = useState(initialRoadmap.title);
   const emoji = initialRoadmap.emoji;
   const [roleId, setRoleId] = useState(initialRoadmap.roleId);
+  const { options: roleOptions } = useRoleOptions();
   const [style, setStyle] = useState<RoadmapStyle>(initialRoadmap.style ?? {});
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>(
@@ -486,7 +489,7 @@ function RoadmapFlowEditor({
           className="rounded-lg border border-line bg-surface px-2 py-2 text-xs text-ink focus:border-primary focus:outline-none"
         >
           <option value="">(role)</option>
-          {ROLE_OPTIONS.map((role) => (
+          {roleOptions.map((role) => (
             <option key={role.id} value={role.id}>{role.label}</option>
           ))}
         </select>
@@ -616,14 +619,15 @@ function RoadmapFlowEditor({
           onClick={onReset}
           className="cursor-pointer rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
         >
-          Reset ke default
+          Batalkan perubahan
         </button>
         <button
           type="button"
           onClick={handleSave}
-          className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95"
+          disabled={isSaving}
+          className="cursor-pointer rounded-full bg-primary px-7 py-2.5 text-sm font-semibold text-canvas transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
         >
-          Simpan
+          {isSaving ? "Menyimpan…" : "Simpan"}
         </button>
       </div>
     </div>

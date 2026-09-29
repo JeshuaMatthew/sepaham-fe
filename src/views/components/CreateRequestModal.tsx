@@ -25,9 +25,19 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
   const [newCommunityName, setNewCommunityName] = useState("");
   const [images, setImages] = useState<string[]>([]);
 
+  const MAX_IMAGES = 3;
+  const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+
   const handleImages = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files ?? []);
-    files.forEach((file) => {
+    const files = Array.from(event.target.files ?? []).filter((file) =>
+      file.type.startsWith("image/"),
+    );
+    const room = Math.max(0, MAX_IMAGES - images.length);
+    files.slice(0, room).forEach((file) => {
+      // Backend mengonversi data URL menjadi berkas WebP di `uploads/`, jadi
+      // base64 di body JSON memang mekanisme upload yang didukung. Batas
+      // jumlah dan ukuran di sini supaya payload tidak membengkak tanpa batas.
+      if (file.size > MAX_IMAGE_BYTES) return;
       const reader = new FileReader();
       reader.onload = () => setImages((prev) => [...prev, String(reader.result)]);
       reader.readAsDataURL(file);
@@ -175,7 +185,11 @@ function CreateRequestModal({ communities, onCreate, onClose }: CreateRequestMod
             <div className="flex flex-wrap gap-2">
               {images.map((src, index) => (
                 <div key={index} className="relative">
-                  <img src={src} alt="" className="h-16 w-16 border border-line object-cover" />
+                  <img
+                    src={src}
+                    alt={`Screenshot ${index + 1} dari ${images.length} yang dipilih`}
+                    className="h-16 w-16 border border-line object-cover"
+                  />
                   <button
                     type="button"
                     onClick={() => setImages((prev) => prev.filter((_, i) => i !== index))}

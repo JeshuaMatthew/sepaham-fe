@@ -1,6 +1,11 @@
 /**
- * Preferensi belajar user (hasil kuesioner Likert onboarding), disimpan di
- * localStorage.
+ * Preferensi belajar user (hasil onboarding).
+ *
+ * `localStorage` di sini hanya CACHE baca-sinkron supaya halaman bisa render
+ * tanpa menunggu network. Sumber kebenarannya tetap `GET /preferences` di
+ * server — ditulis lewat `pushPreference()` setiap onboarding selesai, dibaca
+ * ulang setiap login. Jangan pernah menganggap isi cache ini pasti sama
+ * dengan server.
  */
 
 export interface Preference {

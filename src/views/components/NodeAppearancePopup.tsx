@@ -100,7 +100,11 @@ function NodeAppearancePopup({
         </label>
         {node.image ? (
           <>
-            <img src={node.image} alt="" className="h-7 w-7 border border-line object-cover" />
+            <img
+              src={node.image}
+              alt={node.title ? `Preview gambar node ${node.title}` : "Preview gambar node"}
+              className="h-7 w-7 border border-line object-cover"
+            />
             <button
               type="button"
               onClick={() => onChange(node.id, { image: undefined })}

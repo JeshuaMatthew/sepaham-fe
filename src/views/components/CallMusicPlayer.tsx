@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Track } from "livekit-client";
 import type { LocalTrackPublication, Room } from "livekit-client";
-import type { PlaylistTrack } from "@/features/chat/types/music";
+import type { PlaylistTrack } from "@/features/chat/types/chat";
 import {
   MusicIcon,
   NextIcon,

@@ -60,19 +60,31 @@ function FacultyRequestsContainer({
         ) : (
           <div className="grid grid-cols-1 border-l border-t border-line">
             {requests.map((request) => {
-              const closed = closedIds.includes(request.id) || request.status === "full";
+              // "closed" (ditutup oleh dosen) dan "full" (tim sudah penuh) dua
+              // hal berbeda. Sebelumnya keduanya disamakan sehingga badge
+              // menulis "Closed" untuk request yang belum ditutup, sementara
+              // tombolnya tetap berbunyi "Close request".
+              const isClosed = closedIds.includes(request.id);
+              const isFull = request.status === "full";
               return (
                 <div key={request.id} className="flex flex-col gap-2 border-r border-b border-line p-4">
                   <div className="flex items-start justify-between gap-3">
                     <span className="font-display text-sm font-semibold text-ink">
                       {request.title}
                     </span>
-                    <span
-                      className={`shrink-0 text-[10px] font-semibold uppercase tracking-wide ${
-                        closed ? "text-muted" : "text-neon"
-                      }`}
-                    >
-                      {closed ? "Closed" : "Open"}
+                    <span className="flex shrink-0 items-center gap-1.5">
+                      {isClosed ? (
+                        <span className="rounded-full border border-line px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted">
+                          Closed
+                        </span>
+                      ) : null}
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                          isFull ? "border border-line text-muted" : "text-neon"
+                        }`}
+                      >
+                        {isFull ? "Full" : "Open"}
+                      </span>
                     </span>
                   </div>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
@@ -88,12 +100,12 @@ function FacultyRequestsContainer({
                     type="button"
                     onClick={() => onToggleClose(request.id)}
                     className={`w-fit cursor-pointer rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
-                      closedIds.includes(request.id)
+                      isClosed
                         ? "border border-line text-muted hover:text-ink"
                         : "bg-danger/15 text-danger hover:bg-danger/25"
                     }`}
                   >
-                    {closedIds.includes(request.id) ? "Reopen request" : "Close request"}
+                    {isClosed ? "Reopen request" : "Close request"}
                   </button>
                 </div>
               );

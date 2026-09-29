@@ -1,5 +1,6 @@
 import type { ActiveView, Channel, DirectConversation } from "@/features/chat/types/chat";
 import { MaskIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface ChannelSidebarProps {
   serverName: string;
@@ -74,7 +75,11 @@ function ChannelSidebar({
                 }`}
               >
                 <span className="relative shrink-0">
-                  <img src={dm.avatar} alt={dm.userName} className="h-6 w-6 rounded-full object-cover" />
+                  <Avatar
+                    src={dm.avatar}
+                    name={dm.userName}
+                    className="h-6 w-6 rounded-full"
+                  />
                   <span
                     className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-surface ${
                       dm.online ? "bg-neon" : "bg-muted"

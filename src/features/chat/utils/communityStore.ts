@@ -1,29 +1,14 @@
 import type { Channel, Server } from "@/features/chat/types/chat";
 
 /**
- * Komunitas yang dibuat dari request "Cari Tim", disimpan di localStorage.
+ * Komunitas dari server — bentuk yang dikembalikan `/community/mine`.
+ *
+ * (Dulu ada `getStoredCommunities`/`addStoredCommunity` yang menyimpan
+ * komunitas di localStorage. Itu sudah tidak dipakai: daftar komunitas selalu
+ * diambil dari server.)
  */
 
 export interface StoredCommunity {
   server: Server;
   channels: Channel[];
-}
-
-const STORAGE_KEY = "sepaham:communities";
-
-export function getStoredCommunities(): StoredCommunity[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StoredCommunity[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-export function addStoredCommunity(community: StoredCommunity): void {
-  try {
-    const all = getStoredCommunities();
-    if (all.some((item) => item.server.id === community.server.id)) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([community, ...all]));
-  } catch {}
 }

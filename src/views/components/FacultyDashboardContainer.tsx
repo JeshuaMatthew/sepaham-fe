@@ -38,6 +38,12 @@ const CARDS: {
     title: "Onboarding questions",
     description: "Compose the statements students answer on a Likert scale.",
   },
+  {
+    to: "/faculty/roles",
+    Icon: GradIcon,
+    title: "Manage roles",
+    description: "Add, edit, or delete career roles available to students.",
+  },
 ];
 
 function FacultyDashboardContainer() {

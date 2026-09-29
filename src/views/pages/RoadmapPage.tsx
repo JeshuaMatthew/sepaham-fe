@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -12,17 +12,15 @@ import {
   INTERNSHIP_UNLOCK_PERCENT,
   fetchInternshipContacts,
 } from "@/features/career/services/internshipService";
-import type { SubmissionState } from "@/features/roadmap/types/roadmap";
 import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
-import { getSubmissions, saveSubmission } from "@/features/roadmap/utils/submissionStore";
-import { markRoadmapActive } from "@/features/roadmap/utils/roadmapActivity";
+import { reportError } from "@/shared/errors";
 import RoadmapContainer from "../components/RoadmapContainer";
 
 /**
  * RoadmapPage — skill tree satu roadmap (React Flow).
  *
  * Klik node → buka HALAMAN materi node (bukan modal). Status tiap node
- * diturunkan dari progres submission (localStorage per roadmap). TIDAK ADA
+ * diturunkan dari progres submission di server. TIDAK ADA
  * class Tailwind di sini.
  */
 
@@ -33,8 +31,7 @@ function RoadmapPage() {
   // Catat roadmap ini sebagai "baru dibuka" untuk sorotan di katalog.
   useEffect(() => {
     if (!roadmapId) return;
-    markRoadmapActive(roadmapId);
-    void pushActivity(roadmapId).catch(() => {});
+    void pushActivity(roadmapId).catch((error) => reportError("pushActivity", error));
   }, [roadmapId]);
 
   const { data, isLoading, isError, refetch } = useQuery({
@@ -48,31 +45,12 @@ function RoadmapPage() {
     queryFn: fetchInternshipContacts,
   });
 
-  // Progres dibaca dari store saat mount (halaman ini remount ketika kembali
-  // dari halaman node, sehingga progresnya selalu segar).
-  const [submissions, setSubmissions] = useState<Record<string, SubmissionState>>(() =>
-    getSubmissions(roadmapId ?? ""),
-  );
-
-  // Hidrasi progres dari backend: yang lokal (lebih segar) menang, server
-  // mengisi node yang belum ada di localStorage.
-  useEffect(() => {
-    if (!roadmapId) return;
-    let cancelled = false;
-    void fetchSubmissions(roadmapId)
-      .then((remote) => {
-        if (cancelled) return;
-        const local = getSubmissions(roadmapId);
-        Object.entries(remote).forEach(([nodeKey, state]) => {
-          if (!(nodeKey in local)) saveSubmission(roadmapId, nodeKey, state);
-        });
-        setSubmissions(getSubmissions(roadmapId));
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [roadmapId]);
+  const submissionsQuery = useQuery({
+    queryKey: ["submissions", roadmapId],
+    queryFn: () => fetchSubmissions(roadmapId as string),
+    enabled: roadmapId != null,
+  });
+  const submissions = submissionsQuery.data ?? {};
 
   const roadmap = data ?? null;
   const { statusById, completedCount } = roadmap

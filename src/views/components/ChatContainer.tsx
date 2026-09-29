@@ -10,11 +10,14 @@ import type {
 } from "@/features/chat/types/chat";
 import ServerRail from "./ServerRail";
 import ServerRailSkeleton from "./ServerRailSkeleton";
+import ServerDiscoverPanel from "./ServerDiscoverPanel";
 import ChannelSidebar from "./ChannelSidebar";
 import ChannelSidebarSkeleton from "./ChannelSidebarSkeleton";
 import MessageList from "./MessageList";
 import MessageListSkeleton from "./MessageListSkeleton";
 import { AlertIcon, CheckIcon, CloseIcon, MaskIcon, PhoneIcon, VideoIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
+import type { DiscoverServer } from "@/features/chat/services/communityService";
 import MessageComposer from "./MessageComposer";
 import ThreadPanel from "./ThreadPanel";
 import CallPanel from "./CallPanel";
@@ -34,11 +37,24 @@ interface ChatContainerProps {
   threadReplies: ChatMessage[];
   activeCall: ActiveCall | null;
   joinNotice: string | null;
+  /** Pesan error saat DM dari Cari Tim gagal dibuka. */
+  dmOpenError: string | null;
+  onDismissDmOpenError: () => void;
+  /** Pesan error saat kirim pesan/gabung/panggilan gagal. */
+  sendError: string | null;
+  onDismissSendError: () => void;
   isLoading: boolean;
   isMessagesLoading: boolean;
   isError: boolean;
   onDismissJoinNotice: () => void;
   onSelectServer: (id: string) => void;
+  onOpenDiscover: () => void;
+  onCloseDiscover: () => void;
+  onJoinServer: (serverId: string) => void;
+  isDiscoverOpen: boolean;
+  isDiscoverLoading: boolean;
+  discoverServers: DiscoverServer[];
+  joiningServerId: string | null;
   onSelectChannel: (id: string) => void;
   onSelectDm: (id: string) => void;
   onOpenThread: (messageId: string) => void;
@@ -65,11 +81,22 @@ function ChatContainer({
   threadReplies,
   activeCall,
   joinNotice,
+  dmOpenError,
+  onDismissDmOpenError,
+  sendError,
+  onDismissSendError,
   isLoading,
   isMessagesLoading,
   isError,
   onDismissJoinNotice,
   onSelectServer,
+  onOpenDiscover,
+  onCloseDiscover,
+  onJoinServer,
+  isDiscoverOpen,
+  isDiscoverLoading,
+  discoverServers,
+  joiningServerId,
   onSelectChannel,
   onSelectDm,
   onOpenThread,
@@ -111,8 +138,19 @@ function ChatContainer({
           servers={servers}
           activeServerId={activeServerId}
           onSelectServer={onSelectServer}
+          onOpenDiscover={onOpenDiscover}
         />
       )}
+
+      {isDiscoverOpen ? (
+        <ServerDiscoverPanel
+          servers={discoverServers}
+          joiningId={joiningServerId}
+          isLoading={isDiscoverLoading}
+          onJoin={onJoinServer}
+          onClose={onCloseDiscover}
+        />
+      ) : null}
 
       {/* Daftar channel disembunyikan saat panggilan aktif agar chat tetap lega */}
       {activeCall ? null : isLoading ? (
@@ -130,6 +168,36 @@ function ChatContainer({
 
       {/* Kolom utama */}
       <main className="flex min-w-0 flex-1 flex-col">
+        {/* Banner error membuka DM dari Cari Tim */}
+        {dmOpenError ? (
+          <div className="flex items-center gap-2 border-b border-danger/40 bg-danger/10 px-5 py-2.5 text-sm text-danger">
+            <AlertIcon className="h-4 w-4 shrink-0" />
+            <span className="flex-1">{dmOpenError}</span>
+            <button
+              type="button"
+              onClick={onDismissDmOpenError}
+              aria-label="Tutup notifikasi"
+              className="shrink-0 cursor-pointer hover:opacity-80"
+            >
+              <CloseIcon className="h-4 w-4" />
+            </button>
+          </div>
+        ) : null}
+        {/* Banner error kirim/gabung/panggilan */}
+        {sendError ? (
+          <div className="flex items-center gap-2 border-b border-danger/40 bg-danger/10 px-5 py-2.5 text-sm text-danger">
+            <AlertIcon className="h-4 w-4 shrink-0" />
+            <span className="flex-1">{sendError}</span>
+            <button
+              type="button"
+              onClick={onDismissSendError}
+              aria-label="Tutup notifikasi"
+              className="shrink-0 cursor-pointer hover:opacity-80"
+            >
+              <CloseIcon className="h-4 w-4" />
+            </button>
+          </div>
+        ) : null}
         {/* Banner setelah bergabung lewat invite link */}
         {joinNotice ? (
           <div className="grad-blue flex items-center gap-2 px-5 py-2.5 text-sm text-ink">
@@ -171,7 +239,11 @@ function ChatContainer({
           ) : activeDm ? (
             <>
               <span className="relative shrink-0">
-                <img src={activeDm.avatar} alt={activeDm.userName} className="h-9 w-9 rounded-xl object-cover" />
+                <Avatar
+                  src={activeDm.avatar}
+                  name={activeDm.userName}
+                  className="h-9 w-9 rounded-xl"
+                />
                 <span
                   className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-canvas ${
                     activeDm.online ? "bg-neon" : "bg-muted"

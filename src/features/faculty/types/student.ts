@@ -10,7 +10,8 @@ export interface StudentRoadmap {
 
 export interface StudentGithub {
   repos: number;
-  commits: number;
+  /** `null` kalau tidak diketahui — jangan tampilkan sebagai nol. */
+  commits: number | null;
   topLanguages: string[];
 }
 

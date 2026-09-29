@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { FacultyStudent } from "@/features/faculty/types/student";
 import { AlertIcon, ArrowLeftIcon, DocIcon, CloseIcon, UsersIcon } from "@/shared/icons";
+import Avatar from "@/components/ui/Avatar";
 
 interface StudentRow {
   student: FacultyStudent;
@@ -13,6 +14,10 @@ interface FacultyStudentsContainerProps {
   isLoading: boolean;
   isError: boolean;
   cvStudent: FacultyStudent | null;
+  cvUrl: string | null;
+  cvMimeType: string;
+  cvLoading: boolean;
+  cvError: string | null;
   onViewCv: (student: FacultyStudent) => void;
   onCloseCv: () => void;
   onRetry: () => void;
@@ -23,6 +28,10 @@ function FacultyStudentsContainer({
   isLoading,
   isError,
   cvStudent,
+  cvUrl,
+  cvMimeType,
+  cvLoading,
+  cvError,
   onViewCv,
   onCloseCv,
   onRetry,
@@ -70,10 +79,10 @@ function FacultyStudentsContainer({
             {rows.map(({ student, readiness, level }) => (
               <div key={student.id} className="flex flex-col gap-3 border-r border-b border-line p-5">
                 <div className="flex items-center gap-3">
-                  <img
+                  <Avatar
                     src={student.avatar}
-                    alt={student.name}
-                    className="h-10 w-10 rounded-full object-cover"
+                    name={student.name}
+                    className="h-10 w-10 rounded-full"
                   />
                   <div className="flex min-w-0 flex-col">
                     <span className="truncate font-display text-sm font-semibold text-ink">
@@ -105,7 +114,8 @@ function FacultyStudentsContainer({
                   <span>
                     GitHub:{" "}
                     <span className="text-ink">
-                      {student.github.repos} repos · {student.github.commits} commits
+                      {student.github.repos} repos
+                      {student.github.commits != null ? ` · ${student.github.commits} commits` : ""}
                     </span>
                   </span>
                   <span>
@@ -134,7 +144,7 @@ function FacultyStudentsContainer({
         )}
       </div>
 
-      {/* Modal preview CV (metadata + placeholder) */}
+      {/* Modal CV — berkas asli yang diunduh dari server */}
       {cvStudent ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
@@ -171,15 +181,35 @@ function FacultyStudentsContainer({
               ) : null}
             </div>
 
-            {/* Placeholder preview */}
-            <div className="flex h-48 flex-col items-center justify-center gap-2 border border-dashed border-line text-center">
-              <DocIcon className="h-8 w-8 text-muted" />
-              <span className="text-xs text-muted">
-                CV preview isn't available in this demo.
-                <br />
-                {cvStudent.cvFileName}
-              </span>
-            </div>
+            {/* Berkas asli */}
+            {cvLoading ? (
+              <p className="py-10 text-center text-sm text-muted">Memuat CV…</p>
+            ) : cvError ? (
+              <p className="rounded-lg border border-danger/40 bg-danger/10 px-4 py-3 text-center text-sm text-danger">
+                {cvError}
+              </p>
+            ) : cvUrl ? (
+              <div className="flex flex-col gap-2">
+                {cvMimeType.includes("pdf") || (cvStudent.cvFileName ?? "").toLowerCase().endsWith(".pdf") ? (
+                  <iframe
+                    title={`CV ${cvStudent.name}`}
+                    src={cvUrl}
+                    className="h-96 w-full rounded-lg border border-line bg-surface"
+                  />
+                ) : (
+                  <p className="rounded-lg border border-line bg-surface px-4 py-6 text-center text-sm text-muted">
+                    Pratinjau hanya tersedia untuk PDF. Unduh berkasnya untuk melihat isi lengkap.
+                  </p>
+                )}
+                <a
+                  href={cvUrl}
+                  download={cvStudent.cvFileName ?? "cv"}
+                  className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                >
+                  <DocIcon className="h-3.5 w-3.5" /> Unduh {cvStudent.cvFileName}
+                </a>
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}

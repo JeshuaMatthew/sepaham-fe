@@ -12,8 +12,3 @@ export interface Role {
   techStack: string[];
   accent: string;
 }
-
-export interface RoleRecommendation {
-  recommendedId: string;
-  roles: Role[];
-}

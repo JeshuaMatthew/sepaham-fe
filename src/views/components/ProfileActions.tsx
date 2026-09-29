@@ -3,7 +3,6 @@ import { EditIcon, GithubIcon, LogoutIcon } from "@/shared/icons";
 interface ProfileActionsProps {
   githubConnected: boolean;
   githubUsername: string;
-  onConnectGithub: () => void;
   onDisconnectGithub: () => void;
   onEdit: () => void;
   onLogout: () => void;
@@ -12,7 +11,6 @@ interface ProfileActionsProps {
 function ProfileActions({
   githubConnected,
   githubUsername,
-  onConnectGithub,
   onDisconnectGithub,
   onEdit,
   onLogout,
@@ -20,7 +18,7 @@ function ProfileActions({
   return (
     <section className="flex flex-wrap items-center gap-6  p-4">
       {/* Connect / GitHub status */}
-      {githubConnected ? (
+      {githubConnected && (
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-neon">
             <GithubIcon className="h-4 w-4" /> GitHub connected
@@ -34,14 +32,6 @@ function ProfileActions({
             Disconnect
           </button>
         </div>
-      ) : (
-        <button
-          type="button"
-          onClick={onConnectGithub}
-          className="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-primary"
-        >
-          <GithubIcon className="h-4 w-4" /> Connect GitHub account
-        </button>
       )}
 
       {/* Edit profile */}

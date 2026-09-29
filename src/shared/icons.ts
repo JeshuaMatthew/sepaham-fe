@@ -19,6 +19,8 @@ export {
   FiHeart as HeartIcon,
   FiArrowLeft as ArrowLeftIcon,
   FiArrowRight as ArrowRightIcon,
+  FiArrowUp as ArrowUpIcon,
+  FiArrowDown as ArrowDownIcon,
   FiArrowUpRight as ExternalIcon,
   FiPlay as PlayIcon,
   FiPause as PauseIcon,

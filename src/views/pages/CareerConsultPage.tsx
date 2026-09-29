@@ -5,6 +5,7 @@ import {
   fetchRoadmapCatalog,
   fetchRoadmapTree,
   roadmapTreeQueryKey,
+  fetchSubmissions,
 } from "@/features/roadmap/services/roadmapService";
 import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
 import {
@@ -14,11 +15,9 @@ import {
 import { callAiAssist } from "@/features/home/services/aiService";
 import type { CareerMessage } from "@/features/career/types/career";
 import { getPreference } from "@/features/onboarding/utils/preference";
-import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
 import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
-import { getStoredCommunities } from "@/features/chat/utils/communityStore";
-import { getCv } from "@/features/profile/utils/cv";
-import { isGithubConnected } from "@/features/profile/utils/githubConnection";
+import { PROFILE_QUERY_KEY, fetchProfile } from "@/features/profile/services/profileService";
+import { MY_COMMUNITIES_QUERY_KEY, fetchMyCommunities } from "@/features/chat/services/communityService";
 import CareerConsultContainer from "../components/CareerConsultContainer";
 
 /**
@@ -48,17 +47,24 @@ function CareerConsultPage() {
     enabled: primary != null,
   });
 
-  const projects = getStoredCommunities().length;
-  const cv = getCv();
-  const cvProvided = cv != null;
-  const cvName = cv?.fileName;
-  const connected = isGithubConnected();
+  const profileQuery = useQuery({ queryKey: PROFILE_QUERY_KEY, queryFn: fetchProfile });
+  const communitiesQuery = useQuery({ queryKey: MY_COMMUNITIES_QUERY_KEY, queryFn: fetchMyCommunities });
+  const submissionsQuery = useQuery({
+    queryKey: ["submissions", primary?.id],
+    queryFn: () => fetchSubmissions(primary!.id),
+    enabled: primary != null,
+  });
+
+  const projects = communitiesQuery.data?.length ?? 0;
+  const cvProvided = profileQuery.data?.cvFileName != null;
+  const cvName = profileQuery.data?.cvFileName ?? undefined;
+  const connected = profileQuery.data?.githubConnected ?? false;
 
   const profile = useMemo(() => {
     if (catalogQuery.isLoading || githubQuery.isLoading) return null;
     const tree = treeQuery.data ?? null;
     const completed =
-      primary && tree ? computeStatuses(tree, getSubmissions(primary.id)).completedCount : 0;
+      primary && tree ? computeStatuses(tree, submissionsQuery.data ?? {}).completedCount : 0;
     const github = githubQuery.data;
     return buildCareerProfile({
       roadmap: {

@@ -12,6 +12,8 @@ interface RoadmapQuizContainerProps {
   passed: boolean;
   isLoading: boolean;
   isError: boolean;
+  isSubmitting?: boolean;
+  submitError?: string | null;
   onBack: () => void;
   onSubmit: (answers: Record<string, number>) => void;
   onRetry: () => void;
@@ -27,6 +29,8 @@ function RoadmapQuizContainer({
   passed,
   isLoading,
   isError,
+  isSubmitting = false,
+  submitError = null,
   onBack,
   onSubmit,
   onRetry,
@@ -81,6 +85,8 @@ function RoadmapQuizContainer({
             initialAnswers={initialAnswers}
             score={score}
             passed={passed}
+            isSubmitting={isSubmitting}
+            submitError={submitError}
             onSubmit={onSubmit}
           />
         )}

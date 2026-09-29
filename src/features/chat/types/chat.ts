@@ -28,6 +28,8 @@ export interface Attachment {
   name: string;
   kind: "image" | "file";
   size: string;
+  /** URL berkas hasil unggah. Pesan lama boleh kosong; pesan baru wajib ada. */
+  url?: string;
 }
 
 export interface ChatMessage {
@@ -71,6 +73,13 @@ export interface CallParticipant {
   id: string;
   name: string;
   avatar: string;
+}
+
+/** Lagu di playlist lokal pemutar musik panggilan (diunggah host dari berkas). */
+export interface PlaylistTrack {
+  id: string;
+  title: string;
+  url: string;
 }
 
 export interface ActiveCall {

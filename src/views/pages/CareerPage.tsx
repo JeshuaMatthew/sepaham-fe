@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ROADMAP_CATALOG_QUERY_KEY,
   fetchRoadmapCatalog,
   fetchRoadmapTree,
   roadmapTreeQueryKey,
+  fetchSubmissions,
 } from "@/features/roadmap/services/roadmapService";
 import { GITHUB_QUERY_KEY, fetchGithubStats } from "@/features/profile/services/githubService";
 import { ROLES_QUERY_KEY, fetchRoles } from "@/features/onboarding/services/roleService";
@@ -16,12 +17,11 @@ import {
 } from "@/features/career/services/internshipService";
 import { buildCareerProfile, topCareers } from "@/features/career/services/careerService";
 import { getPreference } from "@/features/onboarding/utils/preference";
-import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
 import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
-import { getStoredCommunities } from "@/features/chat/utils/communityStore";
-import { getCv, saveCv } from "@/features/profile/utils/cv";
-import { isGithubConnected, setGithubConnected } from "@/features/profile/utils/githubConnection";
-import { connectGithub } from "@/features/profile/services/githubService";
+import { PROFILE_QUERY_KEY, fetchProfile } from "@/features/profile/services/profileService";
+import { MY_COMMUNITIES_QUERY_KEY, fetchMyCommunities } from "@/features/chat/services/communityService";
+import AxiosInstance from "@/lib/axios";
+import { reportError } from "@/shared/errors";
 import CareerContainer from "../components/CareerContainer";
 
 /**
@@ -45,6 +45,8 @@ function CareerPage() {
     queryFn: fetchInternshipContacts,
   });
 
+  const queryClient = useQueryClient();
+
   const catalog = catalogQuery.data ?? [];
   const primary =
     (preference != null ? catalog.find((item) => item.roleId === preference.roleId) : undefined) ??
@@ -57,23 +59,35 @@ function CareerPage() {
     enabled: primary != null,
   });
 
-  const projects = getStoredCommunities().length;
-  const [cvName, setCvName] = useState<string | null>(getCv()?.fileName ?? null);
-  const [connected, setConnected] = useState<boolean>(isGithubConnected());
+  const submissionsQuery = useQuery({
+    queryKey: ["submissions", primary?.id],
+    queryFn: () => fetchSubmissions(primary!.id),
+    enabled: primary != null,
+  });
+
+  const communitiesQuery = useQuery({ queryKey: MY_COMMUNITIES_QUERY_KEY, queryFn: fetchMyCommunities });
+  const projects = communitiesQuery.data?.length ?? 0;
+
+  const profileQuery = useQuery({ queryKey: PROFILE_QUERY_KEY, queryFn: fetchProfile });
+  const cvName = profileQuery.data?.cvFileName ?? null;
+  const connected = profileQuery.data?.githubConnected ?? false;
   const cvProvided = cvName != null;
+
+  const [cvError, setCvError] = useState<string | null>(null);
 
   const handleUploadCv = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    saveCv(file.name);
-    setCvName(file.name);
+    const formData = new FormData();
+    formData.append("file", file);
+    setCvError(null);
+    void AxiosInstance.post("/profile/cv", formData)
+      .then(() => queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY }))
+      .catch((error) => {
+        reportError("uploadCv", error);
+        setCvError("Gagal mengunggah CV. Coba lagi.");
+      });
     event.target.value = "";
-  };
-
-  const handleConnectGithub = () => {
-    setGithubConnected(true);
-    setConnected(true);
-    void connectGithub().catch(() => {});
   };
 
   const topMatches = useMemo(
@@ -90,7 +104,7 @@ function CareerPage() {
     if (catalogQuery.isLoading || githubQuery.isLoading) return null;
     const tree = treeQuery.data ?? null;
     const completed =
-      primary && tree ? computeStatuses(tree, getSubmissions(primary.id)).completedCount : 0;
+      primary && tree ? computeStatuses(tree, submissionsQuery.data ?? {}).completedCount : 0;
     const github = githubQuery.data;
     return buildCareerProfile({
       roadmap: {
@@ -114,6 +128,7 @@ function CareerPage() {
     githubQuery.isLoading,
     githubQuery.data,
     treeQuery.data,
+    submissionsQuery.data,
     primary,
     projects,
     cvProvided,
@@ -135,9 +150,9 @@ function CareerPage() {
       isLoading={isLoading}
       hasCv={cvProvided}
       cvName={cvName}
+      cvError={cvError}
       githubConnected={connected}
       onUploadCv={handleUploadCv}
-      onConnectGithub={handleConnectGithub}
       onGoConsult={() => navigate("/career/consult")}
       onGoRoadmap={() => navigate("/roadmap")}
       onGoPartner={() => navigate("/partner")}

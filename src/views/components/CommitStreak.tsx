@@ -1,20 +1,21 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { GithubSummary } from "@/features/profile/types/github";
 import { FireIcon } from "@/shared/icons";
 
 interface CommitStreakProps {
   weeks: number[][];
-  summary: GithubSummary;
+  summary: { totalCommits: number | null; currentStreak: number | null; longestStreak: number | null };
 }
 
-// Ramp abu netral sekuensial (gelap -> terang) ala GitHub dark.
+// Ramp memakai token tema supaya terbaca di light dan dark mode. Level dihitung
+// dari jumlah kontribusi; `null` tidak pernah sampai ke sini karena parent
+// menyembunyikan widget saat datanya tidak diketahui.
 const LEVEL_COLORS = [
   "var(--color-elevate)",
-  "rgba(229, 229, 229, 0.28)",
-  "rgba(229, 229, 229, 0.5)",
-  "rgba(229, 229, 229, 0.72)",
-  "#e5e5e5",
+  "color-mix(in srgb, var(--color-neon) 25%, var(--color-elevate))",
+  "color-mix(in srgb, var(--color-neon) 50%, var(--color-elevate))",
+  "color-mix(in srgb, var(--color-neon) 75%, var(--color-elevate))",
+  "var(--color-neon)",
 ];
 
 function levelOf(count: number): number {
@@ -43,23 +44,24 @@ function CommitStreak({ weeks, summary }: CommitStreakProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Ringkasan streak */}
+      {/* Ringkasan streak — semua angka di sini sudah pasti non-null karena
+          parent hanya render saat datanya diketahui. */}
       <div className="flex flex-wrap gap-6">
         <div className="flex flex-col">
           <span className="inline-flex items-center gap-1.5 font-display text-2xl font-bold text-neon">
-            <FireIcon className="h-6 w-6" /> {summary.currentStreak}
+            <FireIcon className="h-6 w-6" /> {summary.currentStreak ?? "–"}
           </span>
           <span className="text-xs text-muted">hari streak sekarang</span>
         </div>
         <div className="flex flex-col">
           <span className="font-display text-2xl font-bold text-ink">
-            {summary.longestStreak}
+            {summary.longestStreak ?? "–"}
           </span>
           <span className="text-xs text-muted">streak terpanjang</span>
         </div>
         <div className="flex flex-col">
           <span className="font-display text-2xl font-bold text-ink">
-            {summary.totalCommits.toLocaleString("id-ID")}
+            {(summary.totalCommits ?? 0).toLocaleString("id-ID")}
           </span>
           <span className="text-xs text-muted">total commit setahun</span>
         </div>

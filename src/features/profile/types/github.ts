@@ -20,9 +20,10 @@ export interface Repo {
 }
 
 export interface GithubSummary {
-  totalCommits: number;
-  currentStreak: number;
-  longestStreak: number;
+  /** `null` = tidak diketahui (GitHub tidak menyediakannya tanpa token). */
+  totalCommits: number | null;
+  currentStreak: number | null;
+  longestStreak: number | null;
   publicRepos: number;
 }
 

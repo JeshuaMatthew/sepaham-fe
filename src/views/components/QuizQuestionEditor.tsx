@@ -1,10 +1,10 @@
-import type { QuizQuestion } from "@/features/roadmap/types/roadmap";
+import type { QuizQuestionWithKey } from "@/features/roadmap/types/roadmap";
 import { CloseIcon } from "@/shared/icons";
 
 interface QuizQuestionEditorProps {
-  question: QuizQuestion;
+  question: QuizQuestionWithKey;
   index: number;
-  onChange: (index: number, patch: Partial<QuizQuestion>) => void;
+  onChange: (index: number, patch: Partial<QuizQuestionWithKey>) => void;
   onDelete: (index: number) => void;
 }
 

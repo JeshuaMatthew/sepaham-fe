@@ -1,19 +1,26 @@
 import type { ComponentType } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
+  AlertIcon,
   BrandIcon,
   ChatIcon,
   CompassIcon,
+  DocIcon,
   GradIcon,
   HomeIcon,
+  LockIcon,
   MapIcon,
   SparkleIcon,
+  TargetIcon,
   UsersIcon,
 } from "@/shared/icons";
 import ThemeToggle from "@/theme/ThemeToggle";
+import Avatar from "@/components/ui/Avatar";
 
 interface AppSidebarProps {
   avatarUrl: string;
+  /** Nama user — dipakai untuk inisial saat avatar kosong/gagal dimuat. */
+  userName: string;
   isFaculty: boolean;
   /** Dikontrol dari AppLayout */
   open: boolean;
@@ -42,14 +49,26 @@ const LOCKED_ITEMS: {
   { to: "/career",    icon: CompassIcon, label: "Career" },
 ];
 
-const FACULTY_ITEM = { to: "/faculty", icon: GradIcon, label: "Faculty" };
+/** Item khusus faculty — masing-masing tombol terpisah di sidebar */
+const FACULTY_ITEMS: {
+  to: string;
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+}[] = [
+  { to: "/faculty/students",   icon: UsersIcon,   label: "Students" },
+  { to: "/faculty/roadmaps",   icon: MapIcon,     label: "Roadmaps" },
+  { to: "/faculty/groups",     icon: ChatIcon,    label: "Groups" },
+  { to: "/faculty/requests",   icon: TargetIcon,  label: "Requests" },
+  { to: "/faculty/onboarding", icon: DocIcon,     label: "Onboarding" },
+  { to: "/faculty/roles",      icon: GradIcon,    label: "Roles" },
+];
 
-function AppSidebar({ avatarUrl, isFaculty, open, onboardingDone }: AppSidebarProps) {
+function AppSidebar({ avatarUrl, userName, isFaculty, open, onboardingDone }: AppSidebarProps) {
   const navigate = useNavigate();
 
   // Faculty tidak perlu onboarding — semua item selalu aktif
   const lockedItems = isFaculty
-    ? [{ to: "/faculty", icon: GradIcon, label: "Faculty" }]
+    ? FACULTY_ITEMS
     : LOCKED_ITEMS;
 
   const alwaysItems = isFaculty
@@ -58,7 +77,7 @@ function AppSidebar({ avatarUrl, isFaculty, open, onboardingDone }: AppSidebarPr
 
   return (
     <aside
-      className={`flex h-screen shrink-0 flex-col overflow-hidden border-r border-line bg-surface transition-[width] duration-200 ease-out ${
+      className={`hidden h-full shrink-0 flex-col overflow-hidden border-r border-line bg-surface transition-[width] duration-200 ease-out md:flex ${
         open ? "w-52" : "w-14"
       }`}
     >
@@ -129,7 +148,13 @@ function AppSidebar({ avatarUrl, isFaculty, open, onboardingDone }: AppSidebarPr
             </span>
             {open && (
               <span className="overflow-hidden whitespace-nowrap">
-                Onboarding{!onboardingDone && " ●"}
+                Onboarding
+                {!onboardingDone && (
+                  <span
+                    className="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-yellow-400"
+                    aria-label="belum selesai"
+                  />
+                )}
               </span>
             )}
           </NavLink>
@@ -157,15 +182,7 @@ function AppSidebar({ avatarUrl, isFaculty, open, onboardingDone }: AppSidebarPr
                 )}
                 {/* Lock icon kecil di kanan */}
                 {open && (
-                  <svg
-                    className="ml-auto h-3 w-3 shrink-0 text-muted"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <rect x="2" y="5" width="8" height="6" rx="0" stroke="currentColor" strokeWidth="1.2" />
-                    <path d="M4 5V3.5a2 2 0 0 1 4 0V5" stroke="currentColor" strokeWidth="1.2" />
-                  </svg>
+                  <LockIcon className="ml-auto h-3 w-3 shrink-0 text-muted" aria-hidden="true" />
                 )}
               </div>
             );
@@ -198,9 +215,10 @@ function AppSidebar({ avatarUrl, isFaculty, open, onboardingDone }: AppSidebarPr
             type="button"
             onClick={() => void navigate("/onboarding")}
             title="Mulai onboarding untuk membuka semua fitur"
+            aria-label="Mulai onboarding untuk membuka semua fitur"
             className="mx-2 mt-1 flex items-center justify-center py-2 text-yellow-400 transition-colors hover:bg-elevate"
           >
-            <span className="text-[10px] font-bold">!</span>
+            <AlertIcon className="h-4 w-4" />
           </button>
         )}
       </nav>
@@ -226,10 +244,11 @@ function AppSidebar({ avatarUrl, isFaculty, open, onboardingDone }: AppSidebarPr
           }
         >
           <span className="nav-indicator absolute left-0 top-0 h-full w-0.5 bg-primary opacity-0" />
-          <img
+          <Avatar
             src={avatarUrl}
+            name={userName}
             alt="Profile"
-            className="h-7 w-7 shrink-0 object-cover ring-2 ring-transparent"
+            className="h-7 w-7 rounded-full ring-2 ring-transparent"
           />
           {open && (
             <span className="whitespace-nowrap text-sm font-medium text-muted">Profile</span>

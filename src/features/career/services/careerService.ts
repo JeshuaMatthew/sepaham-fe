@@ -6,27 +6,41 @@ export interface CareerMatch {
   fitPercent: number;
 }
 
+/**
+ * Role teratas berdasarkan skor onboarding.
+ *
+ * PENTING: kalau user belum pernah menyelesaikan onboarding, hasilnya kosong.
+ * Versi lama memakai `fallback = [92, 84, 76, 70, 64]` sehingga semua user
+ * tanpa skor tetap melihat "AI career match #1 92%" di bawah judul
+ * "Ranked from your questionnaire, roadmap & activity". Angka itu tidak
+ * berasal dari data siapa pun.
+ *
+ * `fitPercent` adalah skor relatif terhadap role tertinggi, jadi 95 berarti
+ * "95% sepadat role terbaik kamu", bukan "95% kecocokan absolut".
+ */
 export function topCareers(
   roles: Role[],
   roleScores: Record<string, number>,
   count = 3,
 ): CareerMatch[] {
-  const scored = roles.map((role) => ({ role, score: roleScores[role.id] ?? 0 }));
-  const hasScores = scored.some((entry) => entry.score > 0);
-  const max = Math.max(1, ...scored.map((entry) => entry.score));
-  const ranked = hasScores ? [...scored].sort((a, b) => b.score - a.score) : scored;
-  const fallback = [92, 84, 76, 70, 64];
-  return ranked.slice(0, count).map((entry, index) => ({
+  const scored = roles
+    .map((role) => ({ role, score: roleScores[role.id] ?? 0 }))
+    .filter((entry) => entry.score > 0);
+
+  if (scored.length === 0) return [];
+
+  const ranked = [...scored].sort((a, b) => b.score - a.score);
+  const max = ranked[0].score || 1;
+
+  return ranked.slice(0, count).map((entry) => ({
     role: entry.role,
-    fitPercent: hasScores
-      ? Math.max(40, Math.round((entry.score / max) * 95))
-      : fallback[index] ?? 60,
+    fitPercent: Math.round((entry.score / max) * 95),
   }));
 }
 
 export interface CareerInputs {
   roadmap: { completed: number; total: number; title: string };
-  github: { commits: number; repos: number; topLanguages: string[] } | null;
+  github: { commits: number | null; repos: number; topLanguages: string[] } | null;
   projects: number;
   cv: { provided: boolean; fileName?: string };
 }
@@ -40,17 +54,25 @@ function levelFor(readiness: number): string {
   return "Job-ready";
 }
 
+function githubValue(input: NonNullable<CareerInputs["github"]>): string {
+  const repos = `${input.repos} repos`;
+  if (input.commits == null) return `${repos} · commits unknown`;
+  return `${repos} · ${input.commits} commits`;
+}
+
 export function buildCareerProfile(input: CareerInputs): CareerProfile {
   const roadmapScore = input.roadmap.total > 0 ? (input.roadmap.completed / input.roadmap.total) * 100 : 0;
+  // `commits` bisa null (GitHub tidak menyediakannya tanpa token). Kalau null,
+  // skor hanya dari repo — jangan mengarang commits = 0 yang artinya beda.
   const githubScore = input.github
-    ? clamp(input.github.repos * 8 + Math.min(60, input.github.commits / 10))
+    ? clamp(input.github.repos * 8 + (input.github.commits != null ? Math.min(60, input.github.commits / 10) : 0))
     : 0;
   const projectsScore = clamp(input.projects * 30);
   const cvScore = input.cv.provided ? 70 : 0;
 
   const sources: CareerSource[] = [
     { key: "roadmap", label: "Learning roadmap", value: `${input.roadmap.completed}/${input.roadmap.total} skills`, detail: input.roadmap.title || "No roadmap picked yet", score: clamp(roadmapScore) },
-    { key: "github", label: "GitHub activity", value: input.github ? `${input.github.repos} repos · ${input.github.commits} commits` : "Not connected", detail: input.github?.topLanguages.slice(0, 3).join(" · ") || "Connect GitHub on your profile", score: githubScore },
+    { key: "github", label: "GitHub activity", value: input.github ? githubValue(input.github) : "Not connected", detail: input.github?.topLanguages.slice(0, 3).join(" · ") || "No GitHub activity linked yet", score: githubScore },
     { key: "projects", label: "Projects joined", value: `${input.projects} ${input.projects === 1 ? "team" : "teams"}`, detail: input.projects > 0 ? "Real collaboration experience" : "Join a project team to gain experience", score: projectsScore },
     { key: "cv", label: "CV / résumé", value: input.cv.provided ? "Uploaded" : "Not uploaded", detail: input.cv.fileName || "Add your CV during onboarding", score: cvScore },
   ];
@@ -73,37 +95,3 @@ export const CAREER_SUGGESTIONS = [
   "What are my strengths?",
   "How is my roadmap progress?",
 ];
-
-export function answerCareerQuestion(question: string, profile: CareerProfile): string {
-  const q = question.toLowerCase();
-  const src = (key: string) => profile.sources.find((s) => s.key === key)!;
-
-  if (/intern|ready|siap|job|kerja/.test(q)) {
-    return `Your overall career readiness is ${profile.readiness}% — that puts you at the "${profile.level}" stage. ${
-      profile.readiness >= 78 ? "You're ready to apply for internships and junior roles." : `Focus next on: ${profile.nextSteps[0]}`
-    }`;
-  }
-  if (/roadmap|skill|belajar|learn/.test(q)) {
-    const r = src("roadmap");
-    return `On the learning roadmap you've completed ${r.value} (${r.score}%) — ${r.detail}.`;
-  }
-  if (/github|repo|commit|code/.test(q)) {
-    const g = src("github");
-    return `Your GitHub signal is ${g.score}% — ${g.value}. ${g.score < 50 ? "Commit consistently and publish a couple of polished public repos." : "Nice — a healthy GitHub presence shows employers real, consistent work."}`;
-  }
-  if (/project|team|tim|collab/.test(q)) {
-    const p = src("projects");
-    return `You've joined ${p.value}. ${p.score < 60 ? "Joining more project teams gives you collaboration experience recruiters look for." : "Collaboration experience like this is a strong differentiator."}`;
-  }
-  if (/cv|resume|résumé/.test(q)) {
-    const c = src("cv");
-    return c.score > 0 ? `Your CV (${c.detail}) is on file and factored into your progress.` : "You haven't uploaded a CV yet — adding one lets us tailor advice and counts toward your progress.";
-  }
-  if (/strength|kelebihan|good at/.test(q)) {
-    return profile.strengths.length ? `Your strengths right now: ${profile.strengths.join(", ")}.` : "You're still building your first strengths — completing roadmap skills is the fastest way to develop one.";
-  }
-  if (/next|langkah|improve|do/.test(q)) {
-    return `Your top next steps:\n• ${profile.nextSteps.join("\n• ")}`;
-  }
-  return `Here's a snapshot: readiness ${profile.readiness}% ("${profile.level}"). Strengths: ${profile.strengths.join(", ") || "still forming"}. Next step: ${profile.nextSteps[0]}`;
-}

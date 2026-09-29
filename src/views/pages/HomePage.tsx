@@ -8,6 +8,7 @@ import {
   fetchRoadmapCatalog,
   fetchRoadmapTree,
   roadmapTreeQueryKey,
+  fetchSubmissions,
 } from "@/features/roadmap/services/roadmapService";
 import {
   MY_COMMUNITIES_QUERY_KEY,
@@ -19,12 +20,11 @@ import { buildCareerProfile } from "@/features/career/services/careerService";
 import type { RoadmapHeroData } from "../components/HomeRoadmapHero";
 import type { CollabRequest } from "@/features/collab/types/collab";
 import { getPreference } from "@/features/onboarding/utils/preference";
-import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
+import { getAccount } from "@/features/auth/utils/account";
 import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
-import { getStoredCommunities } from "@/features/chat/utils/communityStore";
-import { getCv } from "@/features/profile/utils/cv";
-import { isGithubConnected } from "@/features/profile/utils/githubConnection";
 import HomeContainer from "../components/HomeContainer";
+import FacultyDashboardContainer from "../components/FacultyDashboardContainer";
+import OnboardingCTA from "../components/OnboardingCTA";
 
 /**
  * HomePage — beranda/dashboard: ringkasan semua halaman dengan roadmap sebagai
@@ -44,6 +44,7 @@ function rankFit(request: CollabRequest, roleKeyword: string): number {
 function HomePage() {
   const navigate = useNavigate();
   const preference = getPreference();
+  const isFaculty = getAccount().role === "faculty";
 
   const feedQuery = useQuery({ queryKey: AI_FEED_QUERY_KEY, queryFn: fetchAiFeed });
   const profileQuery = useQuery({ queryKey: PROFILE_QUERY_KEY, queryFn: fetchProfile });
@@ -71,11 +72,17 @@ function HomePage() {
     enabled: primary != null,
   });
 
+  const submissionsQuery = useQuery({
+    queryKey: ["submissions", primary?.id],
+    queryFn: () => fetchSubmissions(primary!.id),
+    enabled: primary != null,
+  });
+
   const roadmap = useMemo<RoadmapHeroData | null>(() => {
     if (!primary) return null;
     const tree = treeQuery.data ?? null;
     const completedCount = tree
-      ? computeStatuses(tree, getSubmissions(primary.id)).completedCount
+      ? computeStatuses(tree, submissionsQuery.data ?? {}).completedCount
       : 0;
     return {
       id: primary.id,
@@ -86,14 +93,13 @@ function HomePage() {
       completedCount,
       totalCount: tree?.nodes.length ?? primary.totalNodes,
     };
-  }, [primary, treeQuery.data]);
+  }, [primary, treeQuery.data, submissionsQuery.data]);
 
   const firstName = (profileQuery.data?.name ?? "Dev").split(" ")[0];
 
   // Ringkasan kesiapan karier (dari roadmap, GitHub, project, CV).
   const careerReadiness = useMemo(() => {
     const github = githubQuery.data;
-    const cv = getCv();
     return buildCareerProfile({
       roadmap: {
         completed: roadmap?.completedCount ?? 0,
@@ -101,17 +107,17 @@ function HomePage() {
         title: roadmap?.title ?? "",
       },
       github:
-        isGithubConnected() && github
+        profileQuery.data?.githubConnected && github
           ? {
               commits: github.stats.totalCommits,
               repos: github.stats.publicRepos,
               topLanguages: github.topLanguages.map((lang) => lang.name),
             }
           : null,
-      projects: getStoredCommunities().length,
-      cv: cv ? { provided: true, fileName: cv.fileName } : { provided: false },
+      projects: serversQuery.data?.length ?? 0,
+      cv: profileQuery.data?.cvFileName ? { provided: true, fileName: profileQuery.data.cvFileName } : { provided: false },
     }).readiness;
-  }, [roadmap, githubQuery.data]);
+  }, [roadmap, githubQuery.data, profileQuery.data, serversQuery.data]);
 
   // "Cari Tim" yang cocok: request terbuka, diurutkan yang match role user dulu.
   const roleKeyword = (preference?.roleTitle ?? "").split(" ")[0].toLowerCase();
@@ -119,9 +125,21 @@ function HomePage() {
     .sort((a, b) => rankFit(b, roleKeyword) - rankFit(a, roleKeyword))
     .slice(0, 4);
 
+  // Faculty melihat dashboard dosen, bukan konten mahasiswa.
+  if (isFaculty) {
+    return <FacultyDashboardContainer />;
+  }
+
+  // Mahasiswa yang belum onboarding tidak melihat konten khusus student
+  // (internships, GitHub streak, roadmap progress) — hanya CTA untuk memulai.
+  if (preference === null) {
+    return <OnboardingCTA />;
+  }
+
   return (
     <HomeContainer
       userName={firstName}
+      isFaculty={isFaculty}
       roadmap={roadmap}
       roadmapLoading={catalogQuery.isLoading || (primary != null && treeQuery.isLoading)}
       community={{

@@ -3,6 +3,8 @@
  */
 
 export interface Profile {
+  /** UUID user. Dipakai untuk menandai pesan milik sendiri. */
+  id: string;
   avatarUrl: string;
   name: string;
   username: string;
@@ -12,6 +14,8 @@ export interface Profile {
   roleEmoji: string;
   bio: string;
   location: string;
+  githubConnected?: boolean;
+  cvFileName?: string | null;
 }
 
 export type BadgeTier = "common" | "rare" | "epic" | "legendary";

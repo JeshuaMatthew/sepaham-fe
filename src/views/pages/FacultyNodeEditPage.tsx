@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  fetchRoadmapTree,
+  fetchFacultyRoadmapTree,
   roadmapTreeQueryKey,
   saveRoadmapTree,
 } from "@/features/roadmap/services/roadmapService";
-import type { NodeSubmission } from "@/features/roadmap/types/roadmap";
+import type {
+  EditableNodeSubmission,
+  EditableRoadmap,
+} from "@/features/roadmap/types/roadmap";
 import FacultyNodeEditContainer from "../components/FacultyNodeEditContainer";
 
 /**
@@ -19,17 +22,24 @@ function FacultyNodeEditPage() {
   const { roadmapId, nodeId } = useParams();
   const queryClient = useQueryClient();
 
+  // Endpoint faculty: editor soal harus melihat kunci jawaban, yang sengaja
+  // dibuang dari payload yang dikirim ke mahasiswa.
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: roadmapTreeQueryKey(roadmapId ?? "none"),
-    queryFn: () => fetchRoadmapTree(roadmapId as string),
+    queryFn: () => fetchFacultyRoadmapTree(roadmapId as string),
     enabled: roadmapId != null,
   });
 
-  const node = data?.nodes.find((item) => item.id === nodeId) ?? null;
+  // `fetchFacultyRoadmapTree` mengembalikan node yang submission-nya boleh
+  // punya kunci jawaban, jadi tipe roadmap di sini yang dipakai, bukan
+  // `Roadmap` biasa.
+  const source = data as EditableRoadmap | undefined;
+  const node = source?.nodes.find((item) => item.id === nodeId) ?? null;
 
   const [article, setArticle] = useState("");
-  const [submission, setSubmission] = useState<NodeSubmission>({ type: "checkmark" });
+  const [submission, setSubmission] = useState<EditableNodeSubmission>({ type: "checkmark" });
   const [notice, setNotice] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   // Inisialisasi draft saat node termuat (hanya saat id node berubah).
   useEffect(() => {
@@ -40,15 +50,24 @@ function FacultyNodeEditPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [node?.id]);
 
+  const saveMutation = useMutation({
+    mutationFn: (tree: EditableRoadmap) =>
+      saveRoadmapTree(roadmapId as string, tree as never),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: roadmapTreeQueryKey(roadmapId as string) });
+      setSaveError(null);
+      setNotice("Tersimpan");
+      window.setTimeout(() => setNotice(null), 2500);
+    },
+    onError: () => setSaveError("Gagal menyimpan. Coba lagi."),
+  });
+
   const handleSave = () => {
-    if (!data || !node || !roadmapId) return;
-    const nextNodes = data.nodes.map((item) =>
+    if (!source || !node || !roadmapId) return;
+    const nextNodes = source.nodes.map((item) =>
       item.id === nodeId ? { ...item, article, submission } : item,
     );
-    saveRoadmapTree(roadmapId, { ...data, nodes: nextNodes });
-    void queryClient.invalidateQueries({ queryKey: roadmapTreeQueryKey(roadmapId) });
-    setNotice("Tersimpan");
-    window.setTimeout(() => setNotice(null), 2500);
+    saveMutation.mutate({ ...source, nodes: nextNodes });
   };
 
   return (
@@ -57,8 +76,9 @@ function FacultyNodeEditPage() {
       nodeTitle={node?.title ?? ""}
       article={article}
       submission={submission}
-      notice={notice}
+      notice={saveError ?? notice}
       isLoading={isLoading}
+      isSaving={saveMutation.isPending}
       isError={isError}
       notFound={!isLoading && !isError && node == null}
       onArticleChange={setArticle}

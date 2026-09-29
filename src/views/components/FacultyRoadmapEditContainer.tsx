@@ -8,6 +8,7 @@ interface FacultyRoadmapEditContainerProps {
   editorKey: string;
   notice: string | null;
   isLoading: boolean;
+  isSaving: boolean;
   isError: boolean;
   onSave: (roadmap: Roadmap) => void;
   onReset: () => void;
@@ -20,6 +21,7 @@ function FacultyRoadmapEditContainer({
   editorKey,
   notice,
   isLoading,
+  isSaving,
   isError,
   onSave,
   onReset,
@@ -69,6 +71,7 @@ function FacultyRoadmapEditContainer({
             key={editorKey}
             initialRoadmap={initialRoadmap}
             notice={notice}
+            isSaving={isSaving}
             onSave={onSave}
             onReset={onReset}
             onOpenNodePage={onOpenNodePage}

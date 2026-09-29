@@ -40,3 +40,24 @@ export async function sendDmMessage(dmId: string, payload: SendPayload): Promise
   const { data } = await AxiosInstance.post<ChatMessage>(`/dms/${dmId}/messages`, sendBody(payload));
   return data;
 }
+
+/**
+ * Unggah lampiran chat. Mengembalikan metadata + URL yang dipakai sebagai
+ * `attachment` saat mengirim pesan.
+ */
+export async function uploadChatAttachment(file: File): Promise<SendPayload["attachment"]> {
+  const form = new FormData();
+  form.append("file", file);
+  const { data } = await AxiosInstance.post<{
+    name: string;
+    kind: string;
+    size: string;
+    url: string;
+  }>("/chat/attachments", form);
+  return {
+    name: data.name,
+    kind: data.kind === "image" ? "image" : "file",
+    size: data.size,
+    url: data.url,
+  };
+}

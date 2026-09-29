@@ -1,20 +1,24 @@
 import type { ChangeEvent } from "react";
-import type { NodeSubmission, RoadmapNode } from "@/features/roadmap/types/roadmap";
+import type {
+  EditableNodeSubmission,
+  EditableRoadmapNode,
+} from "@/features/roadmap/types/roadmap";
 import SubmissionEditor from "./SubmissionEditor";
 import { DocIcon, ImageIcon, LockIcon, SkillIcon, StarIcon } from "@/shared/icons";
 
 interface NodeEditorCardProps {
-  node: RoadmapNode;
+  // Node dari sisi editor dosen, jadi submission-nya boleh punya kunci jawaban.
+  node: EditableRoadmapNode;
   index: number;
   /** nama grup yang sudah ada (untuk autocomplete). */
   groups: string[];
   selected: boolean;
-  onChange: (nodeId: string, patch: Partial<RoadmapNode>) => void;
+  onChange: (nodeId: string, patch: Partial<EditableRoadmapNode>) => void;
   onDelete: (nodeId: string) => void;
 }
 
 function NodeEditorCard({ node, index, groups, selected, onChange, onDelete }: NodeEditorCardProps) {
-  const submission: NodeSubmission = node.submission ?? { type: "checkmark" };
+  const submission: EditableNodeSubmission = node.submission ?? { type: "checkmark" };
   const groupListId = `node-groups-${node.id}`;
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +120,7 @@ function NodeEditorCard({ node, index, groups, selected, onChange, onDelete }: N
             <>
               <img
                 src={node.image}
-                alt="preview node"
+                alt={node.title ? `Preview gambar node ${node.title}` : "Preview gambar node"}
                 className="h-9 w-9 border border-line object-cover"
               />
               <button

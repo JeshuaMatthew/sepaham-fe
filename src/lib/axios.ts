@@ -1,7 +1,6 @@
 import axios from "axios";
-import { clearToken, getToken } from "@/features/auth/utils/authToken";
-import { clearAccount } from "@/features/auth/utils/account";
-import { emitAuthExpired } from "@/features/auth/utils/authEvents";
+import { getToken } from "@/features/auth/utils/authToken";
+import { endSession } from "@/features/auth/utils/session";
 import { API_BASE_URL } from "@/constants/api";
 
 /**
@@ -34,9 +33,7 @@ AxiosInstance.interceptors.response.use(
     const isAuthCall = AUTH_PATHS.some((path) => url.includes(path));
     if (status === 401 && !isAuthCall) {
       // Token basi/dicabut: bersihkan sesi lalu suruh App redirect ke /login.
-      clearToken();
-      clearAccount();
-      emitAuthExpired();
+      endSession();
     }
     return Promise.reject(error);
   },

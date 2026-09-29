@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   fetchRoadmapTree,
+  fetchSubmissions,
   pushActivity,
   pushSubmission,
   roadmapTreeQueryKey,
 } from "@/features/roadmap/services/roadmapService";
-import type { SubmissionState } from "@/features/roadmap/types/roadmap";
 import {
   DEFAULT_PASSING_SCORE,
-  evaluateSubmission,
+  buildSubmissionPayload,
   nodeSubmission,
 } from "@/features/roadmap/utils/nodeContent";
 import { computeStatuses } from "@/features/roadmap/utils/roadmapGraph";
-import { getSubmissions, saveSubmission } from "@/features/roadmap/utils/submissionStore";
+import { reportError } from "@/shared/errors";
 import RoadmapQuizContainer from "../components/RoadmapQuizContainer";
 
 /**
@@ -33,15 +33,27 @@ function RoadmapNodeQuizPage() {
     enabled: roadmapId != null,
   });
 
-  const [submissions, setSubmissions] = useState<Record<string, SubmissionState>>(() =>
-    getSubmissions(roadmapId ?? ""),
-  );
+  const submissionsQuery = useQuery({
+    queryKey: ["submissions", roadmapId],
+    queryFn: () => fetchSubmissions(roadmapId as string),
+    enabled: roadmapId != null,
+  });
+  const queryClient = useQueryClient();
+  const submissions = submissionsQuery.data ?? {};
 
   const roadmap = data ?? null;
   const node = roadmap?.nodes.find((item) => item.id === nodeId) ?? null;
   const submission = node ? nodeSubmission(node) : { type: "checkmark" as const };
   const statusById = roadmap ? computeStatuses(roadmap, submissions).statusById : {};
   const status = nodeId ? statusById[nodeId] ?? "locked" : "locked";
+  const state = nodeId ? submissions[nodeId] : undefined;
+
+  // Penilaian terjadi di server: kita hanya mengirim jawaban, lalu memakai
+  // apa yang server kembalikan. Nilai lama yang dihitung di browser tidak
+  // dipakai, karena `correctIndex` sudah tidak lagi dikirim ke klien.
+  // Hook harus dipanggil sebelum `return` kondisional di bawah.
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Bukan node valid/terbuka → tree; bukan kuis → kembali ke halaman node.
   if (roadmap && (!node || status === "locked")) {
@@ -51,16 +63,20 @@ function RoadmapNodeQuizPage() {
     return <Navigate to={`/roadmap/${roadmapId}/${nodeId}`} replace />;
   }
 
-  const state = nodeId ? submissions[nodeId] : undefined;
-
-  const handleSubmit = (answers: Record<string, number>) => {
+  const handleSubmit = async (answers: Record<string, number>) => {
     if (!node || !roadmapId) return;
-    const next = evaluateSubmission(submission, { quizAnswers: answers });
-    saveSubmission(roadmapId, node.id, next);
-    setSubmissions((prev) => ({ ...prev, [node.id]: next }));
-    // Sinkronkan ke backend (best-effort).
-    void pushSubmission(roadmapId, node.id, next).catch(() => {});
-    void pushActivity(roadmapId).catch(() => {});
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const payload = buildSubmissionPayload(submission, { quizAnswers: answers });
+      const next = await pushSubmission(roadmapId, node.id, payload);
+      queryClient.setQueryData(["submissions", roadmapId], { ...submissions, [node.id]: next });
+      void pushActivity(roadmapId).catch((error) => reportError("pushActivity", error));
+    } catch {
+      setSubmitError("Gagal menyimpan jawaban. Coba lagi.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -70,10 +86,12 @@ function RoadmapNodeQuizPage() {
       questions={submission.questions ?? []}
       passingScore={submission.passingScore ?? DEFAULT_PASSING_SCORE}
       initialAnswers={state?.quizAnswers ?? {}}
-      score={state?.score}
+      score={state?.score ?? undefined}
       passed={state?.done ?? false}
       isLoading={isLoading}
       isError={isError}
+      isSubmitting={isSubmitting}
+      submitError={submitError}
       onBack={() => navigate(`/roadmap/${roadmapId}/${nodeId}`)}
       onSubmit={handleSubmit}
       onRetry={() => {

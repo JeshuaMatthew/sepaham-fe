@@ -1,13 +1,13 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import {
   ROADMAP_CATALOG_QUERY_KEY,
   fetchRoadmapCatalog,
+  fetchSubmissions,
+  fetchRoadmapActivity,
 } from "@/features/roadmap/services/roadmapService";
-import type { RoadmapSummary } from "@/features/roadmap/types/roadmap";
+import type { RoadmapSummary, SubmissionState } from "@/features/roadmap/types/roadmap";
 import { getPreference } from "@/features/onboarding/utils/preference";
-import { getSubmissions } from "@/features/roadmap/utils/submissionStore";
-import { getRoadmapActivity } from "@/features/roadmap/utils/roadmapActivity";
 import RoadmapCatalogContainer from "../components/RoadmapCatalogContainer";
 
 /**
@@ -48,15 +48,31 @@ function RoadmapCatalogPage() {
       scoreRoadmap(a, preference.roleId, preference.roleScores),
   );
 
-  // Progres per roadmap (dari submission) + jejak aktivitas (localStorage).
-  const activity = getRoadmapActivity();
+  const submissionQueries = useQueries({
+    queries: ordered.map((roadmap) => ({
+      queryKey: ["submissions", roadmap.id],
+      queryFn: () => fetchSubmissions(roadmap.id),
+    })),
+  });
+  const submissionsByRoadmap: Record<string, Record<string, SubmissionState>> = {};
+  ordered.forEach((roadmap, i) => {
+    submissionsByRoadmap[roadmap.id] = submissionQueries[i]?.data ?? {};
+  });
+
+  const activityQuery = useQuery({
+    queryKey: ["roadmap-activity"],
+    queryFn: fetchRoadmapActivity,
+  });
+  const activity = activityQuery.data ?? {};
+
+  // Progres per roadmap (dari submission) + jejak aktivitas.
   const progressById: Record<string, { completed: number; total: number }> = {};
   let furthestId: string | null = null;
   let furthestRatio = 0;
   let recentId: string | null = null;
   let recentAt = 0;
   for (const roadmap of ordered) {
-    const completed = Object.values(getSubmissions(roadmap.id)).filter((s) => s.done).length;
+    const completed = Object.values(submissionsByRoadmap[roadmap.id] ?? {}).filter((s) => s.done).length;
     const total = roadmap.totalNodes;
     const lastActive = activity[roadmap.id] ?? null;
     // Tampilkan progress bar kalau roadmap sudah dikerjakan atau pernah dibuka.

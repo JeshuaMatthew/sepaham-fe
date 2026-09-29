@@ -18,7 +18,14 @@ export async function updateProfile(patch: Partial<Profile>): Promise<Profile> {
   return data;
 }
 
+/**
+ * Badge milik user, lengkap dengan status `earned` yang sebenarnya.
+ *
+ * Sebelumnya mengambil `GET /api/badges` — katalog publik yang tidak punya
+ * akses ke data user mana pun, jadi `earned`-nya selalu `false` dan semua
+ * badge tampil terkunci. Endpoint per-user ada di `/profile/badges`.
+ */
 export async function fetchBadges(): Promise<Badge[]> {
-  const { data } = await AxiosInstance.get<{ badges: Badge[] }>("/badges");
-  return data.badges;
+  const { data } = await AxiosInstance.get<Badge[]>("/profile/badges");
+  return data;
 }
